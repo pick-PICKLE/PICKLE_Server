@@ -1,3 +1,6 @@
+#setting file
+application.yml
+
 # Compiled class file
 *.class
 
