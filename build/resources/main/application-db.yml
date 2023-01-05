@@ -1,6 +1,4 @@
 spring:
-  mvc:
-
   jpa:
     properties:
       hibernate:

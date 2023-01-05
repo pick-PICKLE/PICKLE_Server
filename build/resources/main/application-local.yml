@@ -6,7 +6,7 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     username: sa
-    url: jdbc:h2:file:/Users/yousungwook/h2DbList/sinzak;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:file:/Users/yousungwook/h2DbList/pickle;DB_CLOSE_ON_EXIT=FALSE
   h2:
     console:
       enabled: 'true'
