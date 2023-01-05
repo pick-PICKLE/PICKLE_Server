@@ -1,4 +1,4 @@
-package com.pickle.pickle.config.swagger;
+package com.pickle.server.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.pickle.pickle.domain.entity;
+package com.pickle.server.common;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-abstract class Timestamped {
+public abstract class Timestamped {
 
     @CreatedDate
     private LocalDateTime createdAt;

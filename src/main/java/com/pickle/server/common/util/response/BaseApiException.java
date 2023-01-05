@@ -1,4 +1,4 @@
-package com.pickle.pickle.util.response;
+package com.pickle.server.common.util.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

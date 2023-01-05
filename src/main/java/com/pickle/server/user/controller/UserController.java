@@ -1,4 +1,4 @@
-package com.pickle.pickle.controller.client;
+package com.pickle.server.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

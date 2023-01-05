@@ -1,4 +1,4 @@
-package com.pickle.pickle.service;
+package com.pickle.server.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
