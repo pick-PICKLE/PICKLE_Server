@@ -15,7 +15,7 @@ public class User extends Timestamped {
 
     @Id
     @Column(name ="user_id")
-    private String id;
+    private Long id;
 
     @Column
     private String name;

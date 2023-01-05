@@ -1,4 +1,4 @@
-package com.pickle.server.common;
+package com.pickle.server.common.error;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
