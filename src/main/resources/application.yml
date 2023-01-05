@@ -1,0 +1,9 @@
+spring:
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+    path match:
+      matching-strategy: ant_path_matcher
+  profiles:
+    include: db,local

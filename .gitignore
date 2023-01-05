@@ -1,6 +1,5 @@
 #setting file
-application.yml
-
+**/application-local.yml
 # Compiled class file
 *.class
 
@@ -43,7 +42,6 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-**/application-local.yml
 
 ### NetBeans ###
 /nbproject/private/
