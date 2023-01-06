@@ -1,6 +1,5 @@
 #setting file
-application.yml
-
+**/application-local.yml
 # Compiled class file
 *.class
 
