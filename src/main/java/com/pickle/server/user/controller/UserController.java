@@ -16,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @ApiOperation(value ="내 프로필 보기")
-    @GetMapping(value = "users/myProfile")
+    @GetMapping(value = "users/my-profile")
     public UserDto getMyProfile(@ApiIgnore User user){
         return userService.getMyProfile(user);
     }
