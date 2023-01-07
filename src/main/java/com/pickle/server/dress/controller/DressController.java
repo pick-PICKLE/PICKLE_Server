@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/dress")
+@RequestMapping("/dresses")
 public class DressController {
     private final DressService dressService;
 
