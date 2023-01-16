@@ -22,6 +22,6 @@ public class DressOption {
     @Column
     private String name;
 
-    @OneToMany(mappedBy = "dress_option")
+    @OneToMany(mappedBy = "dressOption")
     private List<DressOptionDetail> dressOptionDetails = new ArrayList<>();
 }
