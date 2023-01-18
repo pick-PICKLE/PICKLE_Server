@@ -37,6 +37,9 @@ public class DressDetailDto {
     @JsonProperty("dress_option2")
     private DressOptionDto dressOption2;
 
+    @JsonProperty("dress_stock")
+    private List<DressStockDto> dressStockList = new ArrayList<>();
+
     public DressDetailDto(Dress dress, String base_url){
         Store store = dress.getStore();
         this.storeId = store.getId();
@@ -49,6 +52,9 @@ public class DressDetailDto {
         this.dressPrice = priceKRWFormat.format(dress.getPrice()) + "원";
         this.dressOption1 = getDressOptionDto(dress.getDressOption1());
         this.dressOption2 = getDressOptionDto(dress.getDressOption2());
+        for(DressStock ds : dress.getDressStockList()){
+            this.dressStockList.add(new DressStockDto(ds));
+        }
    }
 
     private DressOptionDto getDressOptionDto(DressOption dressOption) {
@@ -84,3 +90,24 @@ class DressOptionDetailDto{
         this.dressOptionDetailName = dressOptionDetail.getName();
     }
 }
+
+class DressStockDto{
+
+    @JsonProperty("dress_option_detail1_id")
+    private Long dressOptionDetail1Id;
+
+    @JsonProperty("dress_option_detail2_id")
+    private Long dressOptionDetail2Id;
+
+    @JsonProperty("is_in_stock")
+    private Boolean isInStock;
+
+    DressStockDto(DressStock dressStock){
+        this.dressOptionDetail1Id = dressStock.getDressOptionDetail1().getId();
+        this.dressOptionDetail2Id = dressStock.getDressOptionDetail2().getId();
+        this.isInStock = (dressStock.getStock() > 0) ? true : false;
+    }
+
+}
+
+
