@@ -31,7 +31,7 @@ public class SwaggerConfig {
                 .produces(getProduceContentTypes())
                 .apiInfo(this.apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.pickle.pickle"))
+                .apis(RequestHandlerSelectors.basePackage("com.pickle.server"))
                 .paths(PathSelectors.any())
                 .build();
     }
