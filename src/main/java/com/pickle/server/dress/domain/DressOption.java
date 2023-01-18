@@ -23,5 +23,5 @@ public class DressOption {
     private String name;
 
     @OneToMany(mappedBy = "dressOption")
-    private List<DressOptionDetail> dressOptionDetails = new ArrayList<>();
+    private List<DressOptionDetail> dressOptionDetailList = new ArrayList<>();
 }

@@ -29,7 +29,7 @@ public class Dress extends Timestamped {
     private Integer price;
 
     @OneToMany(mappedBy = "dress")
-    private List<DressImage> images = new ArrayList<>();
+    private List<DressImage> imageList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
@@ -37,14 +37,14 @@ public class Dress extends Timestamped {
 
     @OneToOne
     @JoinColumn(name = "dress_option1_id", nullable = false)
-    private DressOption option1;
+    private DressOption dressOption1;
 
     @OneToOne
     @JoinColumn(name = "dress_option2_id", nullable = false)
-    private DressOption option2;
+    private DressOption dressOption2;
 
 
     @OneToMany(mappedBy = "dress")
-    private List<DressStock> dressStocks = new ArrayList<>();
+    private List<DressStock> dressStockList = new ArrayList<>();
 
 }

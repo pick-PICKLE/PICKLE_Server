@@ -26,6 +26,12 @@ public class Store extends Timestamped {
     private String name;
 
     @Column
+    private String address;
+
+    @Column
+    private String image;
+
+    @Column
     private Double latitude;
 
     @Column
