@@ -1,4 +1,3 @@
-
 package com.pickle.server.dress.domain;
 
 import com.pickle.server.common.Timestamped;
