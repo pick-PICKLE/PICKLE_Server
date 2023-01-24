@@ -5,6 +5,7 @@ import com.pickle.server.user.dto.UserDto;
 import com.pickle.server.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -20,5 +21,8 @@ public class UserController {
     public UserDto getMyProfile(@ApiIgnore User user){
         return userService.getMyProfile(user);
     }
+
+
+
 
 }

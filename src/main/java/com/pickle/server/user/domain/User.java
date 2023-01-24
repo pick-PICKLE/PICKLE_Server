@@ -4,12 +4,14 @@ package com.pickle.server.user.domain;
 
 
 import com.pickle.server.common.Timestamped;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 
 @Getter
+@Builder
 @Entity
 public class User extends Timestamped {
 
