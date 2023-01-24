@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -28,8 +28,8 @@ public class DressController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "의상 상세 조회 성공")
     })
-    @GetMapping("/detail")
-    public ResponseEntity<DressDetailDto> viewDressDetail(@RequestParam("id") Long dressId){
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<DressDetailDto> viewDressDetail(@PathVariable("id") Long dressId){
         return new ResponseEntity<>(dressService.findDressDetailInfoByDressId(dressId),HttpStatus.OK);
     }
 }
