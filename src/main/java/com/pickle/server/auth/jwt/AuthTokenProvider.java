@@ -3,6 +3,7 @@ package com.pickle.server.auth.jwt;
 import com.pickle.server.auth.error.TokenValidFailedException;
 import com.sun.istack.NotNull;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,7 @@ public class AuthTokenProvider {
     private static final String AUTHORITIES_KEY = "role";
 
     public AuthTokenProvider(@Value("${app.auth.tokenSecret}") String secretKey) {  //String 또는 인코딩된 byte개열 비밀키를 가지고 있으면 변형해야함
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
     public AuthToken createToken(String id, Long expiry) {  //토큰 생성

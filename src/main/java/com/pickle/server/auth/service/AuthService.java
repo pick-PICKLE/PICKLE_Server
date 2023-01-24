@@ -21,15 +21,17 @@ public class AuthService {
     public JSONObject join(JoinRequest joinRequest){
         Optional<User> findUser =  userRepository.findByEmail(joinRequest.getEmail());
         AuthToken appToken = authTokenProvider.createUserAppToken(joinRequest.getEmail());
+        JSONObject jsonObject = new JSONObject();
         if(!findUser.isPresent()){
             User user = User.builder()
                     .email(joinRequest.getEmail())
                     .name(joinRequest.getName())
-                    .origin("소셜계정X").build();
+                    .origin("소셜_로그인_X").build();
             userRepository.save(user);
+            jsonObject.put("token",appToken.getToken());
+            return jsonObject;
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("token",appToken.getToken());
+        jsonObject.put("message","이미 가입된 이메일입니다");
         return jsonObject;
     }
 }
