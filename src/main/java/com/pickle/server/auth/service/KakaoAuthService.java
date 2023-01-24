@@ -24,7 +24,7 @@ public class KakaoAuthService {
     public AuthResponse login(AuthRequest authRequest){
         User kakaoUser = clientKakao.getUserData(authRequest.getAccessToken());
         Optional<User> user = userRepository.findByEmail(kakaoUser.getEmail());
-        AuthToken appToken = authTokenProvider.createUserAppToken(kakaoUser.getEmail()); //토큰을 만든다 (새로운 유저든 아니든 만든다)
+        AuthToken appToken = authTokenProvider.createUserAppToken(kakaoUser.getEmail()); //이메일로 토큰을 만든다 (새로운 유저든 아니든 만든다)
         if(!user.isPresent()){ //유저가 없다면
             userRepository.save(kakaoUser); //새로 만든다
         }

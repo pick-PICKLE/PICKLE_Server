@@ -31,12 +31,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("jwt 토큰 존재");
             String tokenStr = JwtHeaderUtil.getAccessToken(request);
             AuthToken token = tokenProvider.convertAuthToken(tokenStr);   //토큰 정보를 받아보고
-
             if (token.validate()) { //토큰이 있다면
-                Authentication authentication = tokenProvider.getAuthentication(token); //권한을 받은 후에
+                Authentication authentication = tokenProvider.getAuthentication(tokenStr); //권한을 받은 후에
                 SecurityContextHolder.getContext().setAuthentication(authentication); //권한 설정
             }
-
             filterChain.doFilter(request, response);
         }
     }

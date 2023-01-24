@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private static final String[] AUTH_WHITELIST = {"/api/v1/auth/**","/",
             "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
-            "/h2-console/**", "/configuration/security","/**"}; //인증된 사용자 아니어도 접근 가능
+            "/h2-console/**", "/configuration/security"}; //인증된 사용자 아니어도 접근 가능
     private final AuthTokenProvider authTokenProvider;
 
     @Override
@@ -39,8 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll() //이상하게 여기 .antMatchers는 동작하지 않음 하지만 이걸 작동한다면 filter가 아예 미작동              .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated(); //이것들을 제외하곤 인증
 
         http.headers().frameOptions().disable(); // h2-console 화면을 사용하기 위해 해당 옵션 disable
@@ -51,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .addFilterBefore(new JwtAuthenticationFilter(authTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
                 .httpBasic().disable()
+                .formLogin().disable()
                 .logout()
                 .logoutSuccessUrl("/");
     }
