@@ -7,7 +7,6 @@ import lombok.Getter;
 import java.util.Arrays;
 
 @Getter
-@AllArgsConstructor
 public enum RoleType {
 
     USER("ROLE_USER", "일반 사용자 권한"),
@@ -16,4 +15,8 @@ public enum RoleType {
     private final String code;
     private final String name;
 
+    RoleType(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
 }
