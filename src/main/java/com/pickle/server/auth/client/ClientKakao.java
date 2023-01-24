@@ -19,7 +19,7 @@ public class ClientKakao { //카카오에서 사용자 정보 조회
 
     private final WebClient webClient;
 
-    public User getUserDate(String accessToken){//엑세스 토큰으로 유저 정보를 받아오고 그걸 유저로 만들어 변환
+    public User getUserData(String accessToken){//엑세스 토큰으로 유저 정보를 받아오고 그걸 유저로 만들어 변환
         KakaoUserResponse kakaoUserResponse = webClient.get()
                 .uri("https:/kapi.kakao.com/v2/user/me")
                 .headers(h -> h.setBearerAuth(accessToken))
