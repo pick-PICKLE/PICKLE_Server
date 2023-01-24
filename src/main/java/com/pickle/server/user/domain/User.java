@@ -4,14 +4,15 @@ package com.pickle.server.user.domain;
 
 
 import com.pickle.server.common.Timestamped;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 
 @Getter
-@Builder
 @Entity
 public class User extends Timestamped {
 
@@ -31,7 +32,14 @@ public class User extends Timestamped {
     @Column
     private String origin; //무슨 로그인?
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @Builder
+    public User(String name, String email, String image, String origin) {
+        this.name = name;
+        this.email = email;
+        this.image = image;
+        this.origin = origin;
+    }
+    //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private List<Reserve> reserves = new ArrayList<>();
 //
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.6.14'
+	id 'org.springframework.boot' version '2.6.6'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -34,8 +34,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:3.1.0"
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.6.6'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.6.6'
+//	implementation 'org.springframework.security:spring-security-web:4.2.2.RELEASE'
+//	implementation 'org.springframework.security:spring-security-config:4.2.2.RELEASE'
 	implementation 'org.springframework.security:spring-security-test'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2',
@@ -43,6 +45,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64")
 }
 
 tasks.named('test') {

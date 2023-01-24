@@ -5,6 +5,8 @@ import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.reactive.config.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -26,7 +28,7 @@ import java.util.Set;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+public class SwaggerConfig implements WebMvcConfigurer {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
@@ -38,11 +40,14 @@ public class SwaggerConfig {
     @Bean
     public Docket getDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .consumes(getConsumeContentTypes())
+                .produces(getProduceContentTypes())
                 .useDefaultResponseMessages(false)
-                .ignoredParameterTypes(AuthenticationPrincipal.class)
+//                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.pickle.server"))
                 .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
                 .securityContexts(Arrays.asList(securityContext()))
@@ -59,14 +64,14 @@ public class SwaggerConfig {
 
     private Set<String> getConsumeContentTypes() {
         Set<String> consumes = new HashSet<>();
-        consumes.add("application/json;charset=UTF-8");
+        consumes.add("application/json");
 
         return consumes;
     }
 
     private Set<String> getProduceContentTypes() {
         Set<String> produces = new HashSet<>();
-        produces.add("application/json;charset=UTF-8");
+        produces.add("application/json");
 
         return produces;
     }

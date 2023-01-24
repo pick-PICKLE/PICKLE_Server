@@ -1,5 +1,6 @@
 package com.pickle.server.user.controller;
 
+import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.dto.UserDto;
 import com.pickle.server.user.service.UserService;
@@ -11,8 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -28,6 +29,7 @@ public class UserController {
     public JSONObject getMyProfile(@ApiIgnore @AuthenticationPrincipal User user){
         return userService.getMyProfile(user);
     }
+
 
 
 
