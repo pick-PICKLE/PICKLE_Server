@@ -1,10 +1,12 @@
 package com.pickle.server.user.service;
 
 import com.pickle.server.common.error.UserNotFoundException;
+import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.dto.UserDto;
 import com.pickle.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceNotFoundException;
@@ -15,11 +17,11 @@ import java.util.Optional;
 public class UserService{
     private final UserRepository userRepository;
 
-    public UserDto getMyProfile(User user){
+    public JSONObject getMyProfile(User user){
         if(user == null){
-            throw new UserNotFoundException();
+            return PropertyUtil.responseMessage("유저 로그인 안 되어있음");
         }
         Optional<User> findUser = userRepository.findById(user.getId());
-        return new UserDto(findUser.get());
+        return PropertyUtil.response(new UserDto(findUser.get()));
     }
 }

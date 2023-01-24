@@ -1,6 +1,6 @@
 package com.pickle.server.likes.dto;
 
-import com.pickle.server.likes.domain.Likes;
+
 import com.pickle.server.store.domain.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

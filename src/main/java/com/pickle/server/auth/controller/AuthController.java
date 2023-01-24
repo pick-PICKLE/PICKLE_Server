@@ -5,6 +5,7 @@ import com.pickle.server.auth.dto.AuthResponse;
 import com.pickle.server.auth.dto.JoinRequest;
 import com.pickle.server.auth.service.AuthService;
 import com.pickle.server.auth.service.KakaoAuthService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = "로그인")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
