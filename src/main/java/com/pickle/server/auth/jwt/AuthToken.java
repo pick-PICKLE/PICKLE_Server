@@ -13,11 +13,11 @@ import java.util.Date;
 public class AuthToken {
     @Getter
     private final String token;
-    private final Key key;
+    private final String key;
 
     private static final String AUTHORITIES_KEY = "role";
 
-    AuthToken(String socialId,  Date expiry, Key key) {
+    AuthToken(String socialId,  Date expiry, String key) {
         this.key = key;
         this.token = createAuthToken(socialId,  expiry);
     }

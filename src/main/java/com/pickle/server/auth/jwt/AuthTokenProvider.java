@@ -14,8 +14,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -26,11 +28,11 @@ public class AuthTokenProvider {
 
     private Long expiry = 30*60*1000L; // 토큰 유효시간 30분
 
-    private final Key key;
+    private final String key;
     private static final String AUTHORITIES_KEY = "role";
 
     public AuthTokenProvider(@Value("${app.auth.tokenSecret}") String secretKey) {  //String 또는 인코딩된 byte개열 비밀키를 가지고 있으면 변형해야함
-        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        this.key = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     public AuthToken createToken(String id, Long expiry) {  //토큰 생성

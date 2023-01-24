@@ -1,5 +1,6 @@
 #setting file
 **/application-local.yml
+**/application-auth.yml
 # Compiled class file
 *.class
 
@@ -32,6 +33,9 @@ hs_err_pid*
 .sts4-cache
 .gradle
 build
+.gradle/
+build/
+
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
