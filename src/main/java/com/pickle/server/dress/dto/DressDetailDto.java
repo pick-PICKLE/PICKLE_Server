@@ -57,14 +57,14 @@ public class DressDetailDto {
 
 
 
-    public DressDetailDto(Dress dress, String baseUrl){
+    public DressDetailDto(Dress dress, String urlHead){
         Store store = dress.getStore();
         this.storeId = store.getId();
         this.storeName = store.getName();
         this.dressId = dress.getId();
         this.dressName = dress.getName();
         for(DressImage di : dress.getImageList()){
-            this.dressImageUrlList.add(baseUrl+ "/" + di.getId());
+            this.dressImageUrlList.add(urlHead + di.getId());
         }
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressPrice = priceKRWFormat.format(dress.getPrice()) + "원";
