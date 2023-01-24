@@ -4,11 +4,9 @@ package com.pickle.server.store.repository;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.dto.DressBriefDto;
 import com.pickle.server.dress.dto.QDressBriefDto;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import java.util.List;

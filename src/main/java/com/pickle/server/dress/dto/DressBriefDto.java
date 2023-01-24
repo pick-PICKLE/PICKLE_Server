@@ -1,14 +1,11 @@
 package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pickle.server.dress.domain.Dress;
-import com.pickle.server.dress.domain.DressImage;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 
 @Data

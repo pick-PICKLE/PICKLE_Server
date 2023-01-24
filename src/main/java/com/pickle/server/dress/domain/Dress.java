@@ -28,6 +28,9 @@ public class Dress extends Timestamped {
     @Column
     private Integer price;
 
+    @Column
+    private String comment;
+
     @OneToMany(mappedBy = "dress")
     private List<DressImage> imageList = new ArrayList<>();
 

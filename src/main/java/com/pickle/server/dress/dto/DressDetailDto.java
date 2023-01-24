@@ -1,16 +1,12 @@
 package com.pickle.server.dress.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.dress.domain.*;
 import com.pickle.server.store.domain.Store;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +31,22 @@ public class DressDetailDto {
     @JsonProperty("dress_name")
     private String dressName;
 
-
     @ApiModelProperty(example = "이미지 url")
     @JsonProperty("dress_image_url_list")
     private List<String> dressImageUrlList = new ArrayList<>();
 
+//    @ApiModelProperty(example = "좋아요 여부")
+//    @JsonProperty("is_liked")
+//    private Boolean isLiked;
+
     @ApiModelProperty(example = "의상 가격")
     @JsonProperty("dress_price")
     private String dressPrice;
+
+    @ApiModelProperty(example = "의상 설명")
+    @JsonProperty("comment")
+    private String comment;
+
 
     @ApiModelProperty(example = "의상 옵션 1")
     @JsonProperty("dress_option1")
