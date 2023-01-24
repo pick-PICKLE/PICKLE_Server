@@ -1,5 +1,6 @@
 package com.pickle.server.dress.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.dress.domain.*;
 import com.pickle.server.store.domain.Store;
@@ -18,7 +19,7 @@ import java.util.List;
 public class DressDetailDto {
 
     @ApiModelProperty(example = "스토어 id")
-    @JsonProperty
+    @JsonProperty("store_id")
     private Long storeId;
 
     @ApiModelProperty(example = "스토어 이름")
@@ -54,14 +55,16 @@ public class DressDetailDto {
     @JsonProperty("dress_stock")
     private List<DressStockDto> dressStockList = new ArrayList<>();
 
-    public DressDetailDto(Dress dress, String base_url){
+
+
+    public DressDetailDto(Dress dress, String baseUrl){
         Store store = dress.getStore();
         this.storeId = store.getId();
         this.storeName = store.getName();
         this.dressId = dress.getId();
         this.dressName = dress.getName();
         for(DressImage di : dress.getImageList()){
-            this.dressImageUrlList.add(base_url+ "/" + di.getId());
+            this.dressImageUrlList.add(baseUrl+ "/" + di.getId());
         }
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressPrice = priceKRWFormat.format(dress.getPrice()) + "원";

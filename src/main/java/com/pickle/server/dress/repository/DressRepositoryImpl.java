@@ -16,11 +16,4 @@ public class DressRepositoryImpl implements DressDslRepository{
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
-    public Dress findDressById(Long id) {
-        return queryFactory
-                .selectFrom(dress)
-                .where(dress.id.eq(id))
-                .fetchOne();
-    }
 }
