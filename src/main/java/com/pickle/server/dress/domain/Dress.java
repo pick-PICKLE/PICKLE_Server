@@ -29,12 +29,25 @@ public class Dress extends Timestamped {
     private Integer price;
 
     @Column
-    private String image;
+    private String comment;
+
+    @OneToMany(mappedBy = "dress")
+    private List<DressImage> imageList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @OneToOne
+    @JoinColumn(name = "dress_option1_id", nullable = false)
+    private DressOption dressOption1;
+
+    @OneToOne
+    @JoinColumn(name = "dress_option2_id", nullable = false)
+    private DressOption dressOption2;
+
+
     @OneToMany(mappedBy = "dress")
-    private List<DressOption> dressOptions = new ArrayList<>();
+    private List<DressStock> dressStockList = new ArrayList<>();
+
 }

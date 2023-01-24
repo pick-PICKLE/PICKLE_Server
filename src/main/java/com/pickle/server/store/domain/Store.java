@@ -6,10 +6,7 @@ import com.pickle.server.common.Timestamped;
 import com.pickle.server.dress.domain.Dress;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +23,12 @@ public class Store extends Timestamped {
     private String name;
 
     @Column
+    private String address;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column
     private Double latitude;
 
     @Column
@@ -36,6 +39,10 @@ public class Store extends Timestamped {
 
     @Column(name = "close_time")
     private LocalTime closeTime;
+
+    @OneToOne
+    @JoinColumn(name = "store_open_day_id", nullable = false)
+    private StoreOpenDay storeOpenDay;
 
     @OneToMany(mappedBy = "store")
     private List<Dress> dresses = new ArrayList<>();
