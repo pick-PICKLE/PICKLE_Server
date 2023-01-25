@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.pickle'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '8'
 
 configurations {
 	compileOnly {
@@ -26,6 +26,8 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
 	implementation 'com.h2database:h2:1.4.200'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly('com.h2database:h2:1.4.200') //
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	compileOnly 'org.projectlombok:lombok'
 

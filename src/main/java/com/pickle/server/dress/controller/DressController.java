@@ -2,6 +2,7 @@ package com.pickle.server.dress.controller;
 
 import com.pickle.server.dress.service.DressService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,4 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class DressController {
     private final DressService dressService;
 
+  //  @PostMapping("/{id}/likes")
 }

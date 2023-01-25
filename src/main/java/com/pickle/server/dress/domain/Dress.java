@@ -3,10 +3,14 @@ package com.pickle.server.dress.domain;
 
 
 import com.pickle.server.common.Timestamped;
+import com.pickle.server.likes.domain.DressLike;
+import com.pickle.server.likes.domain.Likes;
 import com.pickle.server.store.domain.Store;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,12 @@ public class Dress extends Timestamped {
 
     @Column
     private Integer price;
+    //
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
 
     @Column
     private String image;
@@ -37,4 +47,11 @@ public class Dress extends Timestamped {
 
     @OneToMany(mappedBy = "dress")
     private List<DressOption> dressOptions = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "dress")
+    private List<Likes> likes = new ArrayList<>();
+    //지우기
+    @OneToMany(mappedBy = "dress")
+    private List<DressLike> dresslike = new ArrayList<>();
 }
