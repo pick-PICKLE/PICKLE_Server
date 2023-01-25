@@ -3,15 +3,16 @@ spring:
     properties:
       hibernate:
         format_sql: 'true'
-        ddl-auto: update
+        ddl-auto: none
     show-sql: 'true'
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: pickle
-    url: jdbc:mysql://localhost:3306/pickle?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    password: pickle
+    url: jdbc:mysql://pickle.c0hklbefxcaz.ap-northeast-2.rds.amazonaws.com:3306/pickle?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3306/pickle?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    password: pickle60!
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
