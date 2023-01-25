@@ -44,6 +44,7 @@ dependencies {
 			'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+	implementation 'mysql:mysql-connector-java'
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64")
 }
