@@ -2,8 +2,8 @@ package com.pickle.server.likes.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pickle.server.dress.domain.Dress;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class DressLikeDto {
     @ApiModelProperty(example = "의상 가격")
     @JsonProperty("dress_id")
-    private Long dress_id;
+    private Long dressId;
     @ApiModelProperty(example = "의상 가격")
     @JsonProperty("name")
     private String name;
@@ -25,10 +25,10 @@ public class DressLikeDto {
     @JsonProperty("image")
     private String image;
 
-    public DressLikeDto(Long dress_id, String name, Integer price, String image){
-        this.dress_id = dress_id;
-        this.name = name;
-        this.price = price;
-        this.image = image;
+    public DressLikeDto(Dress dress){
+        this.dressId = dress.getId();
+        this.name = dress.getName();
+        this.price = dress.getPrice();
+        this.image = dress.getImage();
     }
 }

@@ -1,17 +1,11 @@
 package com.pickle.server.likes.controller;
 
 import com.pickle.server.common.util.response.BaseApiResponse;
-import com.pickle.server.likes.domain.DressLike;
-import com.pickle.server.likes.domain.Likes;
 import com.pickle.server.likes.dto.DressLikeDto;
 
 import com.pickle.server.likes.dto.LikesDto;
-import com.pickle.server.likes.dto.StoreLikeDto;
-import com.pickle.server.likes.repository.DressLikeRepository;
-import com.pickle.server.likes.repository.LikesRepository;
 import com.pickle.server.likes.service.LikesService;
 import com.pickle.server.user.domain.User;
-import com.pickle.server.user.dto.UserDto;
 import com.pickle.server.user.repository.UserRepository;
 
 import com.pickle.server.user.service.UserService;
@@ -24,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -77,17 +70,17 @@ public class LikesController {
    }*/
 
     //좋아요가 0인 데이터 가져오기(테스트용)
-    @GetMapping("/test")
-    public BaseApiResponse<Page<LikesDto>> findAllDesc(@PageableDefault(size=10) Pageable pageable){
-        Page<LikesDto> newlikes = likesService.findAllDesc(pageable);
-        return new BaseApiResponse<>("성공",newlikes);
-    }
+//    @GetMapping("/test")
+//    public BaseApiResponse<Page<LikesDto>> findAllDesc(@PageableDefault(size=10) Pageable pageable){
+//        Page<LikesDto> newlikes = likesService.findAllDesc(pageable);
+//        return new BaseApiResponse<>("성공",newlikes);
+//    }
 
-    //like목록 조회(test)
-    @GetMapping("/find")
-    public List<LikesDto> find(){
-        return likesService.findAll();
-    }
+//    //like목록 조회(test)
+//    @GetMapping("/find")
+//    public List<LikesDto> find(){
+//        return likesService.findAll();
+//    }
 
 
     //좋아요-옷

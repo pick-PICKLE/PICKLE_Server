@@ -1,31 +1,24 @@
 package com.pickle.server.likes.service;
 
 
-import com.pickle.server.common.error.UserNotFoundException;
-import com.pickle.server.likes.domain.DressLike;
 import com.pickle.server.likes.dto.DressLikeDto;
 import com.pickle.server.likes.dto.LikesDto;
-import com.pickle.server.likes.dto.StoreLikeDto;
 import com.pickle.server.likes.repository.DressLikeRepository;
-import com.pickle.server.likes.repository.LikesRepository;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class LikesService {
-    @Autowired
-    private final LikesRepository likesRepository;
     private final UserRepository userRepository;
     private  final DressLikeRepository dressLikeRepository;
     @Transactional(readOnly = true)
@@ -50,26 +43,26 @@ public class LikesService {
             //  return (List<DressLikesListDto>) likesRepository.findLikeByUserId(user_id);
     }
  */
-    @Transactional(readOnly = true)     //test용
-    public Page<LikesDto> findAllDesc(Pageable pagerequest) {
-        return likesRepository.findAllDesc(pagerequest).map( //findAll로 해도 될듯
-                Likes -> new LikesDto(
-                        Likes.getId().longValue(),
-                        Likes.getDress().getId(),
-                        Likes.getUser().getId()
-                ));
-    }
+//    @Transactional(readOnly = true)     //test용
+//    public Page<LikesDto> findAllDesc(Pageable pagerequest) {
+//        return likesRepository.findAllDesc(pagerequest).map( //findAll로 해도 될듯
+//                Likes -> new LikesDto(
+//                        Likes.getId().longValue(),
+//                        Likes.getDress().getId(),
+//                        Likes.getUser().getId()
+//                ));
+//    }
     //좋아요에 사용
    /* @Transactional
     public Optional<Likes> findById(Long dress_id){
         return likesRepository.findById(dress_id);
     }*/
     //
-    @Transactional(readOnly = true)     //test용
-    public List<LikesDto> findAll() {
-        return likesRepository.findAll().stream()
-                .map(LikesDto::new).collect(Collectors.toList());
-    }
+//    @Transactional(readOnly = true)     //test용
+//    public List<LikesDto> findAll() {
+//        return likesRepository.findAll().stream()
+//                .map(LikesDto::new).collect(Collectors.toList());
+//    }
     //옷 좋아요 누르기
   /*  @Transactional
     public void likesDress(Long dress_id){

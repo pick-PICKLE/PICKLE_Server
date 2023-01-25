@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface DressLikeRepository extends JpaRepository<DressLike,Long> {
 
   //  @Query(value="select * from dress_like where user_id= :id",nativeQuery = true)
-  @Query(value="select new com.pickle.server.likes.dto.DressLikeDto(d.dress.id,d.name,d.price,d.image) from DressLike d where d.id= :id")
+  @Query("select new com.pickle.server.likes.dto.DressLikeDto(d.dress) from DressLike d where d.id= :id")
   Page<DressLikeDto> findDressByUsers(@Param("id") Long userId, Pageable pageable);
 }
