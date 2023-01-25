@@ -19,7 +19,7 @@ public class AuthToken {
 
     AuthToken(String socialId, Date expiry,RoleType roleType, String key) {
         this.key = key;
-        this.token = createAuthToken(socialId,roleType.getName(), expiry);
+        this.token = createAuthToken(socialId,roleType.toString(), expiry);
     }
 
     private String createAuthToken(String socialId, String role, Date expiry) {

@@ -26,21 +26,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             "/h2-console/**", "/configuration/security","/auth/**"}; //인증된 사용자 아니어도 접근 가능
     private final AuthTokenProvider authTokenProvider;
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico,");
-
-        // swagger
-        web.ignoring().antMatchers(
-                AUTH_WHITELIST);
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico,");
+//
+//        // swagger
+//        web.ignoring().antMatchers(
+//                AUTH_WHITELIST);
+//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.cors().disable();
+//        http.cors().disable();
 
         http.authorizeRequests()
-//                .antMatchers(AUTH_WHITELIST).permitAll() //이상하게 여기 .antMatchers는 동작하지 않음 하지만 이걸 작동한다면 filter가 아예 미작동              .antMatchers("/auth/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll() //이상하게 여기 .antMatchers는 동작하지 않음
                 .anyRequest().authenticated(); //이것들을 제외하곤 인증
 
         http.headers().frameOptions().disable(); // h2-console 화면을 사용하기 위해 해당 옵션 disable
