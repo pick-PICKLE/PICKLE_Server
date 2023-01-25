@@ -1,5 +1,6 @@
 package com.pickle.server.store.controller;
 
+import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.store.dto.StoreDetailDto;
 import com.pickle.server.store.service.StoreService;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +28,7 @@ public class StoreController {
     })
     @GetMapping("/detail/{id}")
     public ResponseEntity<StoreDetailDto> viewDressDetail(@PathVariable("id") Long storeId,
-                                                          @RequestParam(value = "category", required = false) String category){
+                                                          @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category){
         return new ResponseEntity<>(storeService.findStoreDetailInfoByStoreId(storeId, category), HttpStatus.OK);
     }
 }

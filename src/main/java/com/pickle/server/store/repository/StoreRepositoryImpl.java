@@ -2,8 +2,9 @@ package com.pickle.server.store.repository;
 
 
 import com.pickle.server.common.util.KeyValueService;
-import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.dress.dto.QDressBriefDto;
+import com.pickle.server.dress.domain.DressCategory;
+import com.pickle.server.dress.dto.DressBriefInStoreDto;
+import com.pickle.server.dress.dto.QDressBriefInStoreDto;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,22 +28,21 @@ public class StoreRepositoryImpl implements StoreDslRepository {
     }
 
     @Override
-    public List<DressBriefDto> findDressDtoByStoreId(Long storeId) {
-        return findDressByStoreIdOverlap(storeId).fetch();
-    }
+    public List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category) {
+        if(category == DressCategory.Constants.all)
+            return findDressByStoreIdOverlap(storeId).fetch();
 
-    @Override
-    public List<DressBriefDto> findDressDtoByStoreIdAndCategory(Long storeId, String category) {
-        return findDressByStoreIdOverlap(storeId)
+        else
+            return findDressByStoreIdOverlap(storeId)
                 .where(dress.category.eq(category))
                 .fetch();
     }
 
 
-    private JPAQuery<DressBriefDto> findDressByStoreIdOverlap(Long storeId) {
+    private JPAQuery<DressBriefInStoreDto> findDressByStoreIdOverlap(Long storeId) {
 
         return queryFactory
-                .select(new QDressBriefDto(
+                .select(new QDressBriefInStoreDto(
                                 dress.id,
                                 dress.name,
                                 JPAExpressions.select(dressImage.id.stringValue().prepend(keyValueService.makeUrlHead("dresses")))
