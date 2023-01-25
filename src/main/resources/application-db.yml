@@ -3,24 +3,19 @@ spring:
     properties:
       hibernate:
         format_sql: 'true'
+        ddl-auto: update
     show-sql: 'true'
-    hibernate:
-      ddl-auto: create
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5Dialect
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: pickle
     url: jdbc:mysql://localhost:3306/pickle?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     password: pickle
-    jpa:
-      database: mysql
-      database-platform: org.hibernate.dialect.MySQL5Dialect
-      properties:
-        hibernate:
-          format_sql: 'true'
-      show-sql: 'true'
-      hibernate:
-        ddl-auto: update
-    mvc:
-      pathmatch:
-        matching-strategy: ant_path_matcher
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+
 

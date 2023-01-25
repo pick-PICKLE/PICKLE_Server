@@ -8,7 +8,8 @@
 build
 # Log file
 *.log
-
+.gradle
+build
 # BlueJ files
 *.ctxt
 
@@ -33,6 +34,11 @@ hs_err_pid*
 .settings
 .springBeans
 .sts4-cache
+.gradle
+build
+.gradle/
+build/
+
 
 bin/
 !**/src/main/**/bin/

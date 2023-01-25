@@ -13,7 +13,12 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
+allprojects {
+	repositories {
+		google()
+		maven { url 'https://jitpack.io' }
+	}
+}
 repositories {
 	mavenCentral()
 }
@@ -27,9 +32,8 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
 	implementation 'com.h2database:h2:1.4.200'
-	implementation 'com.mysql:mysql-connector-j'
+	implementation 'mysql:mysql-connector-java'
 	compileOnly 'org.projectlombok:lombok'
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
