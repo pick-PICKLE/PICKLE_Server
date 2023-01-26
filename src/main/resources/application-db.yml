@@ -8,11 +8,6 @@ spring:
       ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: pickle
-    url: jdbc:mysql://localhost:3306/pickle?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    password: pickle60
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
