@@ -7,6 +7,8 @@ spring:
       matching-strategy: ant_path_matcher
   profiles:
     include: db,local,auth,real
-
+server:
+  servlet:
+    context-path: /api
 
 
