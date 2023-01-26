@@ -1,6 +1,7 @@
 package com.pickle.server.dress.repository;
 
 import com.pickle.server.dress.domain.Dress;
+import com.pickle.server.dress.dto.DressDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,12 +17,12 @@ public interface DressRepository extends JpaRepository<Dress, Long> {
     /**
      최근 업로드 된 상품 확인
      */
-    @Query(value = "select d from Dress d where d.store.id = :id and d.createdAt >= :stdDate")
-    List<Dress> findAllByCreatedAtAndStore(@Param(value = "id") Long i, @Param(value="stdDate") LocalDateTime stdDate);
+    @Query(value = "select new com.pickle.server.dress.dto.DressDto(D.id, D.name, D.price, D.image, D.store.name) from Dress D where D.store.id = :id and D.createdAt >= :stdDate order by D.createdAt DESC")
+    List<DressDto> findAllByCreatedAtAndStore(@Param(value = "id") Long i, @Param(value="stdDate") LocalDateTime stdDate);
 
     /**
      선택된 카테고리에서 매장별 최근 5개씩
      */
-    @Query(value = "select * from Dress where Dress.store_id = :id and Dress.category = :category order by createdAt DESC LIMIT 5", nativeQuery = true)
-    List<Dress> findRandomCategory(@Param(value = "id") Long i, @Param(value="category") String category);
+    @Query(value = "select new com.pickle.server.dress.dto.DressDto(D.id, D.name, D.price, D.image, D.store.name) from Dress D where D.store.id = :id and D.category = :category order by D.createdAt DESC")
+    List<DressDto> findRandomCategory(@Param(value = "id") Long i, @Param(value="category") String category);
 }
