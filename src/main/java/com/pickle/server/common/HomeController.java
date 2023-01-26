@@ -1,6 +1,8 @@
 package com.pickle.server.common;
 
 
+import com.pickle.server.config.PropertyUtil;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
     @GetMapping
-    public String home(){
-        return "Hello World";
+    public JSONObject home(){
+        return PropertyUtil.responseMessage("Hello world");
     }
 }
