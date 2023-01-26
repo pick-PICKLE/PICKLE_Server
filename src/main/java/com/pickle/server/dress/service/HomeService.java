@@ -2,6 +2,7 @@ package com.pickle.server.dress.service;
 
 import com.pickle.server.dress.domain.Dress;
 import com.pickle.server.dress.domain.RecentView;
+import com.pickle.server.dress.dto.DressDto;
 import com.pickle.server.dress.repository.DressRepository;
 import com.pickle.server.dress.repository.RecentViewRepository;
 import com.pickle.server.store.repository.StoreRepository;
@@ -26,9 +27,9 @@ public class HomeService {
      * @param nearStores
      * @return
      */
-    public List<Dress> getNewDresses(List<StoreDto> nearStores) {
+    public List<DressDto> getNewDresses(List<StoreDto> nearStores) {
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusDays(7);
-        List<Dress> newDresses = new ArrayList<>();
+        List<DressDto> newDresses = new ArrayList<>();
 
         for (StoreDto storeDto : nearStores) {
             newDresses.addAll(dressRepository.findAllByCreatedAtAndStore(storeDto.getId(), stdTime));
@@ -43,19 +44,24 @@ public class HomeService {
      * @param nearStores
      * @return
      */
-    public List<Dress> getRecDresses(List<StoreDto> nearStores) {
-        List<Dress> recDresses = new ArrayList<>();
-        List<String> Category = Arrays.asList(new String[]{"상의", "아우터", "하의", "원피스", "신발", "가방"});
+    public List<DressDto> getRecDresses(List<StoreDto> nearStores) {
+        List<DressDto> recDresses = new ArrayList<>();
+        List<String> Category = Arrays.asList(new String[]{"상의", "아우터", "하의", "원피스"});
 
         Random random = new Random();
         int index = random.nextInt(Category.size());
+        System.out.println(Category.get(index));
 
         for (StoreDto StoreDto : nearStores) {
             recDresses.addAll(dressRepository.findRandomCategory(StoreDto.getId(), Category.get(index)));
         }
         Collections.shuffle(recDresses);
 
-        return recDresses.subList(0, 20);
+        if (recDresses.size() > 20) {
+            return recDresses.subList(0, 20);
+        } else {
+            return recDresses;
+        }
     }
 
     /**
@@ -64,8 +70,8 @@ public class HomeService {
      * @param userId
      * @return
      */
-    public List<Dress> getRecentView(Long userId) {
-        List<Dress> recentView = new ArrayList<>();
+    public List<DressDto> getRecentView(Long userId) {
+        List<DressDto> recentView = new ArrayList<>();
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusMonths(1);
 
         recentView.addAll(recentViewRepository.findByUserId(userId, stdTime));
