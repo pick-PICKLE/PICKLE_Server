@@ -5,12 +5,8 @@
 # Compiled class file
 *.class
 !gradle/wrapper/gradle-wrapper.jar
-.gradle/
-build
 # Log file
 *.log
-.gradle
-build
 # BlueJ files
 *.ctxt
 
