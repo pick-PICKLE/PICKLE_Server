@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class User extends Timestamped {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name ="user_id")
     private Long id;
 
