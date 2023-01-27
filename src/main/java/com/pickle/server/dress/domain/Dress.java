@@ -3,11 +3,9 @@ package com.pickle.server.dress.domain;
 
 
 import com.pickle.server.common.Timestamped;
-import com.pickle.server.likes.domain.DressLike;
 import com.pickle.server.likes.domain.Likes;
 import com.pickle.server.store.domain.Store;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -54,4 +52,5 @@ public class Dress extends Timestamped {
     //지우기
     @OneToMany(mappedBy = "dress")
     private List<DressLike> dresslike = new ArrayList<>();
+
 }

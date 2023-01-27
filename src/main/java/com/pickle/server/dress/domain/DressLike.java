@@ -1,6 +1,5 @@
-package com.pickle.server.likes.domain;
+package com.pickle.server.dress.domain;
 
-import com.pickle.server.dress.domain.Dress;
 import com.pickle.server.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,11 +15,8 @@ import javax.persistence.*;
 @Builder
 
 public class DressLike {
-
     @Id
-    //  @Column(columnDefinition = "integer default 0")
-    //    @Column(name="dresslike_id",columnDefinition = "0")
-    @Column(name ="dresslike_id")
+    @Column(name ="dressLike_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

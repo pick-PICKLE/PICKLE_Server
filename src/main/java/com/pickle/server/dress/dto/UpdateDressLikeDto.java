@@ -1,7 +1,7 @@
-package com.pickle.server.likes.dto;
+package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pickle.server.likes.domain.DressLike;
+import com.pickle.server.dress.domain.DressLike;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class UpdateDressLikeDto {
     @JsonProperty("dress_id")
     private Long dressId;
 
-    @ApiModelProperty(example = "의상 id")
+    @ApiModelProperty(example = "유저 id")
     @JsonProperty("user_id")
     private Long userId;
 

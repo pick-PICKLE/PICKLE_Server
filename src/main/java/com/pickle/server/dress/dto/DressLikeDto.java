@@ -1,4 +1,4 @@
-package com.pickle.server.likes.dto;
+package com.pickle.server.dress.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
