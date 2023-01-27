@@ -1,36 +1,44 @@
 package com.pickle.server.likes.dto;
 
-import com.pickle.server.likes.domain.Likes;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.store.domain.Store;
-import lombok.AllArgsConstructor;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class StoreLikeDto {
-    private Long store_id;
+    @ApiModelProperty(example = "스토어 id")
+    @JsonProperty("store_id")
+    private Long storeId;
+    @ApiModelProperty(example = "의상 이름")
+    @JsonProperty("name")
     private String name;
+
+    @ApiModelProperty(example = "의상 이미지")
+    @JsonProperty("image")
     private String image;
+
+    @ApiModelProperty(example = "스토어 주소")
+    @JsonProperty("address")
     private String address;
+
+    @ApiModelProperty(example = "오픈 시간")
+    @JsonProperty("open_time")
     private LocalTime open_time;
+
+    @ApiModelProperty(example = "클로즈 시간")
+    @JsonProperty("close_time")
     private LocalTime close_time;
 
- /*   public StoreLikeDto(Long store_id,String name,String image,String addresss,LocalTime open_time,LocalTime close_time){
-        this.store_id = store_id;
-        this.name = name;
-        this.image = image;
-        this.address = address;
-        this.open_time = open_time;
-        this.close_time = close_time;
-    }*/
     public StoreLikeDto(Store store){
-        this.store_id = store.getId();
+        this.storeId = store.getId();
         this.name = store.getName();
         this.image = store.getImage();
+        this.address = store.getAddress();
         this.open_time = store.getOpenTime();
         this.close_time = store.getCloseTime();
     }
