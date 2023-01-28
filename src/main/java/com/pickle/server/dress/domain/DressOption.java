@@ -5,6 +5,8 @@ import com.pickle.server.store.domain.Store;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -12,18 +14,13 @@ import javax.persistence.*;
 public class DressOption {
 
     @Id
-    @Column(name ="option_id")
+    @Column(name ="dress_option_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "dress_id", nullable = false)
-    private Dress dress;
-
-    @Column(name = "is_in_stock")
-    private Boolean isInStock;
-
+    @OneToMany(mappedBy = "dressOption")
+    private List<DressOptionDetail> dressOptionDetailList = new ArrayList<>();
 }

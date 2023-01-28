@@ -24,6 +24,12 @@ public class Store extends Timestamped {
     private String name;
 
     @Column
+    private String address;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column
     private Double latitude;
 
     @Column
@@ -34,6 +40,10 @@ public class Store extends Timestamped {
 
     @Column(name = "close_time")
     private LocalTime closeTime;
+
+    @OneToOne
+    @JoinColumn(name = "store_open_day_id", nullable = false)
+    private StoreOpenDay storeOpenDay;
 
     @OneToMany(mappedBy = "store")
     private List<Dress> dresses = new ArrayList<>();
