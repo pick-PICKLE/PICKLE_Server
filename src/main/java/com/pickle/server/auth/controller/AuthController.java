@@ -13,6 +13,8 @@ import org.json.simple.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
+
 @Api(tags = "로그인")
 @RestController
 @RequestMapping("/auth")
@@ -23,7 +25,7 @@ public class AuthController {
 
     @ApiOperation(value = "카카오 로그인", notes = "카카오 엑세스 토큰을 이용하여 사용자 정보 받아 저장하고 앱의 토큰 반환")
     @PostMapping(value ="/kakao")
-    public AuthResponse kakaoAuthRequest(@RequestBody AuthRequest authRequest){
+    public AuthResponse kakaoAuthRequest(@RequestBody AuthRequest authRequest)  {
         return kakaoAuthService.login(authRequest);
     }
 
