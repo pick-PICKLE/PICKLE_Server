@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RecentViewRepository extends JpaRepository<RecentView, Long> {
@@ -18,4 +19,6 @@ public interface RecentViewRepository extends JpaRepository<RecentView, Long> {
      */
     @Query(value="select R from RecentView R where R.user.id = :id and R.modifiedAt >= :stdDate order by R.modifiedAt Desc")
     List<RecentView> findByUserId(@Param(value = "id") Long i, @Param(value="stdDate")LocalDateTime stdDate);
+    @Query(value="select R from RecentView R where R.user.id =:userId and R.dress.id =:dressId")
+    Optional<RecentView> findByUserIdAndStoreId(@Param(value="userId") Long userId, @Param(value="dressId") Long dressId);
 }
