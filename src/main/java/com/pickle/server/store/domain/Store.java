@@ -4,7 +4,11 @@ package com.pickle.server.store.domain;
 
 import com.pickle.server.common.Timestamped;
 import com.pickle.server.dress.domain.Dress;
+import com.pickle.server.user.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -43,4 +47,5 @@ public class Store extends Timestamped {
 
     @OneToMany(mappedBy = "store")
     private List<Dress> dresses = new ArrayList<>();
+
 }

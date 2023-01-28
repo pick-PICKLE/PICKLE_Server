@@ -1,13 +1,21 @@
-package com.pickle.server.likes.domain;
+package com.pickle.server.store.domain;
 
-import com.pickle.server.store.domain.Store;
 import com.pickle.server.user.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StoreLike {
     @Id
-    @Column(name ="storelike_id")
+    @Column(name ="storeLike_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

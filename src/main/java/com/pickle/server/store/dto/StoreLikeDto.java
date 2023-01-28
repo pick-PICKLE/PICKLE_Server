@@ -1,4 +1,4 @@
-package com.pickle.server.likes.dto;
+package com.pickle.server.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.store.domain.Store;
@@ -14,11 +14,11 @@ public class StoreLikeDto {
     @ApiModelProperty(example = "스토어 id")
     @JsonProperty("store_id")
     private Long storeId;
-    @ApiModelProperty(example = "의상 이름")
+    @ApiModelProperty(example = "스토어 이름")
     @JsonProperty("name")
     private String name;
 
-    @ApiModelProperty(example = "의상 이미지")
+    @ApiModelProperty(example = "스토어 이미지")
     @JsonProperty("image")
     private String image;
 

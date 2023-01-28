@@ -1,7 +1,7 @@
-package com.pickle.server.likes.dto;
+package com.pickle.server.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pickle.server.likes.domain.StoreLike;
+import com.pickle.server.store.domain.StoreLike;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UpdateStoreLikeDto {
-    @ApiModelProperty(example = "의상 id")
+    @ApiModelProperty(example = "스토어 id")
     @JsonProperty("store_id")
     private Long storeId;
 
-    @ApiModelProperty(example = "의상 id")
+    @ApiModelProperty(example = "유저 id")
     @JsonProperty("user_id")
     private Long userId;
 
