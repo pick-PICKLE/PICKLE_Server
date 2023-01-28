@@ -37,7 +37,7 @@ public class ClientKakao { //카카오에서 사용자 정보 조회
             log.info(kakaoUserResponse.getProperties().getNickname());
             log.info(kakaoUserResponse.getProperties().getProfile_image());
             return User.builder()
-                    .origin(String.valueOf(kakaoUserResponse.getId()))
+                    .origin(SocialOrigin.KAKAO.toString())
                     .name(kakaoUserResponse.getProperties().getNickname())
                     .email(kakaoUserResponse.getKakao_account().getEmail())
                     .image(kakaoUserResponse.getProperties().getProfile_image())
