@@ -53,7 +53,7 @@ jobs:
           aws-region: ap-northeast-2
         
       - name: activate deploy.sh
-        run: chmod +x app/step1/deploy.sh && sh app/step1/deploy.sh
+        run: ls && chmod +x app/step1/deploy.sh && sh app/step1/deploy.sh
           
           
   current-time:
