@@ -33,7 +33,8 @@ public class Dress extends Timestamped {
 
     @OneToMany(mappedBy = "dress")
     private List<DressImage> imageList = new ArrayList<>();
-
+    @Column
+    private String image;
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
