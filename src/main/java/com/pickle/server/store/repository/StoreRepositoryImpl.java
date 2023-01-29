@@ -29,13 +29,17 @@ public class StoreRepositoryImpl implements StoreDslRepository {
 
     @Override
     public List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category) {
-        if(category == DressCategory.Constants.all)
+        if (category.equals(DressCategory.Constants.all)) {
+            System.out.println("all");
             return findDressByStoreIdOverlap(storeId).fetch();
+        }
 
-        else
+        else {
+            System.out.println("else");
             return findDressByStoreIdOverlap(storeId)
-                .where(dress.category.eq(category))
-                .fetch();
+                    .where(dress.category.eq(category))
+                    .fetch();
+        }
     }
 
 
@@ -45,10 +49,9 @@ public class StoreRepositoryImpl implements StoreDslRepository {
                 .select(new QDressBriefInStoreDto(
                                 dress.id,
                                 dress.name,
-                                JPAExpressions.select(dressImage.id.stringValue().prepend(keyValueService.makeUrlHead("dresses")))
+                                JPAExpressions.select(dressImage.id.min().stringValue().prepend(keyValueService.makeUrlHead("dresses")))
                                         .from(dressImage)
-                                        .where(dressImage.id.eq(dress.id))
-                                        .limit(1),
+                                        .where(dressImage.dress.id.eq(dress.id)),
                                 dress.price
                         )
                 )
