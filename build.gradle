@@ -1,3 +1,9 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.6.6'
@@ -13,7 +19,12 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
+allprojects {
+	repositories {
+		google()
+		maven { url 'https://jitpack.io' }
+	}
+}
 repositories {
 	mavenCentral()
 }
@@ -21,14 +32,20 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-devtools'
 
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor(
+			"javax.persistence:javax.persistence-api",
+			"javax.annotation:javax.annotation-api",
+			"com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
 	implementation 'com.h2database:h2:1.4.200'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'mysql:mysql-connector-java'
 	compileOnly 'org.projectlombok:lombok'
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -44,9 +61,17 @@ dependencies {
 			'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	implementation 'mysql:mysql-connector-java'
+
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64")
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+		}
+	}
 }
 
 tasks.named('test') {
