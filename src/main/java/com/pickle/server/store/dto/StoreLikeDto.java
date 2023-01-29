@@ -19,9 +19,9 @@ public class StoreLikeDto {
     @JsonProperty("name")
     private String name;
 
-    @ApiModelProperty(example = "스토어 이미지")
-    @JsonProperty("image")
-    private String image;
+    @ApiModelProperty(example = "스토어 이미지 url")
+    @JsonProperty("store_image_url")
+    private String storeImageUrl;
 
     @ApiModelProperty(example = "스토어 주소")
     @JsonProperty("address")
@@ -38,10 +38,10 @@ public class StoreLikeDto {
     @JsonProperty("close_time")
     private LocalTime close_time;
 
-    public StoreLikeDto(Store store){
+    public StoreLikeDto(Store store, String urlHead){
         this.storeId = store.getId();
         this.name = store.getName();
-        this.image = store.getImageUrl();
+        this.storeImageUrl = urlHead + store.getImageUrl();
         this.address = store.getAddress();
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
         this.open_time = store.getOpenTime();
