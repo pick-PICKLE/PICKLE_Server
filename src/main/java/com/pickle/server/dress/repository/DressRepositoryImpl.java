@@ -74,7 +74,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 .select(new QDressBriefDto(
                                 dress.id,
                                 dress.name,
-                                JPAExpressions.select(dressImage.id.min().stringValue().prepend(keyValueService.makeUrlHead("dresses")))
+                                JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
                                         .from(dressImage)
                                         .where(dressImage.dress.id.eq(dress.id)),
                                 dress.price,
