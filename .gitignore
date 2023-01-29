@@ -1,12 +1,12 @@
 #setting file
 **/application-local.yml
 **/application-auth.yml
+**/application-real.yml
 # Compiled class file
 *.class
-
+!gradle/wrapper/gradle-wrapper.jar
 # Log file
 *.log
-
 # BlueJ files
 *.ctxt
 
@@ -35,6 +35,7 @@ hs_err_pid*
 build
 .gradle/
 build/
+
 
 bin/
 !**/src/main/**/bin/
