@@ -26,13 +26,13 @@ public class DressService {
         return new DressDetailDto(dress, keyValueService.makeUrlHead("dresses"));
     }
 
-    public List<DressBriefDto> searchDress(String name, String sort, String category) {
+    public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude) {
         if(!DressCategory.findCategoryByName(category))
             throw new IllegalArgumentException("잘못된 카테고리 입니다.");
 
         if(!DressSortBy.findSortConditionByName(sort))
             throw new IllegalArgumentException("잘못된 정렬 입니다.");
 
-        return dressRepository.findDressByCondition(name, sort, category);
+        return dressRepository.findDressByCondition(name, sort, category, latitude, longitude);
     }
 }

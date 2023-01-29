@@ -29,17 +29,13 @@ public class StoreRepositoryImpl implements StoreDslRepository {
 
     @Override
     public List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category) {
-        if (category.equals(DressCategory.Constants.all)) {
-            System.out.println("all");
+        if (category.equals(DressCategory.Constants.all))
             return findDressByStoreIdOverlap(storeId).fetch();
-        }
 
-        else {
-            System.out.println("else");
+        else
             return findDressByStoreIdOverlap(storeId)
                     .where(dress.category.eq(category))
                     .fetch();
-        }
     }
 
 

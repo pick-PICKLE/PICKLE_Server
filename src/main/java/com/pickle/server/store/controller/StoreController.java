@@ -3,6 +3,7 @@ package com.pickle.server.store.controller;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.store.dto.StoreDetailDto;
 import com.pickle.server.store.service.StoreService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/stores")
+@Api(tags = "매장")
 public class StoreController {
     private final StoreService storeService;
 
@@ -29,6 +31,7 @@ public class StoreController {
     @GetMapping("/detail/{id}")
     public ResponseEntity<StoreDetailDto> viewDressDetail(@PathVariable("id") Long storeId,
                                                           @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category){
+        System.out.println("들어왔나요?");
         return new ResponseEntity<>(storeService.findStoreDetailInfoByStoreId(storeId, category), HttpStatus.OK);
     }
 }
