@@ -41,10 +41,10 @@ jobs:
 #           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 #           restore-keys: |
 #             ${{ runner.os }}-gradle-
-      - name: 🔧 Build Spring server
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean build
+#       - name: 🔧 Build Spring server
+#         run: |
+#           chmod +x ./gradlew
+#           ./gradlew clean build
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
