@@ -4,5 +4,12 @@ spring:
       hibernate:
         format_sql: 'true'
     show-sql: 'true'
-    hibernate:
-      ddl-auto: create
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+
+

@@ -1,11 +1,12 @@
 #setting file
 **/application-local.yml
+**/application-auth.yml
+**/application-real.yml
 # Compiled class file
 *.class
-
+!gradle/wrapper/gradle-wrapper.jar
 # Log file
 *.log
-
 # BlueJ files
 *.ctxt
 
@@ -30,6 +31,12 @@ hs_err_pid*
 .settings
 .springBeans
 .sts4-cache
+.gradle
+build
+.gradle/
+build/
+
+
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
