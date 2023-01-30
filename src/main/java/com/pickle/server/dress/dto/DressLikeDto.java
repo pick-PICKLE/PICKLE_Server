@@ -3,11 +3,14 @@ package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.dress.domain.Dress;
+import com.pickle.server.dress.domain.DressImage;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -22,6 +25,7 @@ public class DressLikeDto {
     @ApiModelProperty(example = "의상 가격")
     @JsonProperty("price")
     private String price;
+
     @ApiModelProperty(example = "의상 이미지")
     @JsonProperty("image")
     private String image;
@@ -33,6 +37,5 @@ public class DressLikeDto {
         this.name = dress.getName();
         this.price = priceFormat.format(dress.getPrice())+"원";
         this.image = dress.getImage();
-
     }
 }

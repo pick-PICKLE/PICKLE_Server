@@ -47,19 +47,19 @@ public class StoreController {
     public ResponseEntity<UpdateStoreLikeDto> likeStore(@RequestBody UpdateStoreLikeDto updatestoreLikeDto){
         storeService.likesStore(updatestoreLikeDto);
         return new ResponseEntity<UpdateStoreLikeDto>(updatestoreLikeDto
-                , HttpStatus.valueOf(200));
+                , HttpStatus.OK);
     }
 
     @GetMapping("/likes/{id}")
     public ResponseEntity<List<StoreLikeDto>> findStoreLikeByUser(@PathVariable("id") Long userId){
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return new ResponseEntity<>(storeService.findStoreLikeByUser(userId),HttpStatus.valueOf(200));
+        return new ResponseEntity<>(storeService.findStoreLikeByUser(userId),HttpStatus.OK);
     }
 
     @PostMapping("/likes/delete")
     public ResponseEntity<UpdateStoreLikeDto> delLikeStore(@RequestBody UpdateStoreLikeDto updateStoreLikeDto){
         storeService.delLikeStore(updateStoreLikeDto);
         return new ResponseEntity<UpdateStoreLikeDto>(updateStoreLikeDto,
-                HttpStatus.valueOf(200));
+                HttpStatus.OK);
     }
 }

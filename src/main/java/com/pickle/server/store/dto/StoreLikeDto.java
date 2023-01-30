@@ -20,8 +20,8 @@ public class StoreLikeDto {
     private String name;
 
     @ApiModelProperty(example = "스토어 이미지")
-    @JsonProperty("image")
-    private String image;
+    @JsonProperty("imageUrl")
+    private String imageUrl;
 
     @ApiModelProperty(example = "스토어 주소")
     @JsonProperty("address")
@@ -41,7 +41,7 @@ public class StoreLikeDto {
     public StoreLikeDto(Store store){
         this.storeId = store.getId();
         this.name = store.getName();
-        this.image = store.getImageUrl();
+        this.imageUrl = store.getImageUrl();
         this.address = store.getAddress();
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
         this.open_time = store.getOpenTime();

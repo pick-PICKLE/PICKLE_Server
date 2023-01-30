@@ -11,14 +11,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.ws.Response;
+
 import java.util.List;
 
 
@@ -45,20 +42,20 @@ public class DressController {
     @GetMapping("/likes/{id}")
     public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@PathVariable("id") Long userId) {
         User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return new ResponseEntity<>(dressService.findDressLikeByUser(userId),HttpStatus.valueOf(200));
+        return new ResponseEntity<>(dressService.findDressLikeByUser(userId),HttpStatus.OK);
     }
 
     @PostMapping("/likes")
     public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
         dressService.likesDress(updatedressLikeDto);
         return new ResponseEntity<>(updatedressLikeDto
-                , HttpStatus.valueOf(200));
+                , HttpStatus.OK);
     }
 
     @PostMapping("/likes/delete")
     public ResponseEntity<UpdateDressLikeDto> delLikeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
         dressService.delLikeDress(updatedressLikeDto);
-        return new ResponseEntity<>(updatedressLikeDto,HttpStatus.valueOf(200));
+        return new ResponseEntity<>(updatedressLikeDto,HttpStatus.OK);
     }
 
 }
