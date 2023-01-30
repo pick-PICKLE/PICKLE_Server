@@ -18,7 +18,7 @@ public interface StoreLikeRepository extends JpaRepository<StoreLike,Long> {
     Optional<StoreLike> findByUserAndStore(User user, Store store);
 
     @Modifying
-    @Query("delete from StoreLike where store_id= :store_id and user_id= :user_id")
+    @Query(value = "delete from Store_Like where store_id= :store_id and user_id= :user_id",nativeQuery = true)
     void deleteStore(@Param("store_id") Store store, @Param("user_id") User user);
 
  //   @Query("select s from StoreLike s where s.id= :id")

@@ -19,8 +19,11 @@ public interface DressLikeRepository extends JpaRepository<DressLike,Long> {
     Optional<DressLike> findByUserAndDress(User user, Dress dress);
     //좋아요 취소
     @Modifying
-    @Query("delete from DressLike where dress_id= :dress_id and user_id= :user_id")
+    @Query(value = "delete from Dress_Like where dress_id= :dress_id and user_id= :user_id",nativeQuery = true)
     void deleteDress(@Param("dress_id") Dress dress, @Param("user_id") User user);
+//    @Query("delete from DressLike where dress_id= :dress_id and user_id= :user_id")
+//    void deleteDress(@Param("dress_id") Dress dress, @Param("user_id") User user);
+
 //    @Query("delete from DressLike where dress.id= :dress.id and user.id= :user.id")
 //    void deleteDress(@Param("dress.id") Dress dress, @Param("user.id") User user);
 
