@@ -1,15 +1,12 @@
 #setting file
 **/application-local.yml
 **/application-auth.yml
+**/application-real.yml
 # Compiled class file
 *.class
 !gradle/wrapper/gradle-wrapper.jar
-.gradle/
-build
 # Log file
 *.log
-.gradle
-build
 # BlueJ files
 *.ctxt
 
