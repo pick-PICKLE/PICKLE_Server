@@ -78,7 +78,8 @@ public class DressRepositoryImpl implements DressDslRepository {
                                         .from(dressImage)
                                         .where(dressImage.dress.id.eq(dress.id)),
                                 dress.price,
-                                dress.store.name
+                                dress.store.name,
+                                dress.store.id
                         )
                 )
                 .from(dress)

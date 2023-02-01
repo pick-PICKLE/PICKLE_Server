@@ -28,17 +28,22 @@ public class DressBriefDto {
     @JsonProperty("dress_price")
     private String dressPrice;
 
+    @ApiModelProperty(example = "매장 id")
+    @JsonProperty("store_id")
+    private Long storeId;
+
     @ApiModelProperty(example = "매장 이름")
     @JsonProperty("store_name")
     private String storeName;
 
     @QueryProjection
-    public DressBriefDto(Long dressId, String dressName, String dressImageUrl, Integer dressPrice, String storeName) {
+    public DressBriefDto(Long dressId, String dressName, String dressImageUrl, Integer dressPrice, String storeName, Long storeId) {
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressId = dressId;
         this.dressName = dressName;
         this.dressImageUrl = dressImageUrl;
         this.dressPrice = priceKRWFormat.format(dressPrice) + "원";
+        this.storeId = storeId;
         this.storeName = storeName;
     }
 }

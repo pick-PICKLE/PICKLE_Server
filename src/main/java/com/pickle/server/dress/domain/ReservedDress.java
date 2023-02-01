@@ -3,16 +3,14 @@ package com.pickle.server.dress.domain;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "dress_stock")
-public class DressStock {
+@Table(name = "reserved_dress")
+public class ReservedDress {
 
     @Id
-    @Column(name ="dress_stock_id")
+    @Column(name ="reserved_dress_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -29,12 +27,6 @@ public class DressStock {
     private Dress dress;
 
     @Column
-    private Integer stock;
+    private Integer quantity;
 
-    public DressStock(DressOptionDetail dressOptionDetail1, DressOptionDetail dressOptionDetail2, Dress dress, Integer stock) {
-        this.dressOptionDetail1 = dressOptionDetail1;
-        this.dressOptionDetail2 = dressOptionDetail2;
-        this.dress = dress;
-        this.stock = stock;
-    }
 }

@@ -4,7 +4,10 @@ import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.domain.DressSortBy;
 import com.pickle.server.dress.dto.DressDetailDto;
+import com.pickle.server.dress.dto.DressReservationDto;
+import com.pickle.server.dress.dto.DressReservationFormDto;
 import com.pickle.server.dress.service.DressService;
+import com.pickle.server.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 @RestController
@@ -57,4 +62,37 @@ public class DressController {
                 PropertyUtil.response(dressService.searchDress(name, sort, category, latitude, longitude))
                 , HttpStatus.OK);
     }
+
+    @ApiOperation(value = "의상 예약 폼 받기",
+            httpMethod = "GET",
+            response = DressDetailDto.class,
+            notes = "의상 예약 폼(스토어 정보, 예약 가능 시간) 받는 API"
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "의상 예약 폼 받기 성공")
+    })
+    @GetMapping("/reservation/{store_id}")
+    public ResponseEntity<DressReservationFormDto> getDressReservationForm(@PathVariable(name = "store_id") Long storeId){
+
+        return new ResponseEntity<>(dressService.getDressReservationForm(storeId), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "의상 예약하기",
+            httpMethod = "POST",
+            response = DressDetailDto.class,
+            notes = "의상 예약 API"
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "의상 검색 성공")
+    })
+    @GetMapping("/reservation")
+    public ResponseEntity<JSONObject> makeReservation(@ModelAttribute DressReservationDto dressReservationDto,
+                                                      @ApiIgnore @AuthenticationPrincipal User user){
+
+        dressService.makeDressReservation(dressReservationDto, user);
+        return new ResponseEntity<>(
+                PropertyUtil.response("예약 완료")
+                , HttpStatus.OK);
+    }
+
 }
