@@ -7,9 +7,9 @@ import com.pickle.server.dress.dto.DressDetailDto;
 import com.pickle.server.dress.dto.DressLikeDto;
 import com.pickle.server.dress.dto.UpdateDressLikeDto;
 import com.pickle.server.dress.service.DressService;
-import io.swagger.annotations.Api;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.repository.UserRepository;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -18,10 +18,10 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
 import java.util.List;
 
 

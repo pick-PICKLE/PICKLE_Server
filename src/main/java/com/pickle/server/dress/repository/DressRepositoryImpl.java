@@ -25,7 +25,6 @@ public class DressRepositoryImpl implements DressDslRepository {
 
     private final JPAQueryFactory queryFactory;
     private final KeyValueService keyValueService;
-    private final KeyValueService keyValueService;
 
     public DressRepositoryImpl(EntityManager em, KeyValueService keyValueService) {
         this.queryFactory = new JPAQueryFactory(em);

@@ -10,8 +10,6 @@ import java.util.List;
 public interface StoreDslRepository {
 
     List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category);
-    List<DressBriefDto> findDressDtoByStoreId(Long storeId);
-    List<DressBriefDto> findDressDtoByStoreIdAndCategory(Long storeId, String category);
     List<StoreLikeDto> findStoreByUsers(Long userId);
 
 }

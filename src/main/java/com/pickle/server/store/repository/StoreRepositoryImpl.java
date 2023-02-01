@@ -3,12 +3,9 @@ package com.pickle.server.store.repository;
 
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
+import com.pickle.server.dress.dto.DressBriefDto;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
 import com.pickle.server.dress.dto.QDressBriefInStoreDto;
-import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.dress.dto.QDressBriefDto;
-import com.pickle.server.store.domain.QStore;
-import com.pickle.server.store.domain.QStoreLike;
 import com.pickle.server.store.dto.QStoreLikeDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 import com.querydsl.jpa.JPAExpressions;
