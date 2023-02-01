@@ -10,10 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/stores")
 public class StoreController {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
     private final StoreService storeService;
 
     @ApiOperation(value = "스토어 상세 조회",
@@ -42,7 +37,6 @@ public class StoreController {
                                                           @RequestParam(value = "category", required = false) String category){
         return new ResponseEntity<>(storeService.findStoreDetailInfoByStoreId(storeId, category), HttpStatus.OK);
     }
-
     @PostMapping("/likes")
     public ResponseEntity<UpdateStoreLikeDto> likeStore(@RequestBody UpdateStoreLikeDto updatestoreLikeDto){
         storeService.likesStore(updatestoreLikeDto);

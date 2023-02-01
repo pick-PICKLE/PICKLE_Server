@@ -47,7 +47,6 @@ public class Dress extends Timestamped {
     @JoinColumn(name = "dress_option2_id", nullable = false)
     private DressOption dressOption2;
 
-
     @OneToMany(mappedBy = "dress")
     private List<DressStock> dressStockList = new ArrayList<>();
 

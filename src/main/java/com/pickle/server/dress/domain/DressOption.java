@@ -1,7 +1,6 @@
-
 package com.pickle.server.dress.domain;
 
-
+import com.pickle.server.common.Timestamped;
 import com.pickle.server.store.domain.Store;
 import lombok.Getter;
 
