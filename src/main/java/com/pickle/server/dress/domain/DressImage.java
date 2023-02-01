@@ -14,6 +14,9 @@ public class DressImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name ="image_url")
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "dress_id", nullable = false)
     private Dress dress;
