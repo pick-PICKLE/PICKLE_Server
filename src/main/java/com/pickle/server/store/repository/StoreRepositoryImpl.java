@@ -5,6 +5,12 @@ import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
 import com.pickle.server.dress.dto.QDressBriefInStoreDto;
+import com.pickle.server.dress.dto.DressBriefDto;
+import com.pickle.server.dress.dto.QDressBriefDto;
+import com.pickle.server.store.domain.QStore;
+import com.pickle.server.store.domain.QStoreLike;
+import com.pickle.server.store.dto.QStoreLikeDto;
+import com.pickle.server.store.dto.StoreLikeDto;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,10 +20,11 @@ import java.util.List;
 
 import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
+import static com.pickle.server.store.domain.QStore.store;
+import static com.pickle.server.store.domain.QStoreLike.storeLike;
 
 
 public class StoreRepositoryImpl implements StoreDslRepository {
-
     private final JPAQueryFactory queryFactory;
 
     private final KeyValueService keyValueService;
@@ -38,6 +45,18 @@ public class StoreRepositoryImpl implements StoreDslRepository {
                     .fetch();
     }
 
+    @Override
+    public List<StoreLikeDto> findStoreByUsers(Long userId) {
+        return queryFactory
+                .select(new QStoreLikeDto(
+                        store,
+                        store.imageUrl.prepend(keyValueService.makeUrlHead("stores"))
+                ))
+                .from(store, storeLike)
+                .where(storeLike.user.id.eq(userId))
+                .where(storeLike.store.id.eq(store.id))
+                .fetch();
+    }
 
     private JPAQuery<DressBriefInStoreDto> findDressByStoreIdOverlap(Long storeId) {
 
