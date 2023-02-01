@@ -16,6 +16,7 @@ import java.util.List;
 public class Store extends Timestamped {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="store_id")
     private Long id;
 
