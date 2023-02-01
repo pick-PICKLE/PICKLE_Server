@@ -18,16 +18,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class HomeService {
     private final DressRepository dressRepository;
-    private final StoreRepository storeRepository;
     private final RecentViewRepository recentViewRepository;
     private final KeyValueService keyValueService;
 
-    /**
-     * 가까운 매장의 NEW 상품 목록 (생성 시간 순 정렬)
-     *
-     * @param nearStores
-     * @return
-     */
     public List<DressOverviewDto> getNewDresses(List<StoreCoordDto> nearStores) {
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusDays(7);
         List<Dress> allnewDresses = new ArrayList<>();
@@ -54,12 +47,6 @@ public class HomeService {
         return newDresses;
     }
 
-    /**
-     * 카테고리별 주변 매장 추천 상품
-     *
-     * @param nearStores
-     * @return
-     */
     public List<DressOverviewDto> getRecDresses(List<StoreCoordDto> nearStores) {
         List<DressOverviewDto> recDressesOverview = new ArrayList<>();
         List<Dress> recDresses = new ArrayList<>();
@@ -75,7 +62,7 @@ public class HomeService {
         for (Dress dress : recDresses) {
             recDressesOverview.add(new DressOverviewDto(dress, keyValueService.makeUrlHead("dresses")));
         }
-        Collections.shuffle(recDresses);
+        Collections.shuffle(recDressesOverview);
 
         if (recDressesOverview.size() > 20) {
             return recDressesOverview.subList(0, 20);
@@ -84,12 +71,6 @@ public class HomeService {
         }
     }
 
-    /**
-     * 최근 본 상품 (DB 저장)
-     *
-     * @param userId
-     * @return
-     */
     public List<DressOverviewDto> getRecentView(Long userId) {
         List<RecentView> recent = new ArrayList<>();
         List<DressOverviewDto> recentView = new ArrayList<>();
