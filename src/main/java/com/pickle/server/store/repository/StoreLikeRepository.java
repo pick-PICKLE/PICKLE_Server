@@ -23,7 +23,7 @@ public interface StoreLikeRepository extends JpaRepository<StoreLike,Long> {
 
  //   @Query("select s from StoreLike s where s.id= :id")
    // Page<StoreLikeDto> findStoreByUsers(@Param("id") Long userId, Pageable pageable);
- @Query("select new com.pickle.server.store.dto.StoreLikeDto(s.store) from StoreLike s where s.id= :id")
- List<StoreLikeDto> findStoreByUsers(@Param("id") Long userId);
+// @Query("select new com.pickle.server.store.dto.StoreLikeDto(s.store) from StoreLike s where s.id= :id")
+// List<StoreLikeDto> findStoreByUsers(@Param("id") Long userId);
 
 }

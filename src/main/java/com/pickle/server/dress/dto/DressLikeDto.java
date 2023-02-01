@@ -4,17 +4,22 @@ package com.pickle.server.dress.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.dress.domain.Dress;
 import com.pickle.server.dress.domain.DressImage;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 
+@Data
 @Getter
 @NoArgsConstructor
+@Setter
 public class DressLikeDto {
     @ApiModelProperty(example = "의상 id")
     @JsonProperty("dress_id")
@@ -30,12 +35,12 @@ public class DressLikeDto {
     @JsonProperty("image")
     private String image;
 
-    public DressLikeDto(Dress dress){
+    @QueryProjection
+    public DressLikeDto(Dress dress, String imageUrl){
         DecimalFormat priceFormat = new DecimalFormat("###,###");
-
         this.dressId = dress.getId();
         this.name = dress.getName();
         this.price = priceFormat.format(dress.getPrice())+"원";
-        this.image = dress.getImage();
+        this.image = imageUrl;
     }
 }

@@ -24,12 +24,9 @@ public interface DressLikeRepository extends JpaRepository<DressLike,Long> {
 //    @Query("delete from DressLike where dress_id= :dress_id and user_id= :user_id")
 //    void deleteDress(@Param("dress_id") Dress dress, @Param("user_id") User user);
 
-//    @Query("delete from DressLike where dress.id= :dress.id and user.id= :user.id")
-//    void deleteDress(@Param("dress.id") Dress dress, @Param("user.id") User user);
-
     //좋아요 옷 목록 조회
-   @Query("select new com.pickle.server.dress.dto.DressLikeDto(d.dress) from DressLike d where d.id= :id")
+   //@Query("select new com.pickle.server.dress.dto.DressLikeDto(d.dress) from DressLike d where d.id= :id")
 //    @Query("select d from DressLike d where d.id= :id")
-    List<DressLikeDto> findDressByUsers(@Param("id") Long userId);
+
 
 }

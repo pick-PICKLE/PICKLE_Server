@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 import java.util.List;
@@ -36,8 +38,8 @@ public class DressController {
             @ApiResponse(code = 200, message = "의상 상세 조회 성공")
     })
     @GetMapping("/detail/{id}")
-    public ResponseEntity<DressDetailDto> viewDressDetail(@PathVariable("id") Long dressId){
-        return new ResponseEntity<>(dressService.findDressDetailInfoByDressId(dressId),HttpStatus.OK);
+    public ResponseEntity<DressDetailDto> viewDressDetail(@PathVariable("id") Long dressId, @ApiIgnore @AuthenticationPrincipal User user){
+        return new ResponseEntity<>(dressService.findDressDetailInfoByDressId(dressId, user),HttpStatus.OK);
     }
     @GetMapping("/likes/{id}")
     public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@PathVariable("id") Long userId) {

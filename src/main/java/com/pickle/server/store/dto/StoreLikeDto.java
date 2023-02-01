@@ -3,7 +3,9 @@ package com.pickle.server.store.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreOpenDay;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,7 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor
+@Data
 public class StoreLikeDto {
     @ApiModelProperty(example = "스토어 id")
     @JsonProperty("store_id")
@@ -38,10 +41,11 @@ public class StoreLikeDto {
     @JsonProperty("close_time")
     private LocalTime close_time;
 
-    public StoreLikeDto(Store store){
+    @QueryProjection
+    public StoreLikeDto(Store store, String imageURl){
         this.storeId = store.getId();
         this.name = store.getName();
-        this.imageUrl = store.getImageUrl();
+        this.imageUrl = imageURl;
         this.address = store.getAddress();
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
         this.open_time = store.getOpenTime();

@@ -5,6 +5,7 @@ import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefDto;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreLike;
+import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreDetailDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 import com.pickle.server.store.dto.UpdateStoreLikeDto;
@@ -101,7 +102,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public List<StoreLikeDto> findStoreLikeByUser(Long userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return storeLikeRepository.findStoreByUsers(userId);
+        return storeRepository.findStoreByUsers(userId);
     }
     @Transactional
     public void likesStore(UpdateStoreLikeDto updateStoreLikeDto){
