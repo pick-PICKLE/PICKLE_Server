@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-
 public interface DressRepository extends JpaRepository<Dress, Long>, DressDslRepository, QuerydslPredicateExecutor<Dress> {
     /*
     최근 업로드 된 상품 확인

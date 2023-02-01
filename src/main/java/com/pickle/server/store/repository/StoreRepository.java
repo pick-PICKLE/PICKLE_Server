@@ -11,3 +11,4 @@ import java.util.List;
 public interface StoreRepository extends JpaRepository<Store, Long>, StoreDslRepository, QuerydslPredicateExecutor<Store> {
 
 }
+

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KeyValueService {
 
-    @Value("${secret.base-url}")
+    @Value("${security.base-url}")
     private String baseUrl;
 
     public String makeUrlHead(String kind){

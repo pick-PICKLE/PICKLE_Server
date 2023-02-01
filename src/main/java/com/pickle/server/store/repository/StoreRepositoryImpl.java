@@ -2,10 +2,10 @@ package com.pickle.server.store.repository;
 
 
 import com.pickle.server.common.util.KeyValueService;
+import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.dress.dto.QDressBriefDto;
-import com.pickle.server.store.domain.QStore;
-import com.pickle.server.store.domain.QStoreLike;
+import com.pickle.server.dress.dto.DressBriefInStoreDto;
+import com.pickle.server.dress.dto.QDressBriefInStoreDto;
 import com.pickle.server.store.dto.QStoreLikeDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 import com.querydsl.jpa.JPAExpressions;
@@ -32,15 +32,14 @@ public class StoreRepositoryImpl implements StoreDslRepository {
     }
 
     @Override
-    public List<DressBriefDto> findDressDtoByStoreId(Long storeId) {
-        return findDressByStoreIdOverlap(storeId).fetch();
-    }
+    public List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category) {
+        if (category.equals(DressCategory.Constants.all))
+            return findDressByStoreIdOverlap(storeId).fetch();
 
-    @Override
-    public List<DressBriefDto> findDressDtoByStoreIdAndCategory(Long storeId, String category) {
-        return findDressByStoreIdOverlap(storeId)
-                .where(dress.category.eq(category))
-                .fetch();
+        else
+            return findDressByStoreIdOverlap(storeId)
+                    .where(dress.category.eq(category))
+                    .fetch();
     }
 
     @Override
@@ -56,16 +55,15 @@ public class StoreRepositoryImpl implements StoreDslRepository {
                 .fetch();
     }
 
-    private JPAQuery<DressBriefDto> findDressByStoreIdOverlap(Long storeId) {
+    private JPAQuery<DressBriefInStoreDto> findDressByStoreIdOverlap(Long storeId) {
 
         return queryFactory
-                .select(new QDressBriefDto(
+                .select(new QDressBriefInStoreDto(
                                 dress.id,
                                 dress.name,
-                                JPAExpressions.select(dressImage.id.stringValue().prepend(keyValueService.makeUrlHead("dresses")))
+                                JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
                                         .from(dressImage)
-                                        .where(dressImage.id.eq(dress.id))
-                                        .limit(1),
+                                        .where(dressImage.dress.id.eq(dress.id)),
                                 dress.price
                         )
                 )
