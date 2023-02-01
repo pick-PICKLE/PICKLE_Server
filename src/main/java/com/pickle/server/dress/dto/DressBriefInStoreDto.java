@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 
 
 @Data
-public class DressBriefDto {
+public class DressBriefInStoreDto {
 
     @ApiModelProperty(example = "의상 id")
     @JsonProperty("dress_id")
@@ -28,17 +28,12 @@ public class DressBriefDto {
     @JsonProperty("dress_price")
     private String dressPrice;
 
-    @ApiModelProperty(example = "매장 이름")
-    @JsonProperty("store_name")
-    private String storeName;
-
     @QueryProjection
-    public DressBriefDto(Long dressId, String dressName, String dressImageUrl, Integer dressPrice, String storeName) {
+    public DressBriefInStoreDto(Long dressId, String dressName, String dressImageUrl, Integer dressPrice) {
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressId = dressId;
         this.dressName = dressName;
         this.dressImageUrl = dressImageUrl;
         this.dressPrice = priceKRWFormat.format(dressPrice) + "원";
-        this.storeName = storeName;
     }
 }
