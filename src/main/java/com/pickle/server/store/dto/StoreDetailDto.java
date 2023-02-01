@@ -1,7 +1,7 @@
 package com.pickle.server.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pickle.server.dress.dto.DressBriefDto;
+import com.pickle.server.dress.dto.DressBriefInStoreDto;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreOpenDay;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,9 +41,9 @@ public class StoreDetailDto {
 
     @ApiModelProperty(example = "스토어 의상 목록")
     @JsonProperty("store_dress_list")
-    private List<DressBriefDto> storeDressList;
+    private List<DressBriefInStoreDto> storeDressList;
 
-    public StoreDetailDto(Store store, List<DressBriefDto> dressBriefDtoList, String urlHead) {
+    public StoreDetailDto(Store store, List<DressBriefInStoreDto> dressBriefInStoreDtoList, String urlHead) {
         this.storeId = store.getId();
         this.storeName = store.getName();
         this.storeAddress = store.getAddress();
@@ -51,7 +51,7 @@ public class StoreDetailDto {
         this.hoursOfOperation = store.getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
                 + store.getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
-        this.storeDressList = dressBriefDtoList;
+        this.storeDressList = dressBriefInStoreDtoList;
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){

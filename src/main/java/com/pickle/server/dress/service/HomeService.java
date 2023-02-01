@@ -6,12 +6,13 @@ import com.pickle.server.dress.domain.RecentView;
 import com.pickle.server.dress.dto.DressOverviewDto;
 import com.pickle.server.dress.repository.DressRepository;
 import com.pickle.server.dress.repository.RecentViewRepository;
-import com.pickle.server.store.repository.StoreRepository;
 import com.pickle.server.store.dto.StoreCoordDto;
+import com.pickle.server.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -22,12 +23,6 @@ public class HomeService {
     private final RecentViewRepository recentViewRepository;
     private final KeyValueService keyValueService;
 
-    /**
-     * 가까운 매장의 NEW 상품 목록 (생성 시간 순 정렬)
-     *
-     * @param nearStores
-     * @return
-     */
     public List<DressOverviewDto> getNewDresses(List<StoreCoordDto> nearStores) {
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusDays(7);
         List<Dress> allnewDresses = new ArrayList<>();
@@ -54,12 +49,6 @@ public class HomeService {
         return newDresses;
     }
 
-    /**
-     * 카테고리별 주변 매장 추천 상품
-     *
-     * @param nearStores
-     * @return
-     */
     public List<DressOverviewDto> getRecDresses(List<StoreCoordDto> nearStores) {
         List<DressOverviewDto> recDressesOverview = new ArrayList<>();
         List<Dress> recDresses = new ArrayList<>();
@@ -84,12 +73,6 @@ public class HomeService {
         }
     }
 
-    /**
-     * 최근 본 상품 (DB 저장)
-     *
-     * @param userId
-     * @return
-     */
     public List<DressOverviewDto> getRecentView(Long userId) {
         List<RecentView> recent = new ArrayList<>();
         List<DressOverviewDto> recentView = new ArrayList<>();

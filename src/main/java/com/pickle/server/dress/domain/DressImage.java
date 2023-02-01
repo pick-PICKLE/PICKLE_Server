@@ -15,7 +15,6 @@ public class DressImage {
     private Long id;
 
     @Column(name ="image_url")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String imageUrl;
 
     @ManyToOne

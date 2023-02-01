@@ -2,6 +2,8 @@ package com.pickle.server.store.service;
 
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
+import com.pickle.server.dress.dto.DressBriefInStoreDto;
+import com.pickle.server.store.domain.Store;
 import com.pickle.server.dress.dto.DressBriefDto;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreLike;
@@ -81,22 +83,16 @@ public class StoreService {
     }
 
     public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category){
-        if(category != null && !DressCategory.findCategoryByName(category))
+        if(!DressCategory.findCategoryByName(category))
             throw new IllegalArgumentException("잘못된 카테고리 입니다.");
 
         Store store = storeRepository.findById(storeId).orElseThrow(
                 ()->new RuntimeException("해당 id의 스토어를 찾을 수 없습니다.")
         );
 
-        List<DressBriefDto> dressBriefDtoList;
-        if(category == null){
-            dressBriefDtoList = storeRepository.findDressDtoByStoreId(storeId);
-        }
-        else{
-            dressBriefDtoList = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
-        }
-
-        return new StoreDetailDto(store, dressBriefDtoList, keyValueService.makeUrlHead("stores"));
+        List<DressBriefInStoreDto> dressBriefInStoreDtoList
+                = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
+        return new StoreDetailDto(store, dressBriefInStoreDtoList, keyValueService.makeUrlHead("stores"));
     }
 
     @Transactional(readOnly = true)
