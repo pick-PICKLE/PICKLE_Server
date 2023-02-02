@@ -37,7 +37,7 @@ public class DressReservationFormDto {
 
     private List<String> getAllAvaliableTime(LocalTime openTime, LocalTime closeTime) {
         List<String> pickUpTimeList = new ArrayList<>();
-        for(LocalTime time = openTime ; time.compareTo(closeTime) != 0; time.plusMinutes(30)){
+        for(LocalTime time = openTime ; time.compareTo(closeTime) != 0; time = time.plusMinutes(30)){
             pickUpTimeList.add(time.format(DateTimeFormatter.ofPattern("HH:mm")));
         }
         return pickUpTimeList;

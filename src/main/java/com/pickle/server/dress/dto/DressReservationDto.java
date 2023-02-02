@@ -19,20 +19,32 @@ public class DressReservationDto {
     @JsonProperty("dress_id")
     private Long dressId;
 
-    @ApiModelProperty(example = "드레스 픽업 날짜,시간")
-    @JsonProperty("dress_datetime")
-    private LocalDateTime pickUpDateTime;
+    @ApiModelProperty(example = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("pickup_datetime")
+    private String pickUpDateTime;
 
     @JsonProperty("reserved_dress_list")
     private List<StockQuantityDto> reservedDressList = new ArrayList<>();
 
     @ApiModelProperty(example = "드레스 픽업 요청사항")
-    @JsonProperty("dress_reservation_comment")
+    @JsonProperty("comment")
     private String comment;
 
 
     @ApiModelProperty(example = "합계 가격")
     @JsonProperty("price")
     private Integer price;
+
+    @Override
+    public String toString() {
+        return "DressReservationDto{" +
+                "storeId=" + storeId +
+                ", dressId=" + dressId +
+                ", pickUpDateTime=" + pickUpDateTime +
+                ", reservedDressList=" + reservedDressList +
+                ", comment='" + comment + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
 

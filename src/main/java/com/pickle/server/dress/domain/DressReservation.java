@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,10 @@ public class DressReservation {
     private Store store;
 
     @OneToMany(mappedBy = "dressReservation")
-    private List<DressStock> dressStockList = new ArrayList<>();
+    private List<ReservedDress> reservedDressList = new ArrayList<>();
 
-    @Column(name = "reservation_datetime")
-    private LocalDateTime reservationDateTime;
+    @Column(name = "pickup_datetime")
+    private LocalDateTime pickUpDateTime;
 
     @Column
     private String comment;
@@ -42,12 +43,12 @@ public class DressReservation {
     @Column
     private Integer price;
 
-    public DressReservation(DressReservationDto dressReservationDto, User user, Store store, List<DressStock> dressStockList) {
+    public DressReservation(DressReservationDto dressReservationDto, User user, Store store, List<ReservedDress> reservedDressList) {
         this.user = user;
         this.store = store;
-        this.reservationDateTime = dressReservationDto.getPickUpDateTime();
+        this.pickUpDateTime = LocalDateTime.parse(dressReservationDto.getPickUpDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.comment = dressReservationDto.getComment();
         this.price = dressReservationDto.getPrice();
-        this.dressStockList = dressStockList;
+        this.reservedDressList = reservedDressList;
     }
 }

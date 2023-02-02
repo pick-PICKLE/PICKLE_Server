@@ -38,7 +38,6 @@ public class StoreController {
     @GetMapping("/detail/{id}")
     public ResponseEntity<StoreDetailDto> viewDressDetail(@PathVariable("id") Long storeId,
                                                           @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category){
-        System.out.println("들어왔나요?");
         return new ResponseEntity<>(storeService.findStoreDetailInfoByStoreId(storeId, category), HttpStatus.OK);
     }
 

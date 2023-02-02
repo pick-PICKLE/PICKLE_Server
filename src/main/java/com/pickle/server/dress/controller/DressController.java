@@ -94,12 +94,11 @@ public class DressController {
             notes = "의상 예약 API"
     )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "의상 검색 성공")
+            @ApiResponse(code = 200, message = "의상 예약 성공")
     })
-    @GetMapping("/reservation")
-    public ResponseEntity<JSONObject> makeReservation(@ModelAttribute DressReservationDto dressReservationDto,
+    @PostMapping("/reservation")
+    public ResponseEntity<JSONObject> makeReservation(@RequestBody DressReservationDto dressReservationDto,
                                                       @ApiIgnore @AuthenticationPrincipal User user){
-
         dressService.makeDressReservation(dressReservationDto, user);
         return new ResponseEntity<>(
                 PropertyUtil.response("예약 완료")

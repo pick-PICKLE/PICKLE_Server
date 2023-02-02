@@ -31,10 +31,4 @@ public class DressStock {
     @Column
     private Integer stock;
 
-    public DressStock(DressOptionDetail dressOptionDetail1, DressOptionDetail dressOptionDetail2, Dress dress, Integer stock) {
-        this.dressOptionDetail1 = dressOptionDetail1;
-        this.dressOptionDetail2 = dressOptionDetail2;
-        this.dress = dress;
-        this.stock = stock;
-    }
 }
