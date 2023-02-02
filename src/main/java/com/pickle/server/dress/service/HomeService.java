@@ -19,7 +19,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class HomeService {
     private final DressRepository dressRepository;
-    private final StoreRepository storeRepository;
     private final RecentViewRepository recentViewRepository;
     private final KeyValueService keyValueService;
 
@@ -64,7 +63,7 @@ public class HomeService {
         for (Dress dress : recDresses) {
             recDressesOverview.add(new DressOverviewDto(dress, keyValueService.makeUrlHead("dresses")));
         }
-        Collections.shuffle(recDresses);
+        Collections.shuffle(recDressesOverview);
 
         if (recDressesOverview.size() > 20) {
             return recDressesOverview.subList(0, 20);

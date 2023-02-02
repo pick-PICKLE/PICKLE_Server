@@ -1,24 +1,18 @@
 package com.pickle.server.dress.service;
 
 import com.pickle.server.common.util.KeyValueService;
-import com.pickle.server.dress.domain.Dress;
-import com.pickle.server.dress.domain.DressCategory;
-import com.pickle.server.dress.domain.DressSortBy;
-import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.dress.domain.DressLike;
-import com.pickle.server.dress.domain.RecentView;
-import com.pickle.server.dress.dto.DressDetailDto;
-import com.pickle.server.dress.dto.DressLikeDto;
-import com.pickle.server.dress.dto.UpdateDressLikeDto;
-import com.pickle.server.dress.repository.DressLikeRepository;
-import com.pickle.server.dress.repository.DressRepository;
-import com.pickle.server.dress.repository.RecentViewRepository;
+import com.pickle.server.dress.domain.*;
+import com.pickle.server.dress.dto.*;
+import com.pickle.server.dress.repository.*;
+import com.pickle.server.store.domain.Store;
+import com.pickle.server.store.repository.StoreRepository;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +22,11 @@ public class DressService {
     private final DressRepository dressRepository;
     private final UserRepository userRepository;
     private final DressLikeRepository dressLikeRepository;
+    private final StoreRepository storeRepository;
+    private final DressReservationRepository dressReservationRepository;
+    private final DressOptionDetailRepository dressOptionDetailRepository;
+    private final ReservedDressRepository reservedDressRepository;
+
     private final KeyValueService keyValueService;
     private final RecentViewRepository recentViewRepository;
 
@@ -82,4 +81,29 @@ public class DressService {
         else{ throw new RuntimeException(); }
     }
 
+
+    public DressReservationFormDto getDressReservationForm(Long storeId) {
+        return new DressReservationFormDto(storeRepository.findById(storeId)
+                .orElseThrow(()->new RuntimeException("해당 id의 스토어를 찾을 수 없습니다.")));
+    }
+
+    public void makeDressReservation(DressReservationDto dressReservationDto, User user) {
+        Store store = storeRepository.findById(dressReservationDto.getStoreId())
+                .orElseThrow(()->new RuntimeException("해당 id의 스토어를 찾을 수 없습니다."));
+
+        List<ReservedDress> reservedDressList = new ArrayList<>();
+
+        Dress reservedDress = dressRepository.findById(dressReservationDto.getDressId()).orElseThrow(()->new RuntimeException("해당 id의 드레스를 찾을 수 없습니다."));
+
+        DressReservation dressReservation = new DressReservation(dressReservationDto, user, store, reservedDressList);
+        dressReservationRepository.save(dressReservation);
+
+        for(StockQuantityDto sqd : dressReservationDto.getReservedDressList()){
+            DressOptionDetail option1 = dressOptionDetailRepository.findById(sqd.getStock1Id()).orElseThrow(() ->new RuntimeException("유효하지 않은 옵션"));
+            DressOptionDetail option2 = dressOptionDetailRepository.findById(sqd.getStock2Id()).orElseThrow(() ->new RuntimeException("유효하지 않은 옵션"));
+            ReservedDress reservedDressWithOption = new ReservedDress(option1, option2, reservedDress, sqd.getQuantity(), dressReservation);
+            reservedDressList.add(reservedDressWithOption);
+            reservedDressRepository.save(reservedDressWithOption);
+        }
+    }
 }

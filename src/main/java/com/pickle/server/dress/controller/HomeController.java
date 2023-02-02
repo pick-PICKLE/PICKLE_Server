@@ -1,5 +1,6 @@
 package com.pickle.server.dress.controller;
 
+import com.pickle.server.dress.dto.DressHomeDto;
 import com.pickle.server.dress.dto.DressOverviewDto;
 import com.pickle.server.dress.service.HomeService;
 import com.pickle.server.store.dto.StoreCoordDto;
@@ -35,24 +36,15 @@ public class HomeController {
             @ApiResponse(code = 200, message = "홈 화면 조회 성공")
     })
     @GetMapping("")
-    public ResponseEntity<HashMap> homeView(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
+    public ResponseEntity<DressHomeDto> homeView(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
         HashMap<String, Object> homeMap = new HashMap<>();
         List<StoreCoordDto> nearStores = storeService.getNearStores(lat, lng);
+
+        List<DressOverviewDto> recentView = homeService.getRecentView(user.getId());
         List<DressOverviewDto> newDresses = homeService.getNewDresses(nearStores);
         List<DressOverviewDto> recDresses = homeService.getRecDresses(nearStores);
-        List<DressOverviewDto> recentView = homeService.getRecentView(user.getId());
 
-        if(newDresses.size() > 5) {
-            homeMap.put("recent", recentView);
-            homeMap.put("new", newDresses.subList(0, 5));
-            homeMap.put("recommendation", recDresses);
-        } else {
-            homeMap.put("recent", recentView);
-            homeMap.put("new", newDresses);
-            homeMap.put("recommendation", recDresses);
-        }
-
-        return new ResponseEntity<>(homeMap, HttpStatus.OK);
+        return new ResponseEntity<>(new DressHomeDto(recentView, newDresses, recDresses), HttpStatus.OK);
     }
 
     @ApiOperation(value = "NEW 상품", notes = "주변 새로운 상품 조회 API")
