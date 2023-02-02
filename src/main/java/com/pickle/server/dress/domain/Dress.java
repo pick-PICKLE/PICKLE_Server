@@ -34,6 +34,9 @@ public class Dress extends Timestamped {
     @OneToMany(mappedBy = "dress")
     private List<DressImage> imageList = new ArrayList<>();
 
+    @Column
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
@@ -45,7 +48,6 @@ public class Dress extends Timestamped {
     @OneToOne
     @JoinColumn(name = "dress_option2_id", nullable = false)
     private DressOption dressOption2;
-
 
     @OneToMany(mappedBy = "dress")
     private List<DressStock> dressStockList = new ArrayList<>();

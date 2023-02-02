@@ -2,10 +2,7 @@ package com.pickle.server.auth.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Properties;
 
@@ -17,9 +14,7 @@ public class KakaoUserResponse {
 
     private Long id;
     private Properties properties;
-    private KakaoAccount kakaoAccount;
-
-
+    private KakaoAccount kakao_account;
 
     @ToString
     @Getter
@@ -27,8 +22,9 @@ public class KakaoUserResponse {
     @AllArgsConstructor
     public static class Properties {
         private String nickname;
-        private String profileImage;
+        private String profile_image;
     }
+    @Data
     @ToString
     @Getter
     @NoArgsConstructor
