@@ -3,22 +3,15 @@ package com.pickle.server.dress.controller;
 import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.domain.DressSortBy;
-import com.pickle.server.dress.dto.DressDetailDto;
-import com.pickle.server.dress.dto.DressReservationDto;
-import com.pickle.server.dress.dto.DressReservationFormDto;
-import com.pickle.server.dress.dto.DressLikeDto;
-import com.pickle.server.dress.dto.UpdateDressLikeDto;
+import com.pickle.server.dress.dto.*;
 import com.pickle.server.dress.service.DressService;
 import com.pickle.server.user.domain.User;
-import com.pickle.server.user.domain.User;
-import com.pickle.server.user.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,9 +26,8 @@ import java.util.List;
 @RequestMapping("/dresses")
 @Api(tags = "의상")
 public class DressController {
-    @Autowired
+
     private final DressService dressService;
-    private final UserRepository userRepository;
 
     @ApiOperation(value = "의상 상세 조회",
             httpMethod = "GET",
@@ -45,8 +37,8 @@ public class DressController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "의상 상세 조회 성공")
     })
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<DressDetailDto> viewDressDetail(@PathVariable("id") Long dressId, @ApiIgnore @AuthenticationPrincipal User user){
+    @GetMapping("/detail/{dress_id}")
+    public ResponseEntity<DressDetailDto> viewDressDetail(@PathVariable("dress_id") Long dressId, @ApiIgnore @AuthenticationPrincipal User user){
         return new ResponseEntity<>(dressService.findDressDetailInfoByDressId(dressId, user),HttpStatus.OK);
     }
 
@@ -116,10 +108,9 @@ public class DressController {
             @ApiResponse(code=200, message= "의상 좋아요 목록 조회 성공")
     })
     
-    @GetMapping("/likes/{id}")
-    public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@PathVariable("id") Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return new ResponseEntity<>(dressService.findDressLikeByUser(userId),HttpStatus.OK);
+    @GetMapping("/likes")
+    public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@ApiIgnore @AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(dressService.findDressLikeByUser(user.getId()),HttpStatus.OK);
     }
 
     @ApiOperation(value="의상 좋아요 추가",

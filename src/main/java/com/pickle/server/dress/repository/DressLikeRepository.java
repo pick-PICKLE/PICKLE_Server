@@ -19,5 +19,5 @@ public interface DressLikeRepository extends JpaRepository<DressLike,Long> {
     @Query(value = "delete from Dress_Like where dress_id= :dress_id and user_id= :user_id",nativeQuery = true)
     void deleteDress(@Param("dress_id") Dress dress, @Param("user_id") User user);
 
-
+    Boolean existsByUserIdAndDressId(Long id, Long dressId);
 }

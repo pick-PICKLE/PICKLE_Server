@@ -43,7 +43,8 @@ public class DressService {
             recentViewRepository.save(new RecentView(dress, user));
         }
 
-        return new DressDetailDto(dress, keyValueService.makeUrlHead("dresses"));
+        return new DressDetailDto(dress, keyValueService.makeUrlHead("dresses"),
+                dressLikeRepository.existsByUserIdAndDressId(user.getId(), dressId));
     }
 
     public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude) {

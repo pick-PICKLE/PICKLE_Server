@@ -61,7 +61,7 @@ public class DressDetailDto {
 
 
 
-    public DressDetailDto(Dress dress, String urlHead){
+    public DressDetailDto(Dress dress, String urlHead, Boolean isLiked){
         Store store = dress.getStore();
         this.storeId = store.getId();
         this.storeName = store.getName();
