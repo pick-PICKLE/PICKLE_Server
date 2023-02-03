@@ -4,8 +4,6 @@ import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
 import com.pickle.server.store.domain.Store;
-import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreLike;
 import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreDetailDto;
@@ -82,7 +80,7 @@ public class StoreService {
         return (deg * Math.PI / 180.0);
     }
 
-    public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category){
+    public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
         if(!DressCategory.findCategoryByName(category))
             throw new IllegalArgumentException("잘못된 카테고리 입니다.");
 
@@ -92,7 +90,11 @@ public class StoreService {
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
                 = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
-        return new StoreDetailDto(store, dressBriefInStoreDtoList, keyValueService.makeUrlHead("stores"));
+
+
+        return new StoreDetailDto(store, dressBriefInStoreDtoList,
+                keyValueService.makeUrlHead("stores"),
+                storeLikeRepository.existsByUserIdAndStoreId(user.getId(), storeId));
     }
 
     @Transactional(readOnly = true)
