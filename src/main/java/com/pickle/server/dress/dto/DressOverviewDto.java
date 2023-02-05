@@ -38,7 +38,7 @@ public class DressOverviewDto {
         this.storeName = dress.getStore().getName();
         this.dressId = dress.getId();
         this.dressName = dress.getName();
-        this.dressDefaultImg = urlHead + dress.getImageList().get(0).getId();
+        this.dressDefaultImg = urlHead + dress.getImageList().get(0).getImageUrl();
 
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressPrice = priceKRWFormat.format(dress.getPrice()) + "원";
