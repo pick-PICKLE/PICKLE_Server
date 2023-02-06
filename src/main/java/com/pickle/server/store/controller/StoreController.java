@@ -1,6 +1,7 @@
 package com.pickle.server.store.controller;
 
 import com.pickle.server.dress.domain.DressCategory;
+import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreDetailDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 import com.pickle.server.store.dto.UpdateStoreLikeDto;
@@ -79,5 +80,16 @@ public class StoreController {
         storeService.delLikeStore(updateStoreLikeDto);
         return new ResponseEntity<>(updateStoreLikeDto,
                 HttpStatus.OK);
+    }
+
+    @ApiOperation(value ="근처 스토어 조회", notes ="스토어 좋아요 삭제 API")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "근처 매장 조회 성공")
+    })
+    @GetMapping ("/near")
+    public ResponseEntity<List<StoreCoordDto>> nearStores(@RequestParam("lat") double lat, @RequestParam("lng") double lng) {
+        List<StoreCoordDto> nearStores = storeService.getNearStores(lat, lng);
+
+        return new ResponseEntity<>(nearStores, HttpStatus.OK);
     }
 }
