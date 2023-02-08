@@ -1,7 +1,7 @@
 package com.pickle.server.store.repository;
 
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
-import com.pickle.server.dress.dto.DressBriefDto;
+import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 
 
@@ -11,5 +11,6 @@ public interface StoreDslRepository {
 
     List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category);
     List<StoreLikeDto> findStoreByUsers(Long userId);
+    List<StoreCoordDto> findNearStore(double latitude, double longitude);
 
 }

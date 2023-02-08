@@ -28,7 +28,7 @@ public class HomeService {
         List<DressOverviewDto> newDresses = new ArrayList<>();
 
         for (StoreCoordDto storeCoordDto : nearStores) {
-            allnewDresses.addAll(dressRepository.findAllByCreatedAtAndStore(storeCoordDto.getId(), stdTime));
+            allnewDresses.addAll(dressRepository.findAllByCreatedAtAndStore(storeCoordDto.getStoreId(), stdTime));
         }
         Collections.sort(allnewDresses, new Comparator<Dress>(){
             @Override
@@ -58,7 +58,7 @@ public class HomeService {
         System.out.println(Category.get(index));
 
         for (StoreCoordDto StoreCoordDto : nearStores) {
-            recDresses.addAll(dressRepository.findRandomCategory(StoreCoordDto.getId(), Category.get(index)));
+            recDresses.addAll(dressRepository.findRandomCategory(StoreCoordDto.getStoreId(), Category.get(index)));
         }
         for (Dress dress : recDresses) {
             recDressesOverview.add(new DressOverviewDto(dress, keyValueService.makeUrlHead("dresses")));
