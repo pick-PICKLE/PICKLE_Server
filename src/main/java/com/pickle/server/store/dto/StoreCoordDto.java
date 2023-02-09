@@ -23,9 +23,10 @@ public class StoreCoordDto {
     private String storeOpenDay;
     private Double latitude;
     private Double longitude;
+    private Long storeLikeId;
 
     @QueryProjection
-    public StoreCoordDto(Store store) {
+    public StoreCoordDto(Store store, Long storeLikeId) {
         this.storeId = store.getId();
         this.name = store.getName();
         this.imgUrl = store.getImageUrl();
@@ -35,6 +36,7 @@ public class StoreCoordDto {
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
         this.latitude = store.getLatitude();
         this.longitude = store.getLongitude();
+        this.storeLikeId = storeLikeId;
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){

@@ -38,7 +38,7 @@ public class HomeController {
     @GetMapping("")
     public ResponseEntity<DressHomeDto> homeView(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
         HashMap<String, Object> homeMap = new HashMap<>();
-        List<StoreCoordDto> nearStores = storeService.getNearStores(lat, lng);
+        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
 
         List<DressOverviewDto> recentView = homeService.getRecentView(user.getId());
         List<DressOverviewDto> newDresses = homeService.getNewDresses(nearStores);
@@ -52,8 +52,8 @@ public class HomeController {
             @ApiResponse(code = 200, message = "새로운 상품 조회 성공")
     })
     @GetMapping("/new")
-    public ResponseEntity<List<DressOverviewDto>> getNew(@RequestParam("lat") double lat, @RequestParam("lng") double lng) {
-        List<StoreCoordDto> nearStores = storeService.getNearStores(lat, lng);
+    public ResponseEntity<List<DressOverviewDto>> getNew(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
+        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
         List<DressOverviewDto> newDresses = homeService.getNewDresses(nearStores);
 
         return new ResponseEntity<>(newDresses, HttpStatus.OK);
@@ -64,8 +64,8 @@ public class HomeController {
             @ApiResponse(code = 200, message = "추천 상품 조회 성공")
     })
     @GetMapping("/recommendation")
-    public ResponseEntity<List<DressOverviewDto>> getRecommend(@RequestParam("lat") double lat, @RequestParam("lng") double lng) {
-        List<StoreCoordDto> nearStores = storeService.getNearStores(lat, lng);
+    public ResponseEntity<List<DressOverviewDto>> getRecommend(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
+        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
 
         List<DressOverviewDto> recDresses = homeService.getRecDresses(nearStores);
 

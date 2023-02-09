@@ -15,7 +15,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -82,13 +84,13 @@ public class StoreController {
                 HttpStatus.OK);
     }
 
-    @ApiOperation(value ="근처 스토어 조회", notes ="스토어 좋아요 삭제 API")
+    @ApiOperation(value ="근처 스토어 조회", notes ="근처 스토어 조회 API")
     @ApiResponses({
             @ApiResponse(code = 200, message = "근처 매장 조회 성공")
     })
     @GetMapping ("/near")
-    public ResponseEntity<List<StoreCoordDto>> nearStores(@RequestParam("lat") double lat, @RequestParam("lng") double lng) {
-        List<StoreCoordDto> nearStores = storeService.getNearStores(lat, lng);
+    public ResponseEntity<List<StoreCoordDto>> nearStores(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
+        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
 
         return new ResponseEntity<>(nearStores, HttpStatus.OK);
     }

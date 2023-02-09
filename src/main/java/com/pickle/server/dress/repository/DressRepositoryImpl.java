@@ -69,7 +69,6 @@ public class DressRepositoryImpl implements DressDslRepository {
                         /*좋아요 순 정렬*/
                         .fetch();
 
-
             case DressSortBy.Constants.newDress:
                 return findDressByCategoryCondition(findDressByNameCondition(name), category)
                         .orderBy(dress.createdAt.desc())

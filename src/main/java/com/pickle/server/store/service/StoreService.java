@@ -33,8 +33,8 @@ public class StoreService {
     private final StoreLikeRepository storeLikeRepository;
 
 
-    public List<StoreCoordDto> getNearStores(Double lat, Double lng) {
-        List<StoreCoordDto> nearStores = storeRepository.findNearStore(lat, lng);
+    public List<StoreCoordDto> getNearStores(Long userId, Double lat, Double lng) {
+        List<StoreCoordDto> nearStores = storeRepository.findNearStore(userId, lat, lng);
 
         return nearStores;
     }

@@ -33,6 +33,7 @@ public class StoreLikeDto {
     @ApiModelProperty(example = "문 여는 요일")
     @JsonProperty("store_open_day")
     private String storeOpenDay;
+
     @ApiModelProperty(example = "오픈 시간")
     @JsonProperty("open_time")
     private LocalTime open_time;

@@ -11,6 +11,6 @@ public interface StoreDslRepository {
 
     List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category);
     List<StoreLikeDto> findStoreByUsers(Long userId);
-    List<StoreCoordDto> findNearStore(double latitude, double longitude);
+    List<StoreCoordDto> findNearStore(Long userId, Double latitude, Double longitude);
 
 }

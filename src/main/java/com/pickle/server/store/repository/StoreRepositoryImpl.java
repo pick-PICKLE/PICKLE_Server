@@ -6,6 +6,9 @@ import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefDto;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
 import com.pickle.server.dress.dto.QDressBriefInStoreDto;
+import com.pickle.server.store.domain.QStore;
+import com.pickle.server.store.domain.Store;
+import com.pickle.server.store.domain.StoreLike;
 import com.pickle.server.store.dto.QStoreLikeDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 import com.pickle.server.store.dto.QStoreCoordDto;
@@ -76,11 +79,13 @@ public class StoreRepositoryImpl implements StoreDslRepository {
                 .where(dress.store.id.eq(storeId));
     }
 
+
     @Override
-    public List<StoreCoordDto> findNearStore(double latitude, double longitude) {
+    public List<StoreCoordDto> findNearStore(Long userId, Double latitude, Double longitude) {
         return queryFactory
-                .select(new QStoreCoordDto(store))
+                .select(new QStoreCoordDto(store, storeLike.id))
                 .from(store)
+                .leftJoin(storeLike).on(store.id.eq(storeLike.store.id).and(storeLike.user.id.eq(userId)))
                 .where(calculateDistance(latitude, longitude, store.latitude, store.longitude).loe(1.5))
                 .orderBy(calculateDistance(latitude, longitude,store.latitude, store.longitude).asc())
                 .fetch();
