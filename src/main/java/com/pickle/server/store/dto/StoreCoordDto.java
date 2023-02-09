@@ -23,7 +23,7 @@ public class StoreCoordDto {
     private String storeOpenDay;
     private Double latitude;
     private Double longitude;
-    private Long storeLikeId;
+    private Boolean storeLike;
 
     @QueryProjection
     public StoreCoordDto(Store store, Long storeLikeId) {
@@ -36,7 +36,7 @@ public class StoreCoordDto {
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
         this.latitude = store.getLatitude();
         this.longitude = store.getLongitude();
-        this.storeLikeId = storeLikeId;
+        this.storeLike = storeLike(storeLikeId);
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){
@@ -49,5 +49,10 @@ public class StoreCoordDto {
         if(storeOpenDay.getSaturday()) message = message.concat("토 ");
         if(storeOpenDay.getSunday()) message = message.concat("일 ");
         return message + "영업";
+    }
+
+    private Boolean storeLike(Long storeLikeId) {
+        if(storeLikeId == null) return false;
+        else return true;
     }
 }
