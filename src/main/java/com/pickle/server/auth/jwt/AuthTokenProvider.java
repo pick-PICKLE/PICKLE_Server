@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class AuthTokenProvider {
 
-    private Long expiry = 30*60*1000L; // 토큰 유효시간 30분
+    private Long expiry = 7*48*30*60*1000L; // 토큰 유효시간 일주일
 
     private final CustomUserDetailsService userDetailsService;
     private final String key;
