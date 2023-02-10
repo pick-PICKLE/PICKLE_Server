@@ -7,7 +7,6 @@ import com.pickle.server.store.dto.StoreDetailDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 import com.pickle.server.store.service.StoreService;
 import com.pickle.server.user.domain.User;
-import com.pickle.server.user.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,7 +26,6 @@ import java.util.List;
 @RequestMapping("/stores")
 @Api(tags = "매장")
 public class StoreController {
-    private final UserRepository userRepository;
     private final StoreService storeService;
 
     @ApiOperation(value = "스토어 상세 조회",
@@ -38,11 +36,11 @@ public class StoreController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "스토어 상세 조회 성공")
     })
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<StoreDetailDto> viewDressDetail(@PathVariable("id") Long storeId,
-                                                          @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category){
-        System.out.println("들어왔나요?");
-        return new ResponseEntity<>(storeService.findStoreDetailInfoByStoreId(storeId, category), HttpStatus.OK);
+    @GetMapping("/detail/{store_id}")
+    public ResponseEntity<StoreDetailDto> viewDressDetail(@PathVariable("store_id") Long storeId,
+                                                          @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category,
+                                                          @ApiIgnore @AuthenticationPrincipal User user){
+        return new ResponseEntity<>(storeService.findStoreDetailInfoByStoreId(storeId, category, user), HttpStatus.OK);
     }
 
 

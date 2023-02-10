@@ -4,6 +4,7 @@ import com.pickle.server.dress.dto.DressBriefDto;
 import com.pickle.server.dress.dto.DressLikeDto;
 import com.pickle.server.dress.dto.DressOverviewDto;
 import org.springframework.data.repository.query.Param;
+import com.pickle.server.dress.dto.DressReservationFormDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
