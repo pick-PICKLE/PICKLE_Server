@@ -80,12 +80,12 @@ public class DressController {
     @ApiResponses({
             @ApiResponse(code=200, message= "의상 좋아요 목록 조회 성공")
     })
-    
-    @GetMapping("/likes/{id}")
-    public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@PathVariable("id") Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return new ResponseEntity<>(dressService.findDressLikeByUser(userId),HttpStatus.OK);
+
+    @GetMapping("/likes")
+    public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@ApiIgnore @AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(dressService.findDressLikeByUser(user.getId()),HttpStatus.OK);
     }
+
 
     @ApiOperation(value="의상 좋아요",
             httpMethod = "POST",
@@ -101,19 +101,5 @@ public class DressController {
         return new ResponseEntity<>(updatedressLikeDto
                 , HttpStatus.OK);
     }
-/*
-    @ApiOperation(value="의상 좋아요 삭제",
-            httpMethod = "POST",
-            response = UpdateDressLikeDto.class,
-            notes = "의상 좋아요 삭제 API"
-    )
-    @ApiResponses({
-            @ApiResponse(code=200, message= "의상 좋아요 삭제 성공")
-    })
-    @PostMapping("/likes/delete")
-    public ResponseEntity<UpdateDressLikeDto> delLikeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
-        dressService.delLikeDress(updatedressLikeDto);
-        return new ResponseEntity<>(updatedressLikeDto,HttpStatus.OK);
-    }*/
 
 }

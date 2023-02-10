@@ -1,10 +1,10 @@
 package com.pickle.server.store.controller;
 
 import com.pickle.server.dress.domain.DressCategory;
+import com.pickle.server.store.dto.UpdateStoreLikeDto;
 import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreDetailDto;
 import com.pickle.server.store.dto.StoreLikeDto;
-import com.pickle.server.store.dto.UpdateStoreLikeDto;
 import com.pickle.server.store.service.StoreService;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.repository.UserRepository;
@@ -65,25 +65,11 @@ public class StoreController {
             notes = "스토어 좋아요 목록 조회 API"
     )
     @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 목록 조회 성공")})
-    @GetMapping("/likes/{id}")
-    public ResponseEntity<List<StoreLikeDto>> findStoreLikeByUser(@PathVariable("id") Long userId){
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return new ResponseEntity<>(storeService.findStoreLikeByUser(userId),HttpStatus.OK);
+    @GetMapping("/likes")
+    public ResponseEntity<List<StoreLikeDto>> findStoreLikeByUser(@ApiIgnore @AuthenticationPrincipal User user){
+        return new ResponseEntity<>(storeService.findStoreLikeByUser(user.getId()),HttpStatus.OK);
     }
 
-    /*
-    @ApiOperation(value ="스토어 좋아요 삭제",
-            httpMethod = "POST",
-            response = UpdateStoreLikeDto.class,
-            notes ="스토어 좋아요 삭제 API"
-    )
-    @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 삭제 성공")})
-    @PostMapping("/likes/delete")
-    public ResponseEntity<UpdateStoreLikeDto> delLikeStore(@RequestBody UpdateStoreLikeDto updateStoreLikeDto){
-        storeService.delLikeStore(updateStoreLikeDto);
-        return new ResponseEntity<>(updateStoreLikeDto,
-                HttpStatus.OK);
-    }*/
 
     @ApiOperation(value ="근처 스토어 조회", notes ="근처 스토어 조회 API")
     @ApiResponses({
