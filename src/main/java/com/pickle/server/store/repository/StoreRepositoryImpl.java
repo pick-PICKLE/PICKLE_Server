@@ -1,18 +1,15 @@
 package com.pickle.server.store.repository;
 
 
+import com.pickle.server.common.error.NotValidParamsException;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
-import com.pickle.server.dress.dto.DressBriefDto;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
 import com.pickle.server.dress.dto.QDressBriefInStoreDto;
-import com.pickle.server.store.domain.QStore;
-import com.pickle.server.store.domain.Store;
-import com.pickle.server.store.domain.StoreLike;
-import com.pickle.server.store.dto.QStoreLikeDto;
-import com.pickle.server.store.dto.StoreLikeDto;
 import com.pickle.server.store.dto.QStoreCoordDto;
+import com.pickle.server.store.dto.QStoreLikeDto;
 import com.pickle.server.store.dto.StoreCoordDto;
+import com.pickle.server.store.dto.StoreLikeDto;
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -85,7 +82,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
         if (latitude == null || longitude == null
                 || latitude > 90 || latitude < -90
                 || longitude > 180 || longitude < -180)
-            throw new RuntimeException("잘못된 위도, 경도 값입니다.");
+            throw new NotValidParamsException();
         return queryFactory
                 .select(new QStoreCoordDto(store, storeLike.id))
                 .from(store)

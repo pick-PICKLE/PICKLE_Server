@@ -1,12 +1,10 @@
 package com.pickle.server.dress.service;
 
+import com.pickle.server.common.error.NotFoundIdException;
+import com.pickle.server.common.error.NotValidParamsException;
 import com.pickle.server.common.util.KeyValueService;
-import com.pickle.server.dress.domain.Dress;
-import com.pickle.server.dress.domain.DressCategory;
-import com.pickle.server.dress.domain.DressSortBy;
+import com.pickle.server.dress.domain.*;
 import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.dress.domain.DressLike;
-import com.pickle.server.dress.domain.RecentView;
 import com.pickle.server.dress.dto.DressDetailDto;
 import com.pickle.server.dress.dto.DressLikeDto;
 import com.pickle.server.dress.dto.UpdateDressLikeDto;
@@ -33,7 +31,7 @@ public class DressService {
 
     public DressDetailDto findDressDetailInfoByDressId(Long dressId, User user) {
         Dress dress = dressRepository.findById(dressId).orElseThrow(
-                () -> new RuntimeException("해당 id의 드레스를 찾을 수 없습니다.")
+                () -> new NotFoundIdException()
         );
 
         Optional<RecentView> recentView = recentViewRepository.findByUserIdAndStoreId(user.getId(), dress.getId());
@@ -49,10 +47,10 @@ public class DressService {
 
     public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude) {
         if(!DressCategory.findCategoryByName(category))
-            throw new IllegalArgumentException("잘못된 카테고리 입니다.");
+            throw new NotValidParamsException();
 
         if(!DressSortBy.findSortConditionByName(sort))
-            throw new IllegalArgumentException("잘못된 정렬 입니다.");
+            throw new NotValidParamsException();
 
         return dressRepository.findDressByCondition(name, sort, category, latitude, longitude);
     }
@@ -65,7 +63,7 @@ public class DressService {
     @Transactional
     public void likesDress(UpdateDressLikeDto updateDressLikeDto){
         User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new RuntimeException("해당 id의 게시글을 찾을 수 없습니다."));
+        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new NotFoundIdException());
 //        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){ throw new RuntimeException(); }
         if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
             dressLikeRepository.deleteDress(dress, user); //api 하나로 사용
