@@ -35,15 +35,15 @@ public class StoreDetailDto {
     @JsonProperty("store_open_day")
     private String storeOpenDay;
 
-//    @ApiModelProperty(example = "좋아요 여부")
-//    @JsonProperty("is_liked")
-//    private Boolean isLiked;
+    @ApiModelProperty(example = "좋아요 여부")
+    @JsonProperty("is_liked")
+    private Boolean isLiked;
 
     @ApiModelProperty(example = "스토어 의상 목록")
     @JsonProperty("store_dress_list")
     private List<DressBriefInStoreDto> storeDressList;
 
-    public StoreDetailDto(Store store, List<DressBriefInStoreDto> dressBriefInStoreDtoList, String urlHead) {
+    public StoreDetailDto(Store store, List<DressBriefInStoreDto> dressBriefInStoreDtoList, String urlHead, Boolean isLiked) {
         this.storeId = store.getId();
         this.storeName = store.getName();
         this.storeAddress = store.getAddress();
@@ -52,6 +52,7 @@ public class StoreDetailDto {
                 + store.getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
         this.storeDressList = dressBriefInStoreDtoList;
+        this.isLiked = isLiked;
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){

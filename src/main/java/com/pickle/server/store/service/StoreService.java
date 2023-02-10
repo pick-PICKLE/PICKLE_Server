@@ -4,8 +4,6 @@ import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
 import com.pickle.server.store.domain.Store;
-import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreLike;
 import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreDetailDto;
@@ -39,7 +37,23 @@ public class StoreService {
         return nearStores;
     }
 
-    public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category){
+    // 거리 미터 단위로 계산
+    private static Double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+
+        dist = Math.acos(dist);
+        dist = (dist * 180 / Math.PI);
+        dist = dist * 60 * 1.1515 * 1609.344;
+
+        return (dist);
+    }
+
+    private static Double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
         if(!DressCategory.findCategoryByName(category))
             throw new IllegalArgumentException("잘못된 카테고리 입니다.");
 
@@ -49,7 +63,11 @@ public class StoreService {
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
                 = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
-        return new StoreDetailDto(store, dressBriefInStoreDtoList, keyValueService.makeUrlHead("stores"));
+
+
+        return new StoreDetailDto(store, dressBriefInStoreDtoList,
+                keyValueService.makeUrlHead("stores"),
+                storeLikeRepository.existsByUserIdAndStoreId(user.getId(), storeId));
     }
 
     @Transactional(readOnly = true)

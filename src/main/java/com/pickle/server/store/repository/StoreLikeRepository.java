@@ -19,9 +19,6 @@ public interface StoreLikeRepository extends JpaRepository<StoreLike,Long> {
     @Query(value = "delete from Store_Like where store_id= :store_id and user_id= :user_id",nativeQuery = true)
     void deleteStore(@Param("store_id") Store store, @Param("user_id") User user);
 
- //   @Query("select s from StoreLike s where s.id= :id")
-   // Page<StoreLikeDto> findStoreByUsers(@Param("id") Long userId, Pageable pageable);
-// @Query("select new com.pickle.server.store.dto.StoreLikeDto(s.store) from StoreLike s where s.id= :id")
-// List<StoreLikeDto> findStoreByUsers(@Param("id") Long userId);
+    Boolean existsByUserIdAndStoreId(Long userId, Long storeId);
 
 }
