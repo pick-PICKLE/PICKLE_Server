@@ -3,9 +3,7 @@ package com.pickle.server.dress.controller;
 import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.domain.DressSortBy;
-import com.pickle.server.dress.dto.DressDetailDto;
-import com.pickle.server.dress.dto.DressLikeDto;
-import com.pickle.server.dress.dto.UpdateDressLikeDto;
+import com.pickle.server.dress.dto.*;
 import com.pickle.server.dress.service.DressService;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.repository.UserRepository;
@@ -80,7 +78,6 @@ public class DressController {
     })
     @GetMapping("/reservation/{store_id}")
     public ResponseEntity<DressReservationFormDto> getDressReservationForm(@PathVariable(name = "store_id") Long storeId){
-
         return new ResponseEntity<>(dressService.getDressReservationForm(storeId), HttpStatus.OK);
     }
 
@@ -103,21 +100,6 @@ public class DressController {
 
 
 
-    @ApiOperation(value="의상 좋아요 조회",
-            httpMethod = "GET",
-            response = DressLikeDto.class,
-            notes = "좋아요 조회 API"
-    )
-    @ApiResponses({
-            @ApiResponse(code=200, message= "의상 좋아요 목록 조회 성공")
-    })
-
-    @GetMapping("/likes")
-    public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@ApiIgnore @AuthenticationPrincipal User user) {
-        return new ResponseEntity<>(dressService.findDressLikeByUser(user.getId()),HttpStatus.OK);
-    }
-
-
     @ApiOperation(value="의상 좋아요",
             httpMethod = "POST",
             response = UpdateDressLikeDto.class,
@@ -126,7 +108,7 @@ public class DressController {
     @ApiResponses({
             @ApiResponse(code=200, message= "의상 좋아요 추가/삭제 성공")
     })
-    @PostMapping("/likes")
+    @PostMapping("/like")
     public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
         dressService.likesDress(updatedressLikeDto);
         return new ResponseEntity<>(updatedressLikeDto
@@ -144,9 +126,8 @@ public class DressController {
             @ApiResponse(code=200, message= "의상 좋아요 목록 조회 성공")
     })
 
-    @GetMapping("/likes")
+    @GetMapping("/like-list")
     public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@ApiIgnore @AuthenticationPrincipal User user) {
         return new ResponseEntity<>(dressService.findDressLikeByUser(user.getId()),HttpStatus.OK);
     }
-
 }
