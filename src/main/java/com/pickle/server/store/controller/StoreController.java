@@ -1,6 +1,7 @@
 package com.pickle.server.store.controller;
 
 import com.pickle.server.dress.domain.DressCategory;
+import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreDetailDto;
 import com.pickle.server.store.dto.StoreLikeDto;
 import com.pickle.server.store.dto.UpdateStoreLikeDto;
@@ -43,12 +44,12 @@ public class StoreController {
     }
 
 
-    @ApiOperation(value = "스토어 좋아요 추가",
+    @ApiOperation(value = "스토어 좋아요 추가/삭제",
             httpMethod = "POST",
             response = UpdateStoreLikeDto.class,
             notes = "스토어 좋아요 추가 API"
     )
-    @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 추가 성공")})
+    @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 추가/삭제 성공")})
     @PostMapping("/likes")
     public ResponseEntity<UpdateStoreLikeDto> likeStore(@RequestBody UpdateStoreLikeDto updatestoreLikeDto){
         storeService.likesStore(updatestoreLikeDto);
@@ -67,6 +68,7 @@ public class StoreController {
         return new ResponseEntity<>(storeService.findStoreLikeByUser(user.getId()),HttpStatus.OK);
     }
 
+    /*
     @ApiOperation(value ="스토어 좋아요 삭제",
             httpMethod = "POST",
             response = UpdateStoreLikeDto.class,
@@ -78,5 +80,16 @@ public class StoreController {
         storeService.delLikeStore(updateStoreLikeDto);
         return new ResponseEntity<>(updateStoreLikeDto,
                 HttpStatus.OK);
+    }*/
+
+    @ApiOperation(value ="근처 스토어 조회", notes ="근처 스토어 조회 API")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "근처 매장 조회 성공")
+    })
+    @GetMapping ("/near")
+    public ResponseEntity<List<StoreCoordDto>> nearStores(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
+        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
+
+        return new ResponseEntity<>(nearStores, HttpStatus.OK);
     }
 }

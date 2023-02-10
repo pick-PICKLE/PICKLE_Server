@@ -31,35 +31,8 @@ public class StoreService {
     private final StoreLikeRepository storeLikeRepository;
 
 
-    public List<StoreCoordDto> getNearStores(Double lat, Double lng) {
-        List<Store> allStores = storeRepository.findAll();
-        List<StoreCoordDto> nearStores = new ArrayList<>();
-
-        for (int i = 0; i < allStores.size(); i++) {
-            Double sLat = allStores.get(i).getLatitude();
-            Double SLng = allStores.get(i).getLongitude();
-
-            // 매장과 사용자 현재 위치 사이의 거리 (meter)
-            Double dist = distance(lat, lng, sLat, SLng);
-
-            // 1km 내에 있는 매장
-            if (dist <= 1000.0) {
-                StoreCoordDto storeCoordDto = new StoreCoordDto(allStores.get(i), dist);
-                nearStores.add(storeCoordDto);
-            }
-        }
-
-        // 매장 거리순으로 정렬
-        Collections.sort(nearStores, new Comparator<StoreCoordDto>() {
-            @Override
-            public int compare(StoreCoordDto s1, StoreCoordDto s2) {
-                if(s1.getDist()-s2.getDist() < 0) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            }
-        });
+    public List<StoreCoordDto> getNearStores(Long userId, Double lat, Double lng) {
+        List<StoreCoordDto> nearStores = storeRepository.findNearStore(userId, lat, lng);
 
         return nearStores;
     }
@@ -106,17 +79,19 @@ public class StoreService {
     public void likesStore(UpdateStoreLikeDto updateStoreLikeDto){
         User user = userRepository.findById(updateStoreLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
         Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()-> new RuntimeException("해당 id의 스토어를 찾을 수 없습니다."));
-        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){throw new RuntimeException();}
+        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store,user);}
+   //     if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){throw new RuntimeException();}
         else{
             StoreLike storeLike = StoreLike.builder().store(store).user(user).build();
             storeLikeRepository.save(storeLike);
         }
     }
+    /*
     @Transactional
     public void delLikeStore(UpdateStoreLikeDto updateStoreLikeDto){
         User user = userRepository.findById(updateStoreLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
         Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()->new RuntimeException("해당 id의 스토어를 찾을 수 없습니다."));
         if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store,user);}
         else{throw new RuntimeException();}
-    }
+    }*/
 }

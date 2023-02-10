@@ -3,23 +3,26 @@ package com.pickle.server.dress.repository;
 
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
+import com.pickle.server.dress.domain.DressLike;
 import com.pickle.server.dress.domain.DressSortBy;
-import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.dress.dto.QDressBriefDto;
+import com.pickle.server.dress.domain.QDress;
+import com.pickle.server.dress.dto.*;
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.pickle.server.dress.dto.DressLikeDto;
-import com.pickle.server.dress.dto.QDressLikeDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
 import static com.pickle.server.dress.domain.QDressLike.dressLike;
+import static com.pickle.server.dress.domain.QRecentView.recentView;
+
 
 public class DressRepositoryImpl implements DressDslRepository {
 
@@ -42,8 +45,8 @@ public class DressRepositoryImpl implements DressDslRepository {
                                 .where(dressImage.dress.id.eq(dress.id))
                 ))
                 .from(dress, dressLike)
-                .where(dress.id.eq(dressLike.user.id))
                 .where(dressLike.user.id.eq(userId))
+                .where(dressLike.dress.id.eq(dress.id))
                 .fetch();
     }
     
@@ -68,7 +71,6 @@ public class DressRepositoryImpl implements DressDslRepository {
                 return findDressByCategoryCondition(findDressByNameCondition(name), category)
                         /*좋아요 순 정렬*/
                         .fetch();
-
 
             case DressSortBy.Constants.newDress:
                 return findDressByCategoryCondition(findDressByNameCondition(name), category)
@@ -101,6 +103,63 @@ public class DressRepositoryImpl implements DressDslRepository {
                 )
                 .from(dress)
                 .where(dress.name.contains(name));
+    }
+
+    @Override
+    public List<DressOverviewDto> findDressByRecentView(Long userId, LocalDateTime stdDate){
+        return queryFactory
+                .select(new QDressOverviewDto(
+                        dress,
+                        dressLike.id,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id))
+                                .limit(1)
+                ))
+                .from(dress)
+                .join(recentView).on(dress.id.eq(recentView.dress.id)
+                        .and(recentView.user.id.eq(userId)))
+                .where(recentView.createdAt.goe(stdDate))
+                .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
+                .orderBy(recentView.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<DressOverviewDto> findDressByStoreAndCreatedAt(Long userId, Double latitude, Double longitude, LocalDateTime stdDate) {
+        return queryFactory
+                .select(new QDressOverviewDto(
+                        dress,
+                        dressLike.id,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id))
+                                .limit(1)
+                ))
+                .from(dress)
+                .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
+                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.5)
+                        .and(dress.createdAt.goe(stdDate)))
+                .orderBy(dress.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<DressOverviewDto> findDressByCategory(Long userId, String category, Double latitude, Double longitude) {
+        return queryFactory
+                .select(new QDressOverviewDto(
+                        dress,
+                        dressLike.id,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id))
+                                .limit(1)
+                ))
+                .from(dress)
+                .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
+                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.5)
+                        .and(dress.category.eq(category)))
+                .fetch();
     }
 
 
