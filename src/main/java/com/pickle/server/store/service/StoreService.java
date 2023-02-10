@@ -49,7 +49,7 @@ public class StoreService {
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
                 = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
-        return new StoreDetailDto(store, dressBriefInStoreDtoList, keyValueService.makeUrlHead("stores"));
+        return new StoreDetailDto(store, dressBriefInStoreDtoList);
     }
 
     @Transactional(readOnly = true)

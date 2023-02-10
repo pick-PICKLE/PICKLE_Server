@@ -68,7 +68,7 @@ public class DressDetailDto {
         this.dressId = dress.getId();
         this.dressName = dress.getName();
         for(DressImage di : dress.getImageList()){
-            this.dressImageUrlList.add(urlHead + di.getId());
+            this.dressImageUrlList.add(urlHead + di.getImageUrl());
         }
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressPrice = priceKRWFormat.format(dress.getPrice()) + "원";
