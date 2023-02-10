@@ -33,53 +33,10 @@ public class StoreService {
     private final StoreLikeRepository storeLikeRepository;
 
 
-    public List<StoreCoordDto> getNearStores(Double lat, Double lng) {
-        List<Store> allStores = storeRepository.findAll();
-        List<StoreCoordDto> nearStores = new ArrayList<>();
-
-        for (int i = 0; i < allStores.size(); i++) {
-            Double sLat = allStores.get(i).getLatitude();
-            Double SLng = allStores.get(i).getLongitude();
-
-            // 매장과 사용자 현재 위치 사이의 거리 (meter)
-            Double dist = distance(lat, lng, sLat, SLng);
-
-            // 1km 내에 있는 매장
-            if (dist <= 1000.0) {
-                StoreCoordDto storeCoordDto = new StoreCoordDto(allStores.get(i), dist);
-                nearStores.add(storeCoordDto);
-            }
-        }
-
-        // 매장 거리순으로 정렬
-        Collections.sort(nearStores, new Comparator<StoreCoordDto>() {
-            @Override
-            public int compare(StoreCoordDto s1, StoreCoordDto s2) {
-                if(s1.getDist()-s2.getDist() < 0) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            }
-        });
+    public List<StoreCoordDto> getNearStores(Long userId, Double lat, Double lng) {
+        List<StoreCoordDto> nearStores = storeRepository.findNearStore(userId, lat, lng);
 
         return nearStores;
-    }
-
-    // 거리 미터 단위로 계산
-    private static Double distance(double lat1, double lon1, double lat2, double lon2) {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-
-        dist = Math.acos(dist);
-        dist = (dist * 180 / Math.PI);
-        dist = dist * 60 * 1.1515 * 1609.344;
-
-        return (dist);
-    }
-
-    private static Double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
     }
 
     public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category){
