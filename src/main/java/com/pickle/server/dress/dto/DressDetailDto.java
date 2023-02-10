@@ -66,6 +66,7 @@ public class DressDetailDto {
         this.storeId = store.getId();
         this.storeName = store.getName();
         this.dressId = dress.getId();
+        this.comment = dress.getComment();
         this.dressName = dress.getName();
         for(DressImage di : dress.getImageList()){
             this.dressImageUrlList.add(urlHead + di.getImageUrl());
