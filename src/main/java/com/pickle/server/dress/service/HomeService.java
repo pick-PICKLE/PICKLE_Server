@@ -22,66 +22,39 @@ public class HomeService {
     private final RecentViewRepository recentViewRepository;
     private final KeyValueService keyValueService;
 
-    public List<DressOverviewDto> getNewDresses(List<StoreCoordDto> nearStores) {
+    public List<DressOverviewDto> getNewDresses(Long userId, Double lat, Double lng) {
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusDays(7);
-        List<Dress> allnewDresses = new ArrayList<>();
         List<DressOverviewDto> newDresses = new ArrayList<>();
-
-        for (StoreCoordDto storeCoordDto : nearStores) {
-            allnewDresses.addAll(dressRepository.findAllByCreatedAtAndStore(storeCoordDto.getStoreId(), stdTime));
-        }
-        Collections.sort(allnewDresses, new Comparator<Dress>(){
-            @Override
-            public int compare(Dress d1, Dress d2) {
-                if(d1.getCreatedAt().isBefore(d2.getCreatedAt())) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        });
-
-        for (Dress dress : allnewDresses) {
-            newDresses.add(new DressOverviewDto(dress, keyValueService.makeUrlHead("dresses")));
-        }
+        newDresses.addAll(dressRepository.findDressByStoreAndCreatedAt(userId, lat, lng, stdTime));
 
         return newDresses;
     }
 
-    public List<DressOverviewDto> getRecDresses(List<StoreCoordDto> nearStores) {
-        List<DressOverviewDto> recDressesOverview = new ArrayList<>();
-        List<Dress> recDresses = new ArrayList<>();
-        List<String> Category = Arrays.asList(new String[]{"상의", "아우터", "하의"});
+    public List<DressOverviewDto> getRecDresses(Long userId, Double lat, Double lng) {
+        List<DressOverviewDto> recDresses = new ArrayList<>();
+        List<String> Category = Arrays.asList(new String[]{"상의", "아우터", "하의", "원피스", "기타"});
 
         Random random = new Random();
         int index = random.nextInt(Category.size());
         System.out.println(Category.get(index));
 
-        for (StoreCoordDto StoreCoordDto : nearStores) {
-            recDresses.addAll(dressRepository.findRandomCategory(StoreCoordDto.getStoreId(), Category.get(index)));
-        }
-        for (Dress dress : recDresses) {
-            recDressesOverview.add(new DressOverviewDto(dress, keyValueService.makeUrlHead("dresses")));
-        }
-        Collections.shuffle(recDressesOverview);
+        recDresses.addAll(dressRepository.findDressByCategory(userId, Category.get(index), lat, lng));
 
-        if (recDressesOverview.size() > 20) {
-            return recDressesOverview.subList(0, 20);
+        Collections.shuffle(recDresses);
+
+        if (recDresses.size() > 20) {
+            return recDresses.subList(0, 20);
         } else {
-            return recDressesOverview;
+            return recDresses;
         }
     }
 
     public List<DressOverviewDto> getRecentView(Long userId) {
-        List<RecentView> recent = new ArrayList<>();
         List<DressOverviewDto> recentView = new ArrayList<>();
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusMonths(1);
 
-        recent.addAll(recentViewRepository.findByUserId(userId, stdTime));
+        recentView.addAll(dressRepository.findDressByRecentView(userId, stdTime));
 
-        for (RecentView r : recent) {
-            recentView.add(new DressOverviewDto(r.getDress(),keyValueService.makeUrlHead("dresses")));
-        }
         return recentView;
     }
 }

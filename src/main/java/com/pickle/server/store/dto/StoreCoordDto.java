@@ -1,8 +1,10 @@
 package com.pickle.server.store.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreOpenDay;
 import com.querydsl.core.annotations.QueryProjection;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +17,32 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoreCoordDto {
+    @ApiModelProperty(example = "스토어 id")
+    @JsonProperty("store_id")
     private Long storeId;
+    @ApiModelProperty(example = "매장명")
+    @JsonProperty("store_name")
     private String name;
+    @ApiModelProperty(example = "매장 대표 사진")
+    @JsonProperty("store_img")
     private String imgUrl;
+    @ApiModelProperty(example = "매장 주소")
+    @JsonProperty("address")
     private String address;
+    @ApiModelProperty(example = "운영 시간")
+    @JsonProperty("hoursOfOperation")
     private String hoursOfOperation;
+    @ApiModelProperty(example = "운영 요일")
+    @JsonProperty("open_day")
     private String storeOpenDay;
+    @ApiModelProperty(example = "위도")
+    @JsonProperty("latitude")
     private Double latitude;
+    @ApiModelProperty(example = "경도")
+    @JsonProperty("longitude")
     private Double longitude;
+    @ApiModelProperty(example = "매장 좋아요 여부")
+    @JsonProperty("store_like")
     private Boolean storeLike;
 
     @QueryProjection

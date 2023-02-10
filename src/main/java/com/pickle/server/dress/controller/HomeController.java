@@ -3,7 +3,6 @@ package com.pickle.server.dress.controller;
 import com.pickle.server.dress.dto.DressHomeDto;
 import com.pickle.server.dress.dto.DressOverviewDto;
 import com.pickle.server.dress.service.HomeService;
-import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.service.StoreService;
 import com.pickle.server.user.domain.User;
 import io.swagger.annotations.Api;
@@ -36,13 +35,12 @@ public class HomeController {
             @ApiResponse(code = 200, message = "홈 화면 조회 성공")
     })
     @GetMapping("")
-    public ResponseEntity<DressHomeDto> homeView(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
+    public ResponseEntity<DressHomeDto> homeView(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") Double lat, @RequestParam("lng") Double lng) {
         HashMap<String, Object> homeMap = new HashMap<>();
-        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
 
         List<DressOverviewDto> recentView = homeService.getRecentView(user.getId());
-        List<DressOverviewDto> newDresses = homeService.getNewDresses(nearStores);
-        List<DressOverviewDto> recDresses = homeService.getRecDresses(nearStores);
+        List<DressOverviewDto> newDresses = homeService.getNewDresses(user.getId(), lat, lng);
+        List<DressOverviewDto> recDresses = homeService.getRecDresses(user.getId(), lat, lng);
 
         return new ResponseEntity<>(new DressHomeDto(recentView, newDresses, recDresses), HttpStatus.OK);
     }
@@ -52,9 +50,8 @@ public class HomeController {
             @ApiResponse(code = 200, message = "새로운 상품 조회 성공")
     })
     @GetMapping("/new")
-    public ResponseEntity<List<DressOverviewDto>> getNew(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
-        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
-        List<DressOverviewDto> newDresses = homeService.getNewDresses(nearStores);
+    public ResponseEntity<List<DressOverviewDto>> getNew(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") Double lat, @RequestParam("lng") Double lng) {
+        List<DressOverviewDto> newDresses = homeService.getNewDresses(user.getId(), lat, lng);
 
         return new ResponseEntity<>(newDresses, HttpStatus.OK);
     }
@@ -64,10 +61,8 @@ public class HomeController {
             @ApiResponse(code = 200, message = "추천 상품 조회 성공")
     })
     @GetMapping("/recommendation")
-    public ResponseEntity<List<DressOverviewDto>> getRecommend(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") double lat, @RequestParam("lng") double lng) {
-        List<StoreCoordDto> nearStores = storeService.getNearStores(user.getId(), lat, lng);
-
-        List<DressOverviewDto> recDresses = homeService.getRecDresses(nearStores);
+    public ResponseEntity<List<DressOverviewDto>> getRecommend(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") Double lat, @RequestParam("lng") Double lng) {
+        List<DressOverviewDto> recDresses = homeService.getRecDresses(user.getId(), lat, lng);
 
         return new ResponseEntity<>(recDresses, HttpStatus.OK);
     }

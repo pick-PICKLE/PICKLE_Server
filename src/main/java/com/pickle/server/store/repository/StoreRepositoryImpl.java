@@ -82,6 +82,10 @@ public class StoreRepositoryImpl implements StoreDslRepository {
 
     @Override
     public List<StoreCoordDto> findNearStore(Long userId, Double latitude, Double longitude) {
+        if (latitude == null || longitude == null
+                || latitude > 90 || latitude < -90
+                || longitude > 180 || longitude < -180)
+            throw new RuntimeException("잘못된 위도, 경도 값입니다.");
         return queryFactory
                 .select(new QStoreCoordDto(store, storeLike.id))
                 .from(store)
