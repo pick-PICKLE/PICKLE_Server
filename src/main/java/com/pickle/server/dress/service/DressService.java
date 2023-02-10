@@ -66,13 +66,17 @@ public class DressService {
     public void likesDress(UpdateDressLikeDto updateDressLikeDto){
         User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
         Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new RuntimeException("해당 id의 게시글을 찾을 수 없습니다."));
-        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){ throw new RuntimeException(); }
+//        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){ throw new RuntimeException(); }
+        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
+            dressLikeRepository.deleteDress(dress, user); //api 하나로 사용
+        }
+
         else{
             DressLike dressLike = DressLike.builder().dress(dress).user(user).build();
             dressLikeRepository.save(dressLike);
         }
     }
-    @Transactional
+/*    @Transactional
     public void delLikeDress(UpdateDressLikeDto updateDressLikeDto){
         User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
         Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new RuntimeException("해당 id의 게시글을 찾을 수 없습니다."));
@@ -80,6 +84,6 @@ public class DressService {
             dressLikeRepository.deleteDress(dress, user);
         }
         else{ throw new RuntimeException(); }
-    }
+    }*/
 
 }
