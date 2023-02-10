@@ -46,12 +46,12 @@ public class StoreController {
     }
 
 
-    @ApiOperation(value = "스토어 좋아요 추가",
+    @ApiOperation(value = "스토어 좋아요 추가/삭제",
             httpMethod = "POST",
             response = UpdateStoreLikeDto.class,
             notes = "스토어 좋아요 추가 API"
     )
-    @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 추가 성공")})
+    @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 추가/삭제 성공")})
     @PostMapping("/likes")
     public ResponseEntity<UpdateStoreLikeDto> likeStore(@RequestBody UpdateStoreLikeDto updatestoreLikeDto){
         storeService.likesStore(updatestoreLikeDto);
@@ -71,6 +71,7 @@ public class StoreController {
         return new ResponseEntity<>(storeService.findStoreLikeByUser(userId),HttpStatus.OK);
     }
 
+    /*
     @ApiOperation(value ="스토어 좋아요 삭제",
             httpMethod = "POST",
             response = UpdateStoreLikeDto.class,
@@ -82,7 +83,7 @@ public class StoreController {
         storeService.delLikeStore(updateStoreLikeDto);
         return new ResponseEntity<>(updateStoreLikeDto,
                 HttpStatus.OK);
-    }
+    }*/
 
     @ApiOperation(value ="근처 스토어 조회", notes ="근처 스토어 조회 API")
     @ApiResponses({

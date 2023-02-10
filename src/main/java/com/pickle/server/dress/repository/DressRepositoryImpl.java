@@ -22,8 +22,7 @@ import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
 import static com.pickle.server.dress.domain.QDressLike.dressLike;
 import static com.pickle.server.dress.domain.QRecentView.recentView;
-import static com.pickle.server.store.domain.QStore.store;
-import static com.pickle.server.store.domain.QStoreLike.storeLike;
+
 
 public class DressRepositoryImpl implements DressDslRepository {
 
@@ -46,8 +45,8 @@ public class DressRepositoryImpl implements DressDslRepository {
                                 .where(dressImage.dress.id.eq(dress.id))
                 ))
                 .from(dress, dressLike)
-                .where(dress.id.eq(dressLike.user.id))
                 .where(dressLike.user.id.eq(userId))
+                .where(dressLike.dress.id.eq(dress.id))
                 .fetch();
     }
     

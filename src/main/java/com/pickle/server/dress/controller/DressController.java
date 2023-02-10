@@ -87,13 +87,13 @@ public class DressController {
         return new ResponseEntity<>(dressService.findDressLikeByUser(userId),HttpStatus.OK);
     }
 
-    @ApiOperation(value="의상 좋아요 추가",
+    @ApiOperation(value="의상 좋아요",
             httpMethod = "POST",
             response = UpdateDressLikeDto.class,
-            notes = "의상 좋아요 추가 API"
+            notes = "의상 좋아요 추가/삭제 API"
     )
     @ApiResponses({
-            @ApiResponse(code=200, message= "의상 좋아요 추가 성공")
+            @ApiResponse(code=200, message= "의상 좋아요 추가/삭제 성공")
     })
     @PostMapping("/likes")
     public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
@@ -101,7 +101,7 @@ public class DressController {
         return new ResponseEntity<>(updatedressLikeDto
                 , HttpStatus.OK);
     }
-
+/*
     @ApiOperation(value="의상 좋아요 삭제",
             httpMethod = "POST",
             response = UpdateDressLikeDto.class,
@@ -114,6 +114,6 @@ public class DressController {
     public ResponseEntity<UpdateDressLikeDto> delLikeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
         dressService.delLikeDress(updatedressLikeDto);
         return new ResponseEntity<>(updatedressLikeDto,HttpStatus.OK);
-    }
+    }*/
 
 }
