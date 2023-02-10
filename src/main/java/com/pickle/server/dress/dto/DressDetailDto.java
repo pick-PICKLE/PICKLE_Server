@@ -41,7 +41,7 @@ public class DressDetailDto {
 
     @ApiModelProperty(example = "의상 가격")
     @JsonProperty("dress_price")
-    private String dressPrice;
+    private Integer dressPrice;
 
     @ApiModelProperty(example = "의상 설명")
     @JsonProperty("comment")
@@ -68,10 +68,9 @@ public class DressDetailDto {
         this.dressId = dress.getId();
         this.dressName = dress.getName();
         for(DressImage di : dress.getImageList()){
-            this.dressImageUrlList.add(urlHead + di.getId());
+            this.dressImageUrlList.add(urlHead + di.getImageUrl());
         }
-        DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
-        this.dressPrice = priceKRWFormat.format(dress.getPrice()) + "원";
+        this.dressPrice = dress.getPrice();
         this.dressOption1 = getDressOptionDto(dress.getDressOption1());
         this.dressOption2 = getDressOptionDto(dress.getDressOption2());
         for(DressStock ds : dress.getDressStockList()){

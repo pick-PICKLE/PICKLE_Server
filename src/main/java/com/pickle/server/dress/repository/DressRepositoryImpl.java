@@ -1,11 +1,10 @@
 package com.pickle.server.dress.repository;
 
 
+import com.pickle.server.common.error.NotValidParamsException;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
-import com.pickle.server.dress.domain.DressLike;
 import com.pickle.server.dress.domain.DressSortBy;
-import com.pickle.server.dress.domain.QDress;
 import com.pickle.server.dress.dto.*;
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -62,7 +61,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 if (latitude == null || longitude == null
                         || latitude > 90 || latitude < -90
                         || longitude > 180 || longitude < -180)
-                    throw new RuntimeException("잘못된 위도, 경도 값입니다.");
+                    throw new NotValidParamsException();
                 return findDressByCategoryCondition(findDressByNameCondition(name), category)
                         .orderBy(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).asc())
                         .fetch();
@@ -77,7 +76,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                         .orderBy(dress.createdAt.desc())
                         .fetch();
             default:
-                throw new RuntimeException("잘못된 정렬 입니다.");
+                throw new NotValidParamsException();
         }
     }
 
