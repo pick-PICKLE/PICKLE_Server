@@ -34,7 +34,11 @@ public class StoreService {
         return nearStores;
     }
 
-    public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category){
+    private static Double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
         if(!DressCategory.findCategoryByName(category))
             throw new NotValidParamsException();
 
@@ -44,7 +48,7 @@ public class StoreService {
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
                 = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
-        return new StoreDetailDto(store, dressBriefInStoreDtoList);
+        return new StoreDetailDto(store, dressBriefInStoreDtoList, storeLikeRepository.existsByUserIdAndStoreId(user.getId(), storeId));
     }
 
     @Transactional(readOnly = true)

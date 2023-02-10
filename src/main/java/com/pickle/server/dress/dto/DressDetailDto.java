@@ -35,9 +35,9 @@ public class DressDetailDto {
     @JsonProperty("dress_image_url_list")
     private List<String> dressImageUrlList = new ArrayList<>();
 
-//    @ApiModelProperty(example = "좋아요 여부")
-//    @JsonProperty("is_liked")
-//    private Boolean isLiked;
+    @ApiModelProperty(example = "좋아요 여부")
+    @JsonProperty("is_liked")
+    private Boolean isLiked;
 
     @ApiModelProperty(example = "의상 가격")
     @JsonProperty("dress_price")
@@ -61,7 +61,7 @@ public class DressDetailDto {
 
 
 
-    public DressDetailDto(Dress dress, String urlHead){
+    public DressDetailDto(Dress dress, String urlHead, Boolean isLiked){
         Store store = dress.getStore();
         this.storeId = store.getId();
         this.storeName = store.getName();
@@ -76,6 +76,7 @@ public class DressDetailDto {
         for(DressStock ds : dress.getDressStockList()){
             this.dressStockList.add(new DressStockDto(ds));
         }
+        this.isLiked = isLiked;
    }
 
     private DressOptionDto getDressOptionDto(DressOption dressOption) {
