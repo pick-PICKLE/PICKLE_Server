@@ -64,14 +64,11 @@ public class DressService {
         return dressRepository.findDressByUsers(userId);
     }
     @Transactional
-    public void likesDress(UpdateDressLikeDto updateDressLikeDto){
-        User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
+    public void likesDress(UpdateDressLikeDto updateDressLikeDto,User user){
         Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(NotFoundIdException::new);
-//        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){ throw new RuntimeException(); }
         if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
-            dressLikeRepository.deleteDress(dress, user); //api 하나로 사용
+            dressLikeRepository.deleteDress(dress, user);
         }
-
         else{
             DressLike dressLike = DressLike.builder().dress(dress).user(user).build();
             dressLikeRepository.save(dressLike);

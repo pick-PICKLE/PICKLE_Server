@@ -136,8 +136,8 @@ public class DressController {
             @ApiResponse(code=200, message= "의상 좋아요 추가/삭제 성공")
     })
     @PostMapping("/like")
-    public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
-        dressService.likesDress(updatedressLikeDto);
+    public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto,@ApiIgnore @AuthenticationPrincipal User user){
+        dressService.likesDress(updatedressLikeDto,user);
         return new ResponseEntity<>(updatedressLikeDto
                 , HttpStatus.OK);
     }

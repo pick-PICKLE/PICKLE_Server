@@ -51,8 +51,8 @@ public class StoreController {
     )
     @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 추가/삭제 성공")})
     @PostMapping("/like")
-    public ResponseEntity<UpdateStoreLikeDto> likeStore(@RequestBody UpdateStoreLikeDto updatestoreLikeDto){
-        storeService.likesStore(updatestoreLikeDto);
+    public ResponseEntity<UpdateStoreLikeDto> likeStore(@RequestBody UpdateStoreLikeDto updatestoreLikeDto,@ApiIgnore @AuthenticationPrincipal User user){
+        storeService.likesStore(updatestoreLikeDto,user);
         return new ResponseEntity<>(updatestoreLikeDto
                 , HttpStatus.OK);
     }
