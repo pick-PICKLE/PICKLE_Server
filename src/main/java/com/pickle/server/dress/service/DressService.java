@@ -58,7 +58,6 @@ public class DressService {
 
         return dressRepository.findDressByCondition(name, sort, category, latitude, longitude);
     }
-
     @Transactional(readOnly = true)
     public List<DressLikeDto> findDressLikeByUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
@@ -78,16 +77,6 @@ public class DressService {
             dressLikeRepository.save(dressLike);
         }
     }
-/*    @Transactional
-    public void delLikeDress(UpdateDressLikeDto updateDressLikeDto){
-        User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new RuntimeException("해당 id의 게시글을 찾을 수 없습니다."));
-        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
-            dressLikeRepository.deleteDress(dress, user);
-        }
-        else{ throw new RuntimeException(); }
-    }*/
-
 
     public DressReservationFormDto getDressReservationForm(Long storeId) {
         return new DressReservationFormDto(storeRepository.findById(storeId)
@@ -113,12 +102,12 @@ public class DressService {
             reservedDressRepository.save(reservedDressWithOption);
         }
     }
-    public List<DressOrderDto> getDressOrder(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return dressRepository.findReservationByUser(userId);
-    }
-    public List<DressOrderListDto> getDressOrderList(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다"));
-        return dressRepository.findReservationListByUser(userId);
-    }
+//    public List<DressOrderDto> getDressOrder(Long userId){
+//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
+//        return dressRepository.findReservationByUser(userId);
+//    }
+//    public List<DressOrderListDto> getDressOrderList(Long userId){
+//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다"));
+//        return dressRepository.findReservationListByUser(userId);
+//    }
 }
