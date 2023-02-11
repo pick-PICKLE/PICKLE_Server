@@ -15,12 +15,9 @@ public class UpdateDressLikeDto {
     @JsonProperty("dress_id")
     private Long dressId;
 
-    @ApiModelProperty(example = "유저 id")
-    @JsonProperty("user_id")
-    private Long userId;
 
     public UpdateDressLikeDto(DressLike dressLike) {
         this.dressId = getDressId();
-        this.userId = getUserId();
+
     }
 }

@@ -13,12 +13,8 @@ public class UpdateStoreLikeDto {
     @JsonProperty("store_id")
     private Long storeId;
 
-    @ApiModelProperty(example = "유저 id")
-    @JsonProperty("user_id")
-    private Long userId;
 
     public UpdateStoreLikeDto(StoreLike storeLike) {
         this.storeId = getStoreId();
-        this.userId = getUserId();
     }
 }
