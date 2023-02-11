@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -24,36 +26,35 @@ public class HomeService {
 
     public List<DressOverviewDto> getNewDresses(Long userId, Double lat, Double lng) {
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusDays(7);
-        List<DressOverviewDto> newDresses = new ArrayList<>();
-        newDresses.addAll(dressRepository.findDressByStoreAndCreatedAt(userId, lat, lng, stdTime));
+
+        Stream<DressOverviewDto> newStream = dressRepository.findDressByStoreAndCreatedAt(userId, lat, lng, stdTime).stream().limit(30);
+        List<DressOverviewDto> newDresses = newStream.collect(Collectors.toList());
+
+        Collections.shuffle(newDresses);
 
         return newDresses;
     }
 
     public List<DressOverviewDto> getRecDresses(Long userId, Double lat, Double lng) {
-        List<DressOverviewDto> recDresses = new ArrayList<>();
         List<String> Category = Arrays.asList(new String[]{"상의", "아우터", "하의", "원피스", "기타"});
 
         Random random = new Random();
         int index = random.nextInt(Category.size());
         System.out.println(Category.get(index));
 
-        recDresses.addAll(dressRepository.findDressByCategory(userId, Category.get(index), lat, lng));
+        Stream<DressOverviewDto> recStream = dressRepository.findDressByCategory(userId, Category.get(index), lat, lng).stream().limit(20);
+        List<DressOverviewDto> recDresses = recStream.collect(Collectors.toList());
 
         Collections.shuffle(recDresses);
 
-        if (recDresses.size() > 20) {
-            return recDresses.subList(0, 20);
-        } else {
-            return recDresses;
-        }
+        return recDresses;
     }
 
     public List<DressOverviewDto> getRecentView(Long userId) {
-        List<DressOverviewDto> recentView = new ArrayList<>();
         LocalDateTime stdTime = LocalDate.now().atStartOfDay().minusMonths(1);
 
-        recentView.addAll(dressRepository.findDressByRecentView(userId, stdTime));
+        Stream<DressOverviewDto> viewStream = dressRepository.findDressByRecentView(userId, stdTime).stream().limit(30);
+        List<DressOverviewDto> recentView = viewStream.collect(Collectors.toList());
 
         return recentView;
     }

@@ -3,7 +3,6 @@ package com.pickle.server.dress.controller;
 import com.pickle.server.dress.dto.DressHomeDto;
 import com.pickle.server.dress.dto.DressOverviewDto;
 import com.pickle.server.dress.service.HomeService;
-import com.pickle.server.store.service.StoreService;
 import com.pickle.server.user.domain.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +20,8 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +29,6 @@ import java.util.List;
 @Api(tags = "홈")
 public class HomeController {
     private final HomeService homeService;
-    private final StoreService storeService;
 
     @ApiOperation(value = "홈 화면 조회", notes = "홈 화면 조회 API")
     @ApiResponses({
