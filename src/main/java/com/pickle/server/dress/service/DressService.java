@@ -99,12 +99,13 @@ public class DressService {
             reservedDressRepository.save(reservedDressWithOption);
         }
     }
-//    public List<DressOrderDto> getDressOrder(Long userId){
-//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-//        return dressRepository.findReservationByUser(userId);
-//    }
-//    public List<DressOrderListDto> getDressOrderList(Long userId){
-//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다"));
-//        return dressRepository.findReservationListByUser(userId);
-//    }
+
+    public List<DressOrderDto> getDressOrder(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
+        return dressRepository.findReservationByUser(userId);
+    }
+    public List<DressOrderListDto> getDressOrderList(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다"));
+        return dressRepository.findReservationListByUser(userId);
+    }
 }
