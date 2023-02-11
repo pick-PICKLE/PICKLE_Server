@@ -67,7 +67,7 @@ public class DressService {
     public void likesDress(UpdateDressLikeDto updateDressLikeDto,User user){
         Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(NotFoundIdException::new);
         if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
-            dressLikeRepository.deleteDress(dress, user);
+            dressLikeRepository.deleteDress(dress.getId(), user.getId());
         }
         else{
             DressLike dressLike = DressLike.builder().dress(dress).user(user).build();
