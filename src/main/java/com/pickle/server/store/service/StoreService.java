@@ -59,7 +59,7 @@ public class StoreService {
     @Transactional
     public void likesStore(UpdateStoreLikeDto updateStoreLikeDto,User user){
         Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()-> new NotFoundIdException());
-        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store,user);}
+        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store.getId(),user.getId());}
         else{
             StoreLike storeLike = StoreLike.builder().store(store).user(user).build();
             storeLikeRepository.save(storeLike);
