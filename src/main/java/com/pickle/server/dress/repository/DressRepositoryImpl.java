@@ -137,7 +137,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 ))
                 .from(dress)
                 .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
-                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.5)
+                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.0)
                         .and(dress.createdAt.goe(stdDate)))
                 .orderBy(dress.createdAt.desc())
                 .fetch();
@@ -156,7 +156,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 ))
                 .from(dress)
                 .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
-                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.5)
+                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.0)
                         .and(dress.category.eq(category)))
                 .fetch();
     }
