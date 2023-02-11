@@ -67,7 +67,7 @@ public class DressService {
     @Transactional
     public void likesDress(UpdateDressLikeDto updateDressLikeDto){
         User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new NotFoundIdException());
+        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(NotFoundIdException::new);
 //        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){ throw new RuntimeException(); }
         if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
             dressLikeRepository.deleteDress(dress, user); //api 하나로 사용
@@ -112,5 +112,13 @@ public class DressService {
             reservedDressList.add(reservedDressWithOption);
             reservedDressRepository.save(reservedDressWithOption);
         }
+    }
+    public List<DressOrderDto> getDressOrder(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
+        return dressRepository.findReservationByUser(userId);
+    }
+    public List<DressOrderListDto> getDressOrderList(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다"));
+        return dressRepository.findReservationListByUser(userId);
     }
 }
