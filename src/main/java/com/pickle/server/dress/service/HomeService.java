@@ -30,8 +30,6 @@ public class HomeService {
         Stream<DressOverviewDto> newStream = dressRepository.findDressByStoreAndCreatedAt(userId, lat, lng, stdTime).stream().limit(30);
         List<DressOverviewDto> newDresses = newStream.collect(Collectors.toList());
 
-        Collections.shuffle(newDresses);
-
         return newDresses;
     }
 
