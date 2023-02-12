@@ -50,11 +50,11 @@ public class DressRepositoryImpl implements DressDslRepository {
     }
     
     @Override
-    public List<DressBriefDto> findDressByCondition(String name, String sort, String category, Double latitude, Double longitude) {
+    public List<DressBriefDto> findDressByCondition(String name, String sort, String category, Double latitude, Double longitude, Long userId) {
 
         switch (sort) {
             case DressSortBy.Constants.price:
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
                         .orderBy(dress.price.asc()).fetch();
 
             case DressSortBy.Constants.distance:
@@ -62,17 +62,17 @@ public class DressRepositoryImpl implements DressDslRepository {
                         || latitude > 90 || latitude < -90
                         || longitude > 180 || longitude < -180)
                     throw new NotValidParamsException();
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
                         .orderBy(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).asc())
                         .fetch();
 
             case DressSortBy.Constants.like:
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
                         /*좋아요 순 정렬*/
                         .fetch();
 
             case DressSortBy.Constants.newDress:
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
                         .orderBy(dress.createdAt.desc())
                         .fetch();
             default:
@@ -86,7 +86,7 @@ public class DressRepositoryImpl implements DressDslRepository {
 
     }
 
-    private JPAQuery<DressBriefDto> findDressByNameCondition(String name) {
+    private JPAQuery<DressBriefDto> findDressByNameCondition(String name, Long userId) {
 
         return queryFactory
                 .select(new QDressBriefDto(
@@ -97,7 +97,11 @@ public class DressRepositoryImpl implements DressDslRepository {
                                         .where(dressImage.dress.id.eq(dress.id)),
                                 dress.price,
                                 dress.store.name,
-                                dress.store.id
+                                dress.store.id,
+                                JPAExpressions.select(dressLike)
+                                        .from(dressLike)
+                                        .where(dressLike.dress.id.eq(dress.id)
+                                                .and(dressLike.user.id.eq(userId)))
                         )
                 )
                 .from(dress)

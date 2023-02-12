@@ -48,10 +48,11 @@ public class DressController {
 
     @ApiOperation(value = "의상 검색",
             httpMethod = "GET",
-            response = DressDetailDto.class,
+            response = JSONObject.class,
             notes = "카테고리 : 아우터, 상의, 하의, 원피스, 기타, (미입력시)전체\n"
             + "정렬 : 낮은가격순, 가까운거리순, (미입력시)좋아요많은순, 최신순\n"
             + "의상 검색 API"
+            + "의상 정보 리스트가 response로 나옵니다."
     )
     @ApiResponses({
             @ApiResponse(code = 200, message = "의상 검색 성공")
@@ -61,10 +62,11 @@ public class DressController {
                                                   @RequestParam(value = "sort", required = false, defaultValue = DressSortBy.Constants.like) String sort,
                                                   @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category,
                                                   @RequestParam(value = "latitude", required = false) Double latitude,
-                                                  @RequestParam(value = "longitude", required = false) Double longitude){
+                                                  @RequestParam(value = "longitude", required = false) Double longitude,
+                                                  @ApiIgnore @AuthenticationPrincipal User user){
 
         return new ResponseEntity<>(
-                PropertyUtil.response(dressService.searchDress(name, sort, category, latitude, longitude))
+                PropertyUtil.response(dressService.searchDress(name, sort, category, latitude, longitude, user))
                 , HttpStatus.OK);
     }
 

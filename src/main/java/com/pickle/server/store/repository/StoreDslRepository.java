@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface StoreDslRepository {
 
-    List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category);
+    List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category, Long userId);
     List<StoreLikeDto> findStoreByUsers(Long userId);
     List<StoreCoordDto> findNearStore(Long userId, Double latitude, Double longitude);
 

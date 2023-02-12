@@ -47,7 +47,7 @@ public class StoreService {
         );
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
-                = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
+                = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category, user.getId());
         return new StoreDetailDto(store, dressBriefInStoreDtoList, storeLikeRepository.existsByUserIdAndStoreId(user.getId(), storeId));
     }
 
