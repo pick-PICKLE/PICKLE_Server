@@ -104,17 +104,10 @@ public class DressOrderDto {
                 + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
         this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
-
         this.dressOption1 = reservedDress.getDressOptionDetail1().getDressOption().getName();
         this.dressOptionName1 = reservedDress.getDressOptionDetail1().getName();
         this.dressOption2 = reservedDress.getDressOptionDetail2().getDressOption().getName();
-//        this.dressOption2 = reservedDress.getDressOptionDetail2().getId().toString();
         this.dressOptionName2 = reservedDress.getDressOptionDetail2().getName();
-
-
-//        this.dressOption2 = reservedDress.getDressOptionDetail2();
-//        this.dressOption1 = dressStock.getDressOptionDetail1();
-//        this.dressOption2 = dressStock.getDressOptionDetail2();
         this.comment =dressReservation.getComment();
         this.price = priceFormat.format(dressReservation.getPrice())+"원";
     }
