@@ -37,6 +37,10 @@ public class DressOrderListDto {
     @JsonProperty("price")
     private String price;
 
+    @ApiModelProperty(example = "예약 상태")
+    @JsonProperty("reservation_status")
+    private String status;
+
     @QueryProjection
     public DressOrderListDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl){
         DecimalFormat priceFormat = new DecimalFormat("###,###");
@@ -45,6 +49,7 @@ public class DressOrderListDto {
         this.storeName = dressReservation.getStore().getName();
         this.dressName = reservedDress.getDress().getName();
         this.dressImageUrl = dressImageUrl;
-        this.price = priceFormat.format(dressReservation.getPrice())+"원";
+        this.price = priceFormat.format(dressReservation.getPrice()*reservedDress.getQuantity())+"원";
+        this.status = dressReservation.getStatus();
     }
 }

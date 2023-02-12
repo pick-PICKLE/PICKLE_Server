@@ -109,7 +109,7 @@ public class DressOrderDto {
         this.dressOption2 = reservedDress.getDressOptionDetail2().getDressOption().getName();
         this.dressOptionName2 = reservedDress.getDressOptionDetail2().getName();
         this.comment =dressReservation.getComment();
-        this.price = priceFormat.format(dressReservation.getPrice())+"원";
+        this.price = priceFormat.format(dressReservation.getPrice()*reservedDress.getQuantity())+"원";
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){
