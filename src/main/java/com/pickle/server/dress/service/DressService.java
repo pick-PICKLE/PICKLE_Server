@@ -49,14 +49,14 @@ public class DressService {
                 dressLikeRepository.existsByUserIdAndDressId(user.getId(), dressId));
     }
 
-    public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude) {
-        if(!DressCategory.findCategoryByName(category))
+    public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude, User user) {
+        if(!DressCategory.existsCategoryByName(category))
             throw new NotValidParamsException();
 
-        if(!DressSortBy.findSortConditionByName(sort))
+        if(!DressSortBy.existsSortConditionByName(sort))
             throw new NotValidParamsException();
 
-        return dressRepository.findDressByCondition(name, sort, category, latitude, longitude);
+        return dressRepository.findDressByCondition(name, sort, category, latitude, longitude, user.getId());
     }
     @Transactional(readOnly = true)
     public List<DressLikeDto> findDressLikeByUser(Long userId) {

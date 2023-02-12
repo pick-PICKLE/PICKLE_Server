@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface DressDslRepository {
 
-    List<DressBriefDto> findDressByCondition(String name, String sort, String category, Double latitude, Double longitude);
+    List<DressBriefDto> findDressByCondition(String name, String sort, String category, Double latitude, Double longitude, Long userId);
 
     List<DressLikeDto> findDressByUsers(@Param("id") Long userId);
 

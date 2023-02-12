@@ -39,7 +39,7 @@ public class StoreService {
     }
 
     public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
-        if(!DressCategory.findCategoryByName(category))
+        if(!DressCategory.existsCategoryByName(category))
             throw new NotValidParamsException();
 
         Store store = storeRepository.findById(storeId).orElseThrow(
@@ -47,7 +47,7 @@ public class StoreService {
         );
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
-                = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
+                = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category, user.getId());
         return new StoreDetailDto(store, dressBriefInStoreDtoList, storeLikeRepository.existsByUserIdAndStoreId(user.getId(), storeId));
     }
 

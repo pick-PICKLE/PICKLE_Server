@@ -22,6 +22,7 @@ import java.util.List;
 
 import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
+import static com.pickle.server.dress.domain.QDressLike.dressLike;
 import static com.pickle.server.store.domain.QStore.store;
 import static com.pickle.server.store.domain.QStoreLike.storeLike;
 
@@ -37,12 +38,12 @@ public class StoreRepositoryImpl implements StoreDslRepository {
     }
 
     @Override
-    public List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category) {
+    public List<DressBriefInStoreDto> findDressDtoByStoreIdAndCategory(Long storeId, String category, Long userId) {
         if (category.equals(DressCategory.Constants.all))
-            return findDressByStoreIdOverlap(storeId).fetch();
+            return findDressByStoreIdOverlap(storeId, userId).fetch();
 
         else
-            return findDressByStoreIdOverlap(storeId)
+            return findDressByStoreIdOverlap(storeId, userId)
                     .where(dress.category.eq(category))
                     .fetch();
     }
@@ -60,7 +61,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
                 .fetch();
     }
 
-    private JPAQuery<DressBriefInStoreDto> findDressByStoreIdOverlap(Long storeId) {
+    private JPAQuery<DressBriefInStoreDto> findDressByStoreIdOverlap(Long storeId, Long userId) {
 
         return queryFactory
                 .select(new QDressBriefInStoreDto(
@@ -69,7 +70,11 @@ public class StoreRepositoryImpl implements StoreDslRepository {
                                 JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
                                         .from(dressImage)
                                         .where(dressImage.dress.id.eq(dress.id)),
-                                dress.price
+                                dress.price,
+                                JPAExpressions.select(dressLike)
+                                        .from(dressLike)
+                                        .where(dressLike.dress.id.eq(dress.id)
+                                                .and(dressLike.user.id.eq(userId)))
                         )
                 )
                 .from(dress)
@@ -88,7 +93,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
                 .from(store)
                 .leftJoin(storeLike).on(store.id.eq(storeLike.store.id).and(storeLike.user.id.eq(userId)))
                 .where(calculateDistance(latitude, longitude, store.latitude, store.longitude).loe(1.5))
-                .orderBy(calculateDistance(latitude, longitude,store.latitude, store.longitude).asc())
+                .orderBy(calculateDistance(latitude, longitude, store.latitude, store.longitude).asc())
                 .fetch();
     }
 

@@ -13,7 +13,7 @@ public enum DressSortBy {
 
     private final String sortBy;
 
-    public static boolean findSortConditionByName(String sortCondition) {
+    public static boolean existsSortConditionByName(String sortCondition) {
         for (DressSortBy dsb : values()) {
             if (dsb.sortBy.equals(sortCondition)) {
                 return true;
