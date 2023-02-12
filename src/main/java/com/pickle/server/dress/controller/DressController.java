@@ -50,7 +50,7 @@ public class DressController {
             response = JSONObject.class,
             notes = "카테고리 : 아우터, 상의, 하의, 원피스, 기타, (미입력시)전체\n"
             + "정렬 : 낮은가격순, 가까운거리순, (미입력시)좋아요많은순, 최신순\n"
-            + "의상 검색 API"
+            + "의상 검색 API\n"
             + "2km 이내의 의상 정보 리스트가 response로 나옵니다."
     )
     @ApiResponses({
@@ -60,8 +60,8 @@ public class DressController {
     public ResponseEntity<JSONObject> searchDress(@RequestParam("name") String name,
                                                   @RequestParam(value = "sort", required = false, defaultValue = DressSortBy.Constants.like) String sort,
                                                   @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category,
-                                                  @RequestParam(value = "latitude", required = false) Double latitude,
-                                                  @RequestParam(value = "longitude", required = false) Double longitude,
+                                                  @RequestParam(value = "latitude") Double latitude,
+                                                  @RequestParam(value = "longitude") Double longitude,
                                                   @ApiIgnore @AuthenticationPrincipal User user){
 
         return new ResponseEntity<>(
