@@ -1,9 +1,7 @@
 package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pickle.server.dress.domain.Dress;
-import com.pickle.server.dress.domain.DressReservation;
-import com.pickle.server.dress.domain.ReservedDress;
+import com.pickle.server.dress.domain.*;
 import com.pickle.server.store.domain.StoreOpenDay;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,8 +12,7 @@ import lombok.Setter;
 
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Data
 @Getter
@@ -23,7 +20,6 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 public class DressOrderDto {
-
     @ApiModelProperty(example = "예약내역 id")
     @JsonProperty("reserved_dress_id")
     private Long reservedDressId;
@@ -50,6 +46,7 @@ public class DressOrderDto {
     @ApiModelProperty(example = "의상 이름")
     @JsonProperty("dress_name")
     private String dressName;
+
     @ApiModelProperty(example = "의상 이미지 url")
     @JsonProperty("dress_image_url")
     private String dressImageUrl;
@@ -57,9 +54,6 @@ public class DressOrderDto {
     @ApiModelProperty(example = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("pickup_datetime")
     private String pickUpDateTime;
-
-    @JsonProperty("reserved_dress_list")
-    private List<ReservedDress> reservedDressList = new ArrayList<>();
 
     @ApiModelProperty(example = "드레스 픽업 요청사항")
     @JsonProperty("comment")
@@ -69,13 +63,46 @@ public class DressOrderDto {
     @JsonProperty("price")
     private String price;
 
+    @ApiModelProperty(example = "드레스 옵션 1")
+    @JsonProperty("dress_option1")
+    private DressOptionDetail dressOption1;
 
+    @ApiModelProperty(example = "드레스 옵션 2")
+    @JsonProperty("dress_option2")
+    private DressOptionDetail dressOption2;
+
+    @ApiModelProperty(example = "quantity")
+    @JsonProperty("quantity")
+    private Integer quantity;
+
+
+
+
+  //  @QueryProjection
+//    public DressOrderDto(DressReservation dressReservation, DressReservationDto dressReservationDto,String dressImgUrl){
+//        DecimalFormat priceFormat = new DecimalFormat("###,###");
+//
+//        this.storeName = dressReservation.getStore().getName();
+//        this.storeAddress = dressReservation.getStore().getAddress();
+//        this.pickUpDateTime = dressReservationDto.getPickUpDateTime();
+//        this.dressImageUrl = getDressImageUrl();
+//
+//        this.hoursOfOperation = dressReservation.getStore().getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
+//                + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+//        this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
+//        this.comment = dressReservationDto.getComment();
+//        this.price = priceFormat.format(dressReservation.getPrice())+"원";
+//        this.dressOption1 = dressReservationDto.getReservedDressList().toString();
+//        this.dressOption2 = dressReservationDto.getReservedDressList().toString();
+//
+//
+ //   }
     @QueryProjection
-    public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImgUrl) {
+    public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl/*, DressStock dressStock*/) {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
         this.reservedDressId = reservedDress.getId();
-        this.storeId = dressReservation.getStore().getId();
+        this.storeId = dressReservation.getStore().getId(); //필요x 삭제
         this.storeName = dressReservation.getStore().getName();
         this.storeAddress = dressReservation.getStore().getAddress();
         this.dressName = reservedDress.getDress().getName();
@@ -84,9 +111,9 @@ public class DressOrderDto {
                 + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
         this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
-//        this.pickUpDateTime = reservedDress.getDressReservation().getPickUpDateTime().toString();
-
-        this.reservedDressList = dressReservation.getReservedDressList();
+//
+//        this.dressOption1 = dressStock.getDressOptionDetail1();
+//        this.dressOption2 = dressStock.getDressOptionDetail2();
         this.comment =dressReservation.getComment();
         this.price = priceFormat.format(dressReservation.getPrice())+"원";
     }
