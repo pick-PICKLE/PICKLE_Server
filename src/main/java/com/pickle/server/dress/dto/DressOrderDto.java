@@ -1,35 +1,23 @@
 package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pickle.server.dress.domain.Dress;
-import com.pickle.server.dress.domain.DressReservation;
-import com.pickle.server.dress.domain.ReservedDress;
+import com.pickle.server.dress.domain.*;
 import com.pickle.server.store.domain.StoreOpenDay;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
-@Data
+
+
 @Getter
-
-@NoArgsConstructor
-@Setter
 public class DressOrderDto {
-
     @ApiModelProperty(example = "예약내역 id")
     @JsonProperty("reserved_dress_id")
     private Long reservedDressId;
-    @ApiModelProperty(example = "스토어 id")
-    @JsonProperty("store_id")
-    private Long storeId;
 
     @ApiModelProperty(example = "스토어 이름")
     @JsonProperty("store_name")
@@ -50,16 +38,14 @@ public class DressOrderDto {
     @ApiModelProperty(example = "의상 이름")
     @JsonProperty("dress_name")
     private String dressName;
-    @ApiModelProperty(example = "의상 이미지 url")
+
+    @ApiModelProperty(example = "의상 대표 이미지")
     @JsonProperty("dress_image_url")
     private String dressImageUrl;
 
     @ApiModelProperty(example = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("pickup_datetime")
     private String pickUpDateTime;
-
-    @JsonProperty("reserved_dress_list")
-    private List<ReservedDress> reservedDressList = new ArrayList<>();
 
     @ApiModelProperty(example = "드레스 픽업 요청사항")
     @JsonProperty("comment")
@@ -69,26 +55,48 @@ public class DressOrderDto {
     @JsonProperty("price")
     private String price;
 
+    @ApiModelProperty(example = "드레스 옵션 1")
+    @JsonProperty("dress_option1")
+    private String dressOption1;
+
+    @ApiModelProperty(example = "드레스 옵션 1_name")
+    @JsonProperty("dress_option1_name")
+//    private DressOptionDetail dressOption1;
+    private String dressOptionName1;
+
+    @ApiModelProperty(example = "드레스 옵션 2")
+    @JsonProperty("dress_option2")
+    private String dressOption2;
+    @ApiModelProperty(example = "드레스 옵션 2_name")
+    @JsonProperty("dress_option2_name")
+//    private DressOptionDetail dressOption1;
+    private String dressOptionName2;
+
+    @ApiModelProperty(example = "예약 상태")
+    @JsonProperty("reservation_status")
+    private String status;
+
 
     @QueryProjection
-    public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImgUrl) {
+    public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl/*, DressStock dressStock*/) {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
         this.reservedDressId = reservedDress.getId();
-        this.storeId = dressReservation.getStore().getId();
         this.storeName = dressReservation.getStore().getName();
         this.storeAddress = dressReservation.getStore().getAddress();
         this.dressName = reservedDress.getDress().getName();
-        this.dressImageUrl = reservedDress.getDress().getImageList().toString();
+        this.dressImageUrl = dressImageUrl;
         this.hoursOfOperation = dressReservation.getStore().getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
                 + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
         this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
-//        this.pickUpDateTime = reservedDress.getDressReservation().getPickUpDateTime().toString();
-
-        this.reservedDressList = dressReservation.getReservedDressList();
+        this.dressOption1 = reservedDress.getDressOptionDetail1().getDressOption().getName();
+        this.dressOptionName1 = reservedDress.getDressOptionDetail1().getName();
+        this.dressOption2 = reservedDress.getDressOptionDetail2().getDressOption().getName();
+        this.dressOptionName2 = reservedDress.getDressOptionDetail2().getName();
         this.comment =dressReservation.getComment();
-        this.price = priceFormat.format(dressReservation.getPrice())+"원";
+        this.price = priceFormat.format(dressReservation.getPrice()*reservedDress.getQuantity())+"원";
+        this.status = dressReservation.getStatus();
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){

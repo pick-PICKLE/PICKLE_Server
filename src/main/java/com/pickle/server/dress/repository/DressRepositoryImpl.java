@@ -20,7 +20,10 @@ import java.util.List;
 import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
 import static com.pickle.server.dress.domain.QDressLike.dressLike;
+import static com.pickle.server.dress.domain.QDressReservation.dressReservation;
+import static com.pickle.server.dress.domain.QDressStock.dressStock;
 import static com.pickle.server.dress.domain.QRecentView.recentView;
+import static com.pickle.server.dress.domain.QReservedDress.reservedDress;
 
 
 public class DressRepositoryImpl implements DressDslRepository {
@@ -48,7 +51,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 .where(dressLike.dress.id.eq(dress.id))
                 .fetch();
     }
-    
+
     @Override
     public List<DressBriefDto> findDressByCondition(String name, String sort, String category,
                                                     Double latitude, Double longitude, Long userId) {
@@ -191,5 +194,33 @@ public class DressRepositoryImpl implements DressDslRepository {
     private NumberExpression<Double> radianToDegree(NumberExpression<Double> radian) {
         return radian.multiply(180 / Math.PI);
     }
+    @Override
+    public List<DressOrderDto> findReservationByUser(Long userId) {
+        return queryFactory
+                .select(new QDressOrderDto(
+                        dressReservation,reservedDress,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id)).limit(1)
+                ))
+                .from(dressReservation, reservedDress)
+                .where(dressReservation.user.id.eq(userId))
+                .where(dressReservation.id.eq(reservedDress.dressReservation.id))
+                .fetch();
+    }
 
+    @Override
+    public List<DressOrderListDto> findReservationListByUser(Long userId) {
+        return queryFactory
+                .select(new QDressOrderListDto(
+                        dressReservation,reservedDress,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id)).limit(1)
+                ))
+                .from(dressReservation, reservedDress)
+                .where(dressReservation.user.id.eq(userId))
+                .where(dressReservation.id.eq(reservedDress.dressReservation.id))
+                .fetch();
+    }
 }
