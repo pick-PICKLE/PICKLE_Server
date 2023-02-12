@@ -2,6 +2,7 @@ package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.dress.domain.Dress;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
@@ -33,14 +34,25 @@ public class DressOverviewDto {
     @JsonProperty("dress_price")
     private String dressPrice;
 
-    public DressOverviewDto(Dress dress, String urlHead) {
+    @ApiModelProperty(example = "의상 좋아요 여부")
+    @JsonProperty("dress_like")
+    private Boolean dressLike;
+
+    @QueryProjection
+    public DressOverviewDto(Dress dress, Long dressLikeId, String dressImgUrl) {
         this.storeId = dress.getStore().getId();
         this.storeName = dress.getStore().getName();
         this.dressId = dress.getId();
         this.dressName = dress.getName();
-        this.dressDefaultImg = urlHead + dress.getImageList().get(0).getImageUrl();
+        this.dressDefaultImg = dressImgUrl;
 
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressPrice = priceKRWFormat.format(dress.getPrice()) + "원";
+        this.dressLike = dressLike(dressLikeId);
+    }
+
+    private Boolean dressLike(Long dressLikeId) {
+        if(dressLikeId == null) return false;
+        else return true;
     }
 }

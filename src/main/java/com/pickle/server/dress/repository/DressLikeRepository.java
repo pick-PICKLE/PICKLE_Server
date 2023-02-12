@@ -15,9 +15,13 @@ import java.util.Optional;
 public interface DressLikeRepository extends JpaRepository<DressLike,Long> {
     Optional<DressLike> findByUserAndDress(User user, Dress dress);
 
+    /*@Modifying
+    @Query(value = "delete from dress_like where dress_id= :dress_id and user_id= :user_id",nativeQuery = true)
+    void deleteDress(@Param("dress_id") Dress dress, @Param("user_id") User user);*/
+
     @Modifying
-    @Query(value = "delete from Dress_Like where dress_id= :dress_id and user_id= :user_id",nativeQuery = true)
-    void deleteDress(@Param("dress_id") Dress dress, @Param("user_id") User user);
+    @Query(value = "delete from dress_like where dress_id= :dress_id and user_id= :user_id",nativeQuery = true)
+    void deleteDress(@Param("dress_id") Long dress, @Param("user_id") Long user);
 
-
+    Boolean existsByUserIdAndDressId(Long id, Long dressId);
 }

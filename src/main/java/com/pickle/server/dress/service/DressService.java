@@ -1,5 +1,7 @@
 package com.pickle.server.dress.service;
 
+import com.pickle.server.common.error.NotFoundIdException;
+import com.pickle.server.common.error.NotValidParamsException;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.*;
 import com.pickle.server.dress.dto.*;
@@ -32,7 +34,7 @@ public class DressService {
 
     public DressDetailDto findDressDetailInfoByDressId(Long dressId, User user) {
         Dress dress = dressRepository.findById(dressId).orElseThrow(
-                () -> new RuntimeException("해당 id의 드레스를 찾을 수 없습니다.")
+                () -> new NotFoundIdException()
         );
 
         Optional<RecentView> recentView = recentViewRepository.findByUserIdAndStoreId(user.getId(), dress.getId());
@@ -43,44 +45,37 @@ public class DressService {
             recentViewRepository.save(new RecentView(dress, user));
         }
 
-        return new DressDetailDto(dress, keyValueService.makeUrlHead("dresses"));
+        return new DressDetailDto(dress, keyValueService.makeUrlHead("dresses"),
+                dressLikeRepository.existsByUserIdAndDressId(user.getId(), dressId));
     }
 
-    public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude) {
-        if(!DressCategory.findCategoryByName(category))
-            throw new IllegalArgumentException("잘못된 카테고리 입니다.");
+    public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude, User user) {
+        if(!DressCategory.existsCategoryByName(category))
+            throw new NotValidParamsException();
 
-        if(!DressSortBy.findSortConditionByName(sort))
-            throw new IllegalArgumentException("잘못된 정렬 입니다.");
+        if(!DressSortBy.existsSortConditionByName(sort))
+            throw new NotValidParamsException();
 
-        return dressRepository.findDressByCondition(name, sort, category, latitude, longitude);
+        return dressRepository.findDressByCondition(name, sort, category, latitude, longitude, user.getId());
     }
 
     @Transactional(readOnly = true)
     public List<DressLikeDto> findDressLikeByUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundIdException());
         return dressRepository.findDressByUsers(userId);
     }
+
     @Transactional
-    public void likesDress(UpdateDressLikeDto updateDressLikeDto){
-        User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new RuntimeException("해당 id의 게시글을 찾을 수 없습니다."));
-        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){ throw new RuntimeException(); }
+    public void likesDress(UpdateDressLikeDto updateDressLikeDto,User user){
+        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(NotFoundIdException::new);
+        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
+            dressLikeRepository.deleteDress(dress.getId(), user.getId());
+        }
         else{
             DressLike dressLike = DressLike.builder().dress(dress).user(user).build();
             dressLikeRepository.save(dressLike);
         }
     }
-    @Transactional
-    public void delLikeDress(UpdateDressLikeDto updateDressLikeDto){
-        User user = userRepository.findById(updateDressLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(()->new RuntimeException("해당 id의 게시글을 찾을 수 없습니다."));
-        if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
-            dressLikeRepository.deleteDress(dress, user);
-        }
-        else{ throw new RuntimeException(); }
-    }
-
 
     public DressReservationFormDto getDressReservationForm(Long storeId) {
         return new DressReservationFormDto(storeRepository.findById(storeId)
@@ -105,5 +100,14 @@ public class DressService {
             reservedDressList.add(reservedDressWithOption);
             reservedDressRepository.save(reservedDressWithOption);
         }
+    }
+
+    public List<DressOrderDto> getDressOrder(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundIdException());
+        return dressRepository.findReservationByUser(userId);
+    }
+    public List<DressOrderListDto> getDressOrderList(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundIdException());
+        return dressRepository.findReservationListByUser(userId);
     }
 }

@@ -1,25 +1,30 @@
 package com.pickle.server.dress.repository;
 
 
+import com.pickle.server.common.error.NotValidParamsException;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.domain.DressSortBy;
-import com.pickle.server.dress.dto.DressBriefDto;
-import com.pickle.server.dress.dto.QDressBriefDto;
+import com.pickle.server.dress.dto.*;
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
-import com.pickle.server.dress.dto.DressLikeDto;
-import com.pickle.server.dress.dto.QDressLikeDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
 import static com.pickle.server.dress.domain.QDressLike.dressLike;
+import static com.pickle.server.dress.domain.QDressReservation.dressReservation;
+import static com.pickle.server.dress.domain.QDressStock.dressStock;
+import static com.pickle.server.dress.domain.QRecentView.recentView;
+import static com.pickle.server.dress.domain.QReservedDress.reservedDress;
+
 
 public class DressRepositoryImpl implements DressDslRepository {
 
@@ -42,40 +47,40 @@ public class DressRepositoryImpl implements DressDslRepository {
                                 .where(dressImage.dress.id.eq(dress.id))
                 ))
                 .from(dress, dressLike)
-                .where(dress.id.eq(dressLike.user.id))
                 .where(dressLike.user.id.eq(userId))
+                .where(dressLike.dress.id.eq(dress.id))
                 .fetch();
     }
-    
+
     @Override
-    public List<DressBriefDto> findDressByCondition(String name, String sort, String category, Double latitude, Double longitude) {
+    public List<DressBriefDto> findDressByCondition(String name, String sort, String category,
+                                                    Double latitude, Double longitude, Long userId) {
 
         switch (sort) {
             case DressSortBy.Constants.price:
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         .orderBy(dress.price.asc()).fetch();
 
             case DressSortBy.Constants.distance:
                 if (latitude == null || longitude == null
                         || latitude > 90 || latitude < -90
                         || longitude > 180 || longitude < -180)
-                    throw new RuntimeException("잘못된 위도, 경도 값입니다.");
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                    throw new NotValidParamsException();
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         .orderBy(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).asc())
                         .fetch();
 
             case DressSortBy.Constants.like:
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         /*좋아요 순 정렬*/
                         .fetch();
 
-
             case DressSortBy.Constants.newDress:
-                return findDressByCategoryCondition(findDressByNameCondition(name), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         .orderBy(dress.createdAt.desc())
                         .fetch();
             default:
-                throw new RuntimeException("잘못된 정렬 입니다.");
+                throw new NotValidParamsException();
         }
     }
 
@@ -85,7 +90,7 @@ public class DressRepositoryImpl implements DressDslRepository {
 
     }
 
-    private JPAQuery<DressBriefDto> findDressByNameCondition(String name) {
+    private JPAQuery<DressBriefDto> findDressByNameCondition(String name, Long userId, Double latitude, Double longitude) {
 
         return queryFactory
                 .select(new QDressBriefDto(
@@ -96,11 +101,73 @@ public class DressRepositoryImpl implements DressDslRepository {
                                         .where(dressImage.dress.id.eq(dress.id)),
                                 dress.price,
                                 dress.store.name,
-                                dress.store.id
+                                dress.store.id,
+                                JPAExpressions.select(dressLike)
+                                        .from(dressLike)
+                                        .where(dressLike.dress.id.eq(dress.id)
+                                                .and(dressLike.user.id.eq(userId)))
                         )
                 )
                 .from(dress)
-                .where(dress.name.contains(name));
+                .where(dress.name.contains(name)
+                        .and(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).lt(2)));
+    }
+
+    @Override
+    public List<DressOverviewDto> findDressByRecentView(Long userId, LocalDateTime stdDate){
+        return queryFactory
+                .select(new QDressOverviewDto(
+                        dress,
+                        dressLike.id,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id))
+                                .limit(1)
+                ))
+                .from(dress)
+                .join(recentView).on(dress.id.eq(recentView.dress.id)
+                        .and(recentView.user.id.eq(userId)))
+                .where(recentView.createdAt.goe(stdDate))
+                .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
+                .orderBy(recentView.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<DressOverviewDto> findDressByStoreAndCreatedAt(Long userId, Double latitude, Double longitude, LocalDateTime stdDate) {
+        return queryFactory
+                .select(new QDressOverviewDto(
+                        dress,
+                        dressLike.id,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id))
+                                .limit(1)
+                ))
+                .from(dress)
+                .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
+                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.0)
+                        .and(dress.createdAt.goe(stdDate)))
+                .orderBy(dress.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<DressOverviewDto> findDressByCategory(Long userId, String category, Double latitude, Double longitude) {
+        return queryFactory
+                .select(new QDressOverviewDto(
+                        dress,
+                        dressLike.id,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id))
+                                .limit(1)
+                ))
+                .from(dress)
+                .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
+                .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.0)
+                        .and(dress.category.eq(category)))
+                .fetch();
     }
 
 
@@ -127,5 +194,33 @@ public class DressRepositoryImpl implements DressDslRepository {
     private NumberExpression<Double> radianToDegree(NumberExpression<Double> radian) {
         return radian.multiply(180 / Math.PI);
     }
+    @Override
+    public List<DressOrderDto> findReservationByUser(Long userId) {
+        return queryFactory
+                .select(new QDressOrderDto(
+                        dressReservation,reservedDress,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id)).limit(1)
+                ))
+                .from(dressReservation, reservedDress)
+                .where(dressReservation.user.id.eq(userId))
+                .where(dressReservation.id.eq(reservedDress.dressReservation.id))
+                .fetch();
+    }
 
+    @Override
+    public List<DressOrderListDto> findReservationListByUser(Long userId) {
+        return queryFactory
+                .select(new QDressOrderListDto(
+                        dressReservation,reservedDress,
+                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+                                .from(dressImage)
+                                .where(dressImage.dress.id.eq(dress.id)).limit(1)
+                ))
+                .from(dressReservation, reservedDress)
+                .where(dressReservation.user.id.eq(userId))
+                .where(dressReservation.id.eq(reservedDress.dressReservation.id))
+                .fetch();
+    }
 }

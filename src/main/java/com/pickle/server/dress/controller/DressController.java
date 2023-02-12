@@ -3,15 +3,9 @@ package com.pickle.server.dress.controller;
 import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.domain.DressSortBy;
-import com.pickle.server.dress.dto.DressDetailDto;
-import com.pickle.server.dress.dto.DressReservationDto;
-import com.pickle.server.dress.dto.DressReservationFormDto;
-import com.pickle.server.dress.dto.DressLikeDto;
-import com.pickle.server.dress.dto.UpdateDressLikeDto;
+import com.pickle.server.dress.dto.*;
 import com.pickle.server.dress.service.DressService;
 import com.pickle.server.user.domain.User;
-import com.pickle.server.user.domain.User;
-import com.pickle.server.user.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,9 +27,8 @@ import java.util.List;
 @RequestMapping("/dresses")
 @Api(tags = "의상")
 public class DressController {
-    @Autowired
+
     private final DressService dressService;
-    private final UserRepository userRepository;
 
     @ApiOperation(value = "의상 상세 조회",
             httpMethod = "GET",
@@ -45,8 +38,8 @@ public class DressController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "의상 상세 조회 성공")
     })
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<DressDetailDto> viewDressDetail(@PathVariable("id") Long dressId, @ApiIgnore @AuthenticationPrincipal User user){
+    @GetMapping("/detail/{dress_id}")
+    public ResponseEntity<DressDetailDto> viewDressDetail(@PathVariable("dress_id") Long dressId, @ApiIgnore @AuthenticationPrincipal User user){
         return new ResponseEntity<>(dressService.findDressDetailInfoByDressId(dressId, user),HttpStatus.OK);
     }
 
@@ -54,10 +47,11 @@ public class DressController {
 
     @ApiOperation(value = "의상 검색",
             httpMethod = "GET",
-            response = DressDetailDto.class,
+            response = JSONObject.class,
             notes = "카테고리 : 아우터, 상의, 하의, 원피스, 기타, (미입력시)전체\n"
             + "정렬 : 낮은가격순, 가까운거리순, (미입력시)좋아요많은순, 최신순\n"
             + "의상 검색 API"
+            + "2km 이내의 의상 정보 리스트가 response로 나옵니다."
     )
     @ApiResponses({
             @ApiResponse(code = 200, message = "의상 검색 성공")
@@ -67,10 +61,11 @@ public class DressController {
                                                   @RequestParam(value = "sort", required = false, defaultValue = DressSortBy.Constants.like) String sort,
                                                   @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category,
                                                   @RequestParam(value = "latitude", required = false) Double latitude,
-                                                  @RequestParam(value = "longitude", required = false) Double longitude){
+                                                  @RequestParam(value = "longitude", required = false) Double longitude,
+                                                  @ApiIgnore @AuthenticationPrincipal User user){
 
         return new ResponseEntity<>(
-                PropertyUtil.response(dressService.searchDress(name, sort, category, latitude, longitude))
+                PropertyUtil.response(dressService.searchDress(name, sort, category, latitude, longitude, user))
                 , HttpStatus.OK);
     }
 
@@ -84,7 +79,6 @@ public class DressController {
     })
     @GetMapping("/reservation/{store_id}")
     public ResponseEntity<DressReservationFormDto> getDressReservationForm(@PathVariable(name = "store_id") Long storeId){
-
         return new ResponseEntity<>(dressService.getDressReservationForm(storeId), HttpStatus.OK);
     }
 
@@ -92,6 +86,8 @@ public class DressController {
             httpMethod = "POST",
             response = DressDetailDto.class,
             notes = "의상 예약 API"
+            +"주문완료 픽업대기 픽업완료 구매확정"
+            +"status 변경 기능은 아직 없음(매장 계정이 없으므로)"
     )
     @ApiResponses({
             @ApiResponse(code = 200, message = "의상 예약 성공")
@@ -105,6 +101,20 @@ public class DressController {
                 , HttpStatus.OK);
     }
 
+    @ApiOperation(value="의상 좋아요",
+            httpMethod = "POST",
+            response = UpdateDressLikeDto.class,
+            notes = "의상 좋아요 추가/삭제 API"
+    )
+    @ApiResponses({
+            @ApiResponse(code=200, message= "의상 좋아요 추가/삭제 성공")
+    })
+    @PostMapping("/like")
+    public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto,@ApiIgnore @AuthenticationPrincipal User user){
+        dressService.likesDress(updatedressLikeDto,user);
+        return new ResponseEntity<>(updatedressLikeDto
+                , HttpStatus.OK);
+    }
 
 
     @ApiOperation(value="의상 좋아요 조회",
@@ -112,43 +122,42 @@ public class DressController {
             response = DressLikeDto.class,
             notes = "좋아요 조회 API"
     )
+
     @ApiResponses({
             @ApiResponse(code=200, message= "의상 좋아요 목록 조회 성공")
     })
-    
-    @GetMapping("/likes/{id}")
-    public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@PathVariable("id") Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        return new ResponseEntity<>(dressService.findDressLikeByUser(userId),HttpStatus.OK);
+
+    @GetMapping("/like-list")
+    public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@ApiIgnore @AuthenticationPrincipal User user) {
+        return new ResponseEntity<>(dressService.findDressLikeByUser(user.getId()),HttpStatus.OK);
     }
 
-    @ApiOperation(value="의상 좋아요 추가",
-            httpMethod = "POST",
-            response = UpdateDressLikeDto.class,
-            notes = "의상 좋아요 추가 API"
+
+    @ApiOperation(value = "의상 예약 상세 내역  조회",
+            httpMethod = "GET",
+            response = DressOrderDto.class,
+            notes = "의상 예약 상세 내역 조회 API"
     )
     @ApiResponses({
-            @ApiResponse(code=200, message= "의상 좋아요 추가 성공")
+            @ApiResponse(code = 200, message = "의상 예약 상세 내역 조회 성공")
     })
-    @PostMapping("/likes")
-    public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
-        dressService.likesDress(updatedressLikeDto);
-        return new ResponseEntity<>(updatedressLikeDto
-                , HttpStatus.OK);
+    @GetMapping("/orders")
+    public ResponseEntity<List<DressOrderDto>> getOrder (@ApiIgnore @AuthenticationPrincipal User user){
+        return new ResponseEntity<>(dressService.getDressOrder(user.getId()), HttpStatus.OK);
     }
 
-    @ApiOperation(value="의상 좋아요 삭제",
-            httpMethod = "POST",
-            response = UpdateDressLikeDto.class,
-            notes = "의상 좋아요 삭제 API"
+
+
+    @ApiOperation(value = "의상 예약 내역 조회",
+            httpMethod = "GET",
+            response = DressOrderDto.class,
+            notes = "의상 예약 내역 조회 API"
     )
     @ApiResponses({
-            @ApiResponse(code=200, message= "의상 좋아요 삭제 성공")
+            @ApiResponse(code = 200, message = "의상 예약 내역 조회 성공")
     })
-    @PostMapping("/likes/delete")
-    public ResponseEntity<UpdateDressLikeDto> delLikeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto){
-        dressService.delLikeDress(updatedressLikeDto);
-        return new ResponseEntity<>(updatedressLikeDto,HttpStatus.OK);
+    @GetMapping("/order-list")
+    public ResponseEntity<List<DressOrderListDto>> getOrderList (@ApiIgnore @AuthenticationPrincipal User user){
+        return new ResponseEntity<>(dressService.getDressOrderList(user.getId()), HttpStatus.OK);
     }
-
 }
