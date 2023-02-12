@@ -21,6 +21,7 @@ import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
 import static com.pickle.server.dress.domain.QDressLike.dressLike;
 import static com.pickle.server.dress.domain.QDressReservation.dressReservation;
+import static com.pickle.server.dress.domain.QDressStock.dressStock;
 import static com.pickle.server.dress.domain.QRecentView.recentView;
 import static com.pickle.server.dress.domain.QReservedDress.reservedDress;
 
@@ -190,6 +191,15 @@ public class DressRepositoryImpl implements DressDslRepository {
     @Override
     public List<DressOrderDto> findReservationByUser(Long userId) {
         return queryFactory
+//                .select(new QDressOrderDto(
+//                        dressReservation,reservedDress,dressStock,
+//                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
+//                                .from(dressImage)
+//                                .where(dressImage.dress.id.eq(dress.id)).limit(1)
+//                ))
+//                .from(dressReservation)
+//                .where(dressReservation.user.id.eq(userId))
+//                .fetch();
                 .select(new QDressOrderDto(
                         dressReservation,reservedDress,
                         JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))

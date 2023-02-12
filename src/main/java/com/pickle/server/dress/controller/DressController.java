@@ -128,6 +128,8 @@ public class DressController {
     public ResponseEntity<List<DressLikeDto>> findDressLikeByUser(@ApiIgnore @AuthenticationPrincipal User user) {
         return new ResponseEntity<>(dressService.findDressLikeByUser(user.getId()),HttpStatus.OK);
     }
+
+
     @ApiOperation(value = "의상 예약 상세 내역  조회",
             httpMethod = "GET",
             response = DressOrderDto.class,
