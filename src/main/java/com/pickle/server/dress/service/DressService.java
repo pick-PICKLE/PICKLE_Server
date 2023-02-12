@@ -50,10 +50,10 @@ public class DressService {
     }
 
     public List<DressBriefDto> searchDress(String name, String sort, String category, Double latitude, Double longitude, User user) {
-        if(!DressCategory.findCategoryByName(category))
+        if(!DressCategory.existsCategoryByName(category))
             throw new NotValidParamsException();
 
-        if(!DressSortBy.findSortConditionByName(sort))
+        if(!DressSortBy.existsSortConditionByName(sort))
             throw new NotValidParamsException();
 
         return dressRepository.findDressByCondition(name, sort, category, latitude, longitude, user.getId());

@@ -39,7 +39,7 @@ public class StoreService {
     }
 
     public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
-        if(!DressCategory.findCategoryByName(category))
+        if(!DressCategory.existsCategoryByName(category))
             throw new NotValidParamsException();
 
         Store store = storeRepository.findById(storeId).orElseThrow(
