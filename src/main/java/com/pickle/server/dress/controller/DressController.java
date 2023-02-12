@@ -6,7 +6,6 @@ import com.pickle.server.dress.domain.DressSortBy;
 import com.pickle.server.dress.dto.*;
 import com.pickle.server.dress.service.DressService;
 import com.pickle.server.user.domain.User;
-import com.pickle.server.user.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

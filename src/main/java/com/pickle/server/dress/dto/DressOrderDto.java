@@ -5,27 +5,19 @@ import com.pickle.server.dress.domain.*;
 import com.pickle.server.store.domain.StoreOpenDay;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 
 
-@Data
-@Getter
 
-@NoArgsConstructor
-@Setter
+@Getter
 public class DressOrderDto {
     @ApiModelProperty(example = "예약내역 id")
     @JsonProperty("reserved_dress_id")
     private Long reservedDressId;
-    @ApiModelProperty(example = "스토어 id")
-    @JsonProperty("store_id")
-    private Long storeId;
 
     @ApiModelProperty(example = "스토어 이름")
     @JsonProperty("store_name")
@@ -47,7 +39,7 @@ public class DressOrderDto {
     @JsonProperty("dress_name")
     private String dressName;
 
-    @ApiModelProperty(example = "의상 이미지 url")
+    @ApiModelProperty(example = "의상 대표 이미지")
     @JsonProperty("dress_image_url")
     private String dressImageUrl;
 
@@ -65,18 +57,20 @@ public class DressOrderDto {
 
     @ApiModelProperty(example = "드레스 옵션 1")
     @JsonProperty("dress_option1")
-    private DressOptionDetail dressOption1;
+    private String dressOption1;
+
+    @ApiModelProperty(example = "드레스 옵션 1_name")
+    @JsonProperty("dress_option1_name")
+//    private DressOptionDetail dressOption1;
+    private String dressOptionName1;
 
     @ApiModelProperty(example = "드레스 옵션 2")
     @JsonProperty("dress_option2")
-    private DressOptionDetail dressOption2;
-
-    @ApiModelProperty(example = "quantity")
-    @JsonProperty("quantity")
-    private Integer quantity;
-
-
-
+    private String dressOption2;
+    @ApiModelProperty(example = "드레스 옵션 2_name")
+    @JsonProperty("dress_option2_name")
+//    private DressOptionDetail dressOption1;
+    private String dressOptionName2;
 
   //  @QueryProjection
 //    public DressOrderDto(DressReservation dressReservation, DressReservationDto dressReservationDto,String dressImgUrl){
@@ -102,16 +96,23 @@ public class DressOrderDto {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
         this.reservedDressId = reservedDress.getId();
-        this.storeId = dressReservation.getStore().getId(); //필요x 삭제
         this.storeName = dressReservation.getStore().getName();
         this.storeAddress = dressReservation.getStore().getAddress();
         this.dressName = reservedDress.getDress().getName();
-        this.dressImageUrl = reservedDress.getDress().getImageList().toString();
+        this.dressImageUrl = dressImageUrl;
         this.hoursOfOperation = dressReservation.getStore().getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
                 + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
         this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
-//
+
+        this.dressOption1 = reservedDress.getDressOptionDetail1().getDressOption().getName();
+        this.dressOptionName1 = reservedDress.getDressOptionDetail1().getName();
+        this.dressOption2 = reservedDress.getDressOptionDetail2().getDressOption().getName();
+//        this.dressOption2 = reservedDress.getDressOptionDetail2().getId().toString();
+        this.dressOptionName2 = reservedDress.getDressOptionDetail2().getName();
+
+
+//        this.dressOption2 = reservedDress.getDressOptionDetail2();
 //        this.dressOption1 = dressStock.getDressOptionDetail1();
 //        this.dressOption2 = dressStock.getDressOptionDetail2();
         this.comment =dressReservation.getComment();

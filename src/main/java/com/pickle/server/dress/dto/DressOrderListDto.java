@@ -5,15 +5,13 @@ import com.pickle.server.dress.domain.DressReservation;
 import com.pickle.server.dress.domain.ReservedDress;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 import lombok.Getter;
 
 import java.text.DecimalFormat;
 
-@Data
+
 @Getter
-@AllArgsConstructor
 public class DressOrderListDto {
 //    @ApiModelProperty(example = "예약내역 id")
 //    @JsonProperty("reserved_dress_id")
@@ -31,7 +29,7 @@ public class DressOrderListDto {
     @JsonProperty("dress_name")
     private String dressName;
 
-    @ApiModelProperty(example = "의상 이미지 url")
+    @ApiModelProperty(example = "의상 대표 이미지")
     @JsonProperty("dress_image_url")
     private String dressImageUrl;
 
@@ -40,14 +38,13 @@ public class DressOrderListDto {
     private String price;
 
     @QueryProjection
-    public DressOrderListDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImgUrl){
+    public DressOrderListDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl){
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
         this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
         this.storeName = dressReservation.getStore().getName();
         this.dressName = reservedDress.getDress().getName();
-        this.dressImageUrl = reservedDress.getDress().getImageList().toString();
+        this.dressImageUrl = dressImageUrl;
         this.price = priceFormat.format(dressReservation.getPrice())+"원";
-
     }
 }
