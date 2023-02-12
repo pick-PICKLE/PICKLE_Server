@@ -111,8 +111,7 @@ public class DressController {
     })
     @PostMapping("/like")
     public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto,@ApiIgnore @AuthenticationPrincipal User user){
-        dressService.likesDress(updatedressLikeDto,user);
-        return new ResponseEntity<>(updatedressLikeDto
+        return new ResponseEntity<>(dressService.likesDress(updatedressLikeDto,user)
                 , HttpStatus.OK);
     }
 

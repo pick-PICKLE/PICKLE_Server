@@ -15,9 +15,12 @@ public class UpdateDressLikeDto {
     @JsonProperty("dress_id")
     private Long dressId;
 
+    @ApiModelProperty(example = "의상 좋아요 여부")
+    @JsonProperty("is_like")
+    private Boolean isLike;
 
     public UpdateDressLikeDto(DressLike dressLike) {
         this.dressId = getDressId();
-
+        this.isLike = getIsLike();
     }
 }
