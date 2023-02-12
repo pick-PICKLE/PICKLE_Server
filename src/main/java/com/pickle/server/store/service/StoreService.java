@@ -39,7 +39,7 @@ public class StoreService {
     }
 
     public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
-        if(!DressCategory.findCategoryByName(category))
+        if(!DressCategory.existsCategoryByName(category))
             throw new NotValidParamsException();
 
         Store store = storeRepository.findById(storeId).orElseThrow(
@@ -47,7 +47,7 @@ public class StoreService {
         );
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
-                = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category);
+                = storeRepository.findDressDtoByStoreIdAndCategory(storeId,category, user.getId());
         return new StoreDetailDto(store, dressBriefInStoreDtoList, storeLikeRepository.existsByUserIdAndStoreId(user.getId(), storeId));
     }
 
@@ -59,7 +59,7 @@ public class StoreService {
     @Transactional
     public void likesStore(UpdateStoreLikeDto updateStoreLikeDto,User user){
         Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()-> new NotFoundIdException());
-        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store,user);}
+        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store.getId(),user.getId());}
         else{
             StoreLike storeLike = StoreLike.builder().store(store).user(user).build();
             storeLikeRepository.save(storeLike);

@@ -1,6 +1,7 @@
 package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pickle.server.dress.domain.DressLike;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,12 +29,17 @@ public class DressBriefInStoreDto {
     @JsonProperty("dress_price")
     private String dressPrice;
 
+    @ApiModelProperty(example = "좋아요 여부")
+    @JsonProperty("is_liked")
+    private Boolean isLiked;
+
     @QueryProjection
-    public DressBriefInStoreDto(Long dressId, String dressName, String dressImageUrl, Integer dressPrice) {
+    public DressBriefInStoreDto(Long dressId, String dressName, String dressImageUrl, Integer dressPrice, DressLike dressLike) {
         DecimalFormat priceKRWFormat  = new DecimalFormat("###,###");
         this.dressId = dressId;
         this.dressName = dressName;
         this.dressImageUrl = dressImageUrl;
         this.dressPrice = priceKRWFormat.format(dressPrice) + "원";
+        this.isLiked = (dressLike != null) ? true : false;
     }
 }

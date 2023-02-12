@@ -14,7 +14,7 @@ public enum DressCategory {
     OTHER(Constants.other);
     private final String category;
 
-    public static Boolean findCategoryByName(String categoryName) {
+    public static Boolean existsCategoryByName(String categoryName) {
         for (DressCategory dc : values()) {
             if (dc.category.equals(categoryName)) {
                 return true;

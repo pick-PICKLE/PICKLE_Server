@@ -43,6 +43,9 @@ public class DressReservation {
     @Column
     private Integer price;
 
+    @Column
+    private String status;
+
     public DressReservation(DressReservationDto dressReservationDto, User user, Store store, List<ReservedDress> reservedDressList) {
         this.user = user;
         this.store = store;
@@ -50,5 +53,6 @@ public class DressReservation {
         this.comment = dressReservationDto.getComment();
         this.price = dressReservationDto.getPrice();
         this.reservedDressList = reservedDressList;
+        this.status = DressReservationStatus.Constants.orderCompletion;
     }
 }
