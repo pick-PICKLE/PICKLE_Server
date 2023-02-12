@@ -72,25 +72,11 @@ public class DressOrderDto {
 //    private DressOptionDetail dressOption1;
     private String dressOptionName2;
 
-  //  @QueryProjection
-//    public DressOrderDto(DressReservation dressReservation, DressReservationDto dressReservationDto,String dressImgUrl){
-//        DecimalFormat priceFormat = new DecimalFormat("###,###");
-//
-//        this.storeName = dressReservation.getStore().getName();
-//        this.storeAddress = dressReservation.getStore().getAddress();
-//        this.pickUpDateTime = dressReservationDto.getPickUpDateTime();
-//        this.dressImageUrl = getDressImageUrl();
-//
-//        this.hoursOfOperation = dressReservation.getStore().getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
-//                + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-//        this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
-//        this.comment = dressReservationDto.getComment();
-//        this.price = priceFormat.format(dressReservation.getPrice())+"원";
-//        this.dressOption1 = dressReservationDto.getReservedDressList().toString();
-//        this.dressOption2 = dressReservationDto.getReservedDressList().toString();
-//
-//
- //   }
+    @ApiModelProperty(example = "예약 상태")
+    @JsonProperty("reservation_status")
+    private String status;
+
+
     @QueryProjection
     public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl/*, DressStock dressStock*/) {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
@@ -110,6 +96,7 @@ public class DressOrderDto {
         this.dressOptionName2 = reservedDress.getDressOptionDetail2().getName();
         this.comment =dressReservation.getComment();
         this.price = priceFormat.format(dressReservation.getPrice()*reservedDress.getQuantity())+"원";
+        this.status = dressReservation.getStatus();
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){
