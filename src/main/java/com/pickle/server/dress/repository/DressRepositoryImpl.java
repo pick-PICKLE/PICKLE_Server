@@ -50,11 +50,12 @@ public class DressRepositoryImpl implements DressDslRepository {
     }
     
     @Override
-    public List<DressBriefDto> findDressByCondition(String name, String sort, String category, Double latitude, Double longitude, Long userId) {
+    public List<DressBriefDto> findDressByCondition(String name, String sort, String category,
+                                                    Double latitude, Double longitude, Long userId) {
 
         switch (sort) {
             case DressSortBy.Constants.price:
-                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         .orderBy(dress.price.asc()).fetch();
 
             case DressSortBy.Constants.distance:
@@ -62,17 +63,17 @@ public class DressRepositoryImpl implements DressDslRepository {
                         || latitude > 90 || latitude < -90
                         || longitude > 180 || longitude < -180)
                     throw new NotValidParamsException();
-                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         .orderBy(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).asc())
                         .fetch();
 
             case DressSortBy.Constants.like:
-                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         /*좋아요 순 정렬*/
                         .fetch();
 
             case DressSortBy.Constants.newDress:
-                return findDressByCategoryCondition(findDressByNameCondition(name, userId), category)
+                return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         .orderBy(dress.createdAt.desc())
                         .fetch();
             default:
@@ -86,7 +87,7 @@ public class DressRepositoryImpl implements DressDslRepository {
 
     }
 
-    private JPAQuery<DressBriefDto> findDressByNameCondition(String name, Long userId) {
+    private JPAQuery<DressBriefDto> findDressByNameCondition(String name, Long userId, Double latitude, Double longitude) {
 
         return queryFactory
                 .select(new QDressBriefDto(
@@ -105,7 +106,8 @@ public class DressRepositoryImpl implements DressDslRepository {
                         )
                 )
                 .from(dress)
-                .where(dress.name.contains(name));
+                .where(dress.name.contains(name)
+                        .and(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).lt(2)));
     }
 
     @Override
