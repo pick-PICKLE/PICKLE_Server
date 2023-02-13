@@ -36,10 +36,12 @@ public class HomeController {
     })
     @GetMapping("")
     public ResponseEntity<DressHomeDto> homeView(@ApiIgnore @AuthenticationPrincipal User user, @RequestParam("lat") Double lat, @RequestParam("lng") Double lng) {
-        HashMap<String, Object> homeMap = new HashMap<>();
+        Stream<DressOverviewDto> viewStream = homeService.getRecentView(user.getId()).stream().limit(7);
+        List<DressOverviewDto> recentView = viewStream.collect(Collectors.toList());
 
-        List<DressOverviewDto> recentView = homeService.getRecentView(user.getId());
-        List<DressOverviewDto> newDresses = homeService.getNewDresses(user.getId(), lat, lng);
+        Stream<DressOverviewDto> newStream = homeService.getNewDresses(user.getId(), lat, lng).stream().limit(7);
+        List<DressOverviewDto> newDresses = newStream.collect(Collectors.toList());
+
         List<DressOverviewDto> recDresses = homeService.getRecDresses(user.getId(), lat, lng);
 
         return new ResponseEntity<>(new DressHomeDto(recentView, newDresses, recDresses), HttpStatus.OK);
