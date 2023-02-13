@@ -114,4 +114,12 @@ public class DressService {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundIdException());
         return dressRepository.findReservationListByUser(userId);
     }
+
+    public void cancelReservation(Long reservationId) {
+        DressReservation dressReservation = dressReservationRepository.findById(reservationId).orElseThrow(
+                () -> new NotFoundIdException()
+        );
+        dressReservation.setStatus(DressReservationStatus.Constants.canceledOrder);
+        dressReservationRepository.save(dressReservation);
+    }
 }
