@@ -76,7 +76,7 @@ public class DressOrderDto {
 
 
     @QueryProjection
-    public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl/*, DressStock dressStock*/) {
+    public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl) {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
         this.reservedDressId = reservedDress.getId();
