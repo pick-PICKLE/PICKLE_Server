@@ -52,6 +52,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public List<StoreLikeDto> findStoreLikeByUser(Long userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
+        List<StoreLikeDto> storeLike = storeRepository.findStoreByUsers(userId);
         return storeRepository.findStoreByUsers(userId);
     }
     @Transactional

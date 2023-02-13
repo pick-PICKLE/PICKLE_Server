@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
@@ -34,13 +35,9 @@ public class StoreLikeDto {
     @JsonProperty("store_open_day")
     private String storeOpenDay;
 
-    @ApiModelProperty(example = "오픈 시간")
-    @JsonProperty("open_time")
-    private LocalTime open_time;
-
-    @ApiModelProperty(example = "클로즈 시간")
-    @JsonProperty("close_time")
-    private LocalTime close_time;
+    @ApiModelProperty(example = "운영 시간")
+    @JsonProperty("hours_of_operation")
+    private String hoursOfOperation;
 
     @QueryProjection
     public StoreLikeDto(Store store, String imageURl){
@@ -49,8 +46,8 @@ public class StoreLikeDto {
         this.imageUrl = imageURl;
         this.address = store.getAddress();
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
-        this.open_time = store.getOpenTime();
-        this.close_time = store.getCloseTime();
+        this.hoursOfOperation = store.getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
+                + store.getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
     private String makeStoreOpenDayIntroduction(StoreOpenDay storeOpenDay){
