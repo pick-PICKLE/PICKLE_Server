@@ -145,10 +145,10 @@ public class DressRepositoryImpl implements DressDslRepository {
                                 .limit(1)
                 ))
                 .from(dress)
+                .orderBy(dress.createdAt.desc())
                 .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id).and(dressLike.user.id.eq(userId)))
                 .where(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).loe(1.0)
                         .and(dress.createdAt.goe(stdDate)))
-                .orderBy(dress.createdAt.desc())
                 .fetch();
     }
 
