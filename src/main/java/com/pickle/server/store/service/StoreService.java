@@ -35,9 +35,6 @@ public class StoreService {
         return nearStores;
     }
 
-    private static Double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
 
     public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
         if(!DressCategory.existsCategoryByName(category))
