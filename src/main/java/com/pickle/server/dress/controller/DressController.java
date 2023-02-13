@@ -48,7 +48,7 @@ public class DressController {
 
     @ApiOperation(value = "의상 검색",
             httpMethod = "GET",
-            response = JSONObject.class,
+            response = DressBriefDto.class,
             notes = "카테고리 : 아우터, 상의, 하의, 원피스, 기타, (미입력시)전체\n"
             + "정렬 : 낮은가격순, 가까운거리순, (미입력시)좋아요많은순, 최신순\n"
             + "의상 검색 API\n"
@@ -165,7 +165,7 @@ public class DressController {
 
     @ApiOperation(value = "의상 예약 내역 조회",
             httpMethod = "GET",
-            response = DressOrderDto.class,
+            response = DressOrderListDto.class,
             notes = "의상 예약 내역 조회 API"
     )
     @ApiResponses({
