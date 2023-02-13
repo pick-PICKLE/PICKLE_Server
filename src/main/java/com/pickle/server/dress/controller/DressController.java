@@ -48,7 +48,7 @@ public class DressController {
 
     @ApiOperation(value = "의상 검색",
             httpMethod = "GET",
-            response = JSONObject.class,
+            response = DressBriefDto.class,
             notes = "카테고리 : 아우터, 상의, 하의, 원피스, 기타, (미입력시)전체\n"
             + "정렬 : 낮은가격순, 가까운거리순, (미입력시)좋아요많은순, 최신순\n"
             + "의상 검색 API\n"
@@ -85,7 +85,7 @@ public class DressController {
 
     @ApiOperation(value = "의상 예약하기",
             httpMethod = "POST",
-            response = DressDetailDto.class,
+            response = DressReservationDto.class,
             notes = "의상 예약 API"
             +"주문완료 픽업대기 픽업완료 구매확정"
             +"status 변경 기능은 아직 없음(매장 계정이 없으므로)"

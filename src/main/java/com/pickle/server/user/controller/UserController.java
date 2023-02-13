@@ -31,16 +31,12 @@ public class UserController {
         return userService.getMyProfile(user);
     }
 
-
     @ApiOperation(value ="프로필 수정하기")
     @PutMapping(value = "/user/profile")
-    public ResponseEntity<JSONObject> updateProfile(@ApiIgnore @AuthenticationPrincipal User user, @RequestBody UpdateDressLikeDto updatedressLikeDto) {
-        userService.updateProfile(user, updatedressLikeDto);
+    public ResponseEntity<JSONObject> updateProfile(@ApiIgnore @AuthenticationPrincipal User user, @RequestBody UserDto userDto) {
+        userService.updateProfile(user, userDto);
 
         return new ResponseEntity<>(PropertyUtil.response("프로필 수정 완료"), HttpStatus.OK);
     }
-
-
-
 
 }
