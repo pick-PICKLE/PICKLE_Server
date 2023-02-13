@@ -52,8 +52,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
     public List<StoreLikeDto> findStoreByUsers(Long userId) {
         return queryFactory
                 .select(new QStoreLikeDto(
-                        store,
-                        store.imageUrl.prepend(keyValueService.makeUrlHead("stores"))
+                        store
                 ))
                 .from(store, storeLike)
                 .where(storeLike.user.id.eq(userId))

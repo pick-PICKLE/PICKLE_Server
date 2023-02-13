@@ -40,10 +40,10 @@ public class StoreLikeDto {
     private String hoursOfOperation;
 
     @QueryProjection
-    public StoreLikeDto(Store store, String imageURl){
+    public StoreLikeDto(Store store){
         this.storeId = store.getId();
         this.name = store.getName();
-        this.imageUrl = imageURl;
+        this.imageUrl = store.getImageUrl();
         this.address = store.getAddress();
         this.storeOpenDay = makeStoreOpenDayIntroduction(store.getStoreOpenDay());
         this.hoursOfOperation = store.getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
