@@ -195,7 +195,7 @@ public class DressRepositoryImpl implements DressDslRepository {
         return radian.multiply(180 / Math.PI);
     }
     @Override
-    public List<DressOrderDto> findReservationByUser(Long userId) {
+    public List<DressOrderDto> findReservationByUserAndReservationId(Long dressReservationId,Long userId) {
         return queryFactory
                 .select(new QDressOrderDto(
                         dressReservation,reservedDress,
@@ -204,13 +204,13 @@ public class DressRepositoryImpl implements DressDslRepository {
                                 .where(dressImage.dress.id.eq(dress.id)).limit(1)
                 ))
                 .from(dressReservation, reservedDress)
-                .where(dressReservation.user.id.eq(userId))
+                .where(dressReservation.user.id.eq(userId).and(dressReservation.id.eq(dressReservationId)))
                 .where(dressReservation.id.eq(reservedDress.dressReservation.id))
                 .fetch();
     }
 
     @Override
-    public List<DressOrderListDto> findReservationListByUser(Long userId) {
+    public List<DressOrderListDto> findReservationListByStatusAndUser(String status,Long userId) {
         return queryFactory
                 .select(new QDressOrderListDto(
                         dressReservation,reservedDress,
@@ -221,6 +221,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 .from(dressReservation, reservedDress)
                 .where(dressReservation.user.id.eq(userId))
                 .where(dressReservation.id.eq(reservedDress.dressReservation.id))
+                .where(dressReservation.status.eq(status))
                 .fetch();
     }
 }

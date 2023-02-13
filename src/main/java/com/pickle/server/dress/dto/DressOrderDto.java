@@ -12,7 +12,6 @@ import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 
 
-
 @Getter
 public class DressOrderDto {
     @ApiModelProperty(example = "예약내역 id")
@@ -55,18 +54,17 @@ public class DressOrderDto {
     @JsonProperty("price")
     private String price;
 
-    @ApiModelProperty(example = "드레스 옵션 1")
-    @JsonProperty("dress_option1")
-    private String dressOption1;
+//    @ApiModelProperty(example = "드레스 옵션 1")
+//    @JsonProperty("dress_option1")
+//    private String dressOption1;
 
     @ApiModelProperty(example = "드레스 옵션 1_name")
     @JsonProperty("dress_option1_name")
-//    private DressOptionDetail dressOption1;
     private String dressOptionName1;
 
-    @ApiModelProperty(example = "드레스 옵션 2")
-    @JsonProperty("dress_option2")
-    private String dressOption2;
+//    @ApiModelProperty(example = "드레스 옵션 2")
+//    @JsonProperty("dress_option2")
+//    private String dressOption2;
     @ApiModelProperty(example = "드레스 옵션 2_name")
     @JsonProperty("dress_option2_name")
 //    private DressOptionDetail dressOption1;
@@ -90,9 +88,9 @@ public class DressOrderDto {
                 + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
         this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
-        this.dressOption1 = reservedDress.getDressOptionDetail1().getDressOption().getName();
+//        this.dressOption1 = reservedDress.getDressOptionDetail1().getDressOption().getName();
         this.dressOptionName1 = reservedDress.getDressOptionDetail1().getName();
-        this.dressOption2 = reservedDress.getDressOptionDetail2().getDressOption().getName();
+//        this.dressOption2 = reservedDress.getDressOptionDetail2().getDressOption().getName();
         this.dressOptionName2 = reservedDress.getDressOptionDetail2().getName();
         this.comment =dressReservation.getComment();
         this.price = priceFormat.format(dressReservation.getPrice()*reservedDress.getQuantity())+"원";
