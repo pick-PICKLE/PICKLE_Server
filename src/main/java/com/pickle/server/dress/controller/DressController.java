@@ -63,7 +63,7 @@ public class DressController {
                                                   @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category,
                                                   @RequestParam(value = "latitude") Double latitude,
                                                   @RequestParam(value = "longitude") Double longitude,
-                                                  @ApiIgnore @AuthenticationPrincipal User user){
+                                                  @ApiIgnore @AuthenticationPrincipal User user) {
 
         return new ResponseEntity<>(
                 PropertyUtil.response(dressService.searchDress(name, sort, category, latitude, longitude, user))

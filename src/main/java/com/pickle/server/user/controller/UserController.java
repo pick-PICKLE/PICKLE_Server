@@ -1,6 +1,7 @@
 package com.pickle.server.user.controller;
 
 import com.pickle.server.config.PropertyUtil;
+import com.pickle.server.dress.dto.UpdateDressLikeDto;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.dto.UserDto;
 import com.pickle.server.user.service.UserService;
@@ -12,10 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.HashMap;
 
 
 @RestController
@@ -30,6 +31,14 @@ public class UserController {
         return userService.getMyProfile(user);
     }
 
+
+    @ApiOperation(value ="프로필 수정하기")
+    @PutMapping(value = "/user/profile")
+    public ResponseEntity<JSONObject> updateProfile(@ApiIgnore @AuthenticationPrincipal User user, @RequestBody UpdateDressLikeDto updatedressLikeDto) {
+        userService.updateProfile(user, updatedressLikeDto);
+
+        return new ResponseEntity<>(PropertyUtil.response("프로필 수정 완료"), HttpStatus.OK);
+    }
 
 
 
