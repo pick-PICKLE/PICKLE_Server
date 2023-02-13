@@ -141,12 +141,10 @@ public class DressController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "의상 예약 상세 내역 조회 성공")
     })
-    @GetMapping("/orders")
-    public ResponseEntity<List<DressOrderDto>> getOrder (@ApiIgnore @AuthenticationPrincipal User user){
-        return new ResponseEntity<>(dressService.getDressOrder(user.getId()), HttpStatus.OK);
+    @GetMapping("/orders/{dress_reservation_id}")
+    public ResponseEntity<List<DressOrderDto>> getOrder(@PathVariable(name="dress_reservation_id") Long dressReservationId, @ApiIgnore @AuthenticationPrincipal User user){
+        return new ResponseEntity<>(dressService.getDressOrder(dressReservationId,user.getId()), HttpStatus.OK);
     }
-
-
 
     @ApiOperation(value = "의상 예약 내역 조회",
             httpMethod = "GET",
@@ -157,7 +155,7 @@ public class DressController {
             @ApiResponse(code = 200, message = "의상 예약 내역 조회 성공")
     })
     @GetMapping("/order-list")
-    public ResponseEntity<List<DressOrderListDto>> getOrderList (@ApiIgnore @AuthenticationPrincipal User user){
+    public ResponseEntity<List<DressOrderListDto>> getOrderList(@ApiIgnore @AuthenticationPrincipal User user){
         return new ResponseEntity<>(dressService.getDressOrderList(user.getId()), HttpStatus.OK);
     }
 }
