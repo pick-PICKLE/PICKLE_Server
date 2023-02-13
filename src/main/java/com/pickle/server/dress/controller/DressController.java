@@ -4,6 +4,7 @@ import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.domain.DressSortBy;
 import com.pickle.server.dress.dto.*;
+import com.pickle.server.dress.repository.DressReservationRepository;
 import com.pickle.server.dress.service.DressService;
 import com.pickle.server.user.domain.User;
 import io.swagger.annotations.Api;
@@ -71,7 +72,7 @@ public class DressController {
 
     @ApiOperation(value = "의상 예약 폼 받기",
             httpMethod = "GET",
-            response = DressDetailDto.class,
+            response = DressReservationFormDto.class,
             notes = "의상 예약 폼(스토어 정보, 예약 가능 시간) 받는 API"
     )
     @ApiResponses({
