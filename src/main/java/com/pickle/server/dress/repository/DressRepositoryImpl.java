@@ -210,7 +210,7 @@ public class DressRepositoryImpl implements DressDslRepository {
     }
 
     @Override
-    public List<DressOrderListDto> findReservationListByUser(Long userId) {
+    public List<DressOrderListDto> findReservationListByStatusAndUser(String status,Long userId) {
         return queryFactory
                 .select(new QDressOrderListDto(
                         dressReservation,reservedDress,
@@ -221,6 +221,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 .from(dressReservation, reservedDress)
                 .where(dressReservation.user.id.eq(userId))
                 .where(dressReservation.id.eq(reservedDress.dressReservation.id))
+                .where(dressReservation.status.eq(status))
                 .fetch();
     }
 }

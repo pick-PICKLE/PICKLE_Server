@@ -18,5 +18,5 @@ public interface DressDslRepository {
 
     List<DressOverviewDto> findDressByCategory(Long userId, String category, Double latitude, Double longitude);
     List<DressOrderDto> findReservationByUserAndReservationId(Long dressReservationId,Long userId);
-    List<DressOrderListDto> findReservationListByUser(Long userId);
+    List<DressOrderListDto> findReservationListByStatusAndUser(String status,Long userId);
 }

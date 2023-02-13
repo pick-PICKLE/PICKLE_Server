@@ -107,8 +107,8 @@ public class DressService {
 
         return dressRepository.findReservationByUserAndReservationId(dressReservationId,userId);
     }
-    public List<DressOrderListDto> getDressOrderList(Long userId){
+    public List<DressOrderListDto> getDressOrderList(String status,Long userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundIdException());
-        return dressRepository.findReservationListByUser(userId);
+        return dressRepository.findReservationListByStatusAndUser(status,userId);
     }
 }
