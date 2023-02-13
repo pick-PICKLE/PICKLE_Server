@@ -13,9 +13,9 @@ import java.text.DecimalFormat;
 
 @Getter
 public class DressOrderListDto {
-//    @ApiModelProperty(example = "예약내역 id")
-//    @JsonProperty("reserved_dress_id")
-//    private Long reservedDressId;
+    @ApiModelProperty(example = "예약내역 id")
+    @JsonProperty("reserved_dress_id")
+    private Long reservedDressId;
 
     @ApiModelProperty(example = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("pickup_datetime")
@@ -45,6 +45,7 @@ public class DressOrderListDto {
     public DressOrderListDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl){
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
+        this.reservedDressId = dressReservation.getId();
         this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
         this.storeName = dressReservation.getStore().getName();
         this.dressName = reservedDress.getDress().getName();
