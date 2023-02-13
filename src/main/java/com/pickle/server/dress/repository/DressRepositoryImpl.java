@@ -6,9 +6,7 @@ import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.domain.DressSortBy;
 import com.pickle.server.dress.dto.*;
-import com.querydsl.core.types.dsl.MathExpressions;
-import com.querydsl.core.types.dsl.NumberExpression;
-import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -72,7 +70,9 @@ public class DressRepositoryImpl implements DressDslRepository {
 
             case DressSortBy.Constants.like:
                 return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
-                        /*좋아요 순 정렬*/
+                        .leftJoin(dressLike).on(dress.id.eq(dressLike.dress.id))
+                        .groupBy(dress.id)
+                        .orderBy(dressLike.count().desc())
                         .fetch();
 
             case DressSortBy.Constants.newDress:

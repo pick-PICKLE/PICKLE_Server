@@ -66,14 +66,18 @@ public class DressService {
     }
 
     @Transactional
-    public void likesDress(UpdateDressLikeDto updateDressLikeDto,User user){
+    public UpdateDressLikeDto likesDress(UpdateDressLikeDto updateDressLikeDto,User user){
         Dress dress = dressRepository.findById(updateDressLikeDto.getDressId()).orElseThrow(NotFoundIdException::new);
         if(dressLikeRepository.findByUserAndDress(user,dress).isPresent()){
             dressLikeRepository.deleteDress(dress.getId(), user.getId());
+
+            return new UpdateDressLikeDto(updateDressLikeDto.getDressId(), Boolean.FALSE);
         }
         else{
             DressLike dressLike = DressLike.builder().dress(dress).user(user).build();
             dressLikeRepository.save(dressLike);
+
+            return new UpdateDressLikeDto(updateDressLikeDto.getDressId(), Boolean.TRUE);
         }
     }
 
@@ -110,5 +114,13 @@ public class DressService {
     public List<DressOrderListDto> getDressOrderList(String status,Long userId){
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundIdException());
         return dressRepository.findReservationListByStatusAndUser(status,userId);
+    }
+
+    public void cancelReservation(Long reservationId) {
+        DressReservation dressReservation = dressReservationRepository.findById(reservationId).orElseThrow(
+                () -> new NotFoundIdException()
+        );
+        dressReservation.setStatus(DressReservationStatus.Constants.canceledOrder);
+        dressReservationRepository.save(dressReservation);
     }
 }

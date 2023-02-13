@@ -50,7 +50,7 @@ public class DressController {
             response = JSONObject.class,
             notes = "카테고리 : 아우터, 상의, 하의, 원피스, 기타, (미입력시)전체\n"
             + "정렬 : 낮은가격순, 가까운거리순, (미입력시)좋아요많은순, 최신순\n"
-            + "의상 검색 API"
+            + "의상 검색 API\n"
             + "2km 이내의 의상 정보 리스트가 response로 나옵니다."
     )
     @ApiResponses({
@@ -60,8 +60,8 @@ public class DressController {
     public ResponseEntity<JSONObject> searchDress(@RequestParam("name") String name,
                                                   @RequestParam(value = "sort", required = false, defaultValue = DressSortBy.Constants.like) String sort,
                                                   @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category,
-                                                  @RequestParam(value = "latitude", required = false) Double latitude,
-                                                  @RequestParam(value = "longitude", required = false) Double longitude,
+                                                  @RequestParam(value = "latitude") Double latitude,
+                                                  @RequestParam(value = "longitude") Double longitude,
                                                   @ApiIgnore @AuthenticationPrincipal User user){
 
         return new ResponseEntity<>(
@@ -101,6 +101,22 @@ public class DressController {
                 , HttpStatus.OK);
     }
 
+    @ApiOperation(value = "의상 예약 취소하기",
+            httpMethod = "POST",
+            response = JSONObject.class,
+            notes = "의상 예약 취소 API"
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "의상 예약 취소 성공")
+    })
+    @PostMapping("/reservation/cancel/{reservation_id}")
+    public ResponseEntity<JSONObject> cancelReservation(@PathVariable("reservation_id") Long reservationId){
+        dressService.cancelReservation(reservationId);
+        return new ResponseEntity<>(
+                PropertyUtil.response("예약 취소 완료")
+                , HttpStatus.OK);
+    }
+
     @ApiOperation(value="의상 좋아요",
             httpMethod = "POST",
             response = UpdateDressLikeDto.class,
@@ -111,8 +127,7 @@ public class DressController {
     })
     @PostMapping("/like")
     public ResponseEntity<UpdateDressLikeDto> likeDress(@RequestBody UpdateDressLikeDto updatedressLikeDto,@ApiIgnore @AuthenticationPrincipal User user){
-        dressService.likesDress(updatedressLikeDto,user);
-        return new ResponseEntity<>(updatedressLikeDto
+        return new ResponseEntity<>(dressService.likesDress(updatedressLikeDto,user)
                 , HttpStatus.OK);
     }
 

@@ -4,6 +4,7 @@ import com.pickle.server.common.error.NotFoundIdException;
 import com.pickle.server.common.error.NotValidParamsException;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
+import com.pickle.server.dress.dto.UpdateDressLikeDto;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreLike;
 import com.pickle.server.store.dto.StoreCoordDto;
@@ -57,12 +58,17 @@ public class StoreService {
         return storeRepository.findStoreByUsers(userId);
     }
     @Transactional
-    public void likesStore(UpdateStoreLikeDto updateStoreLikeDto,User user){
+    public UpdateStoreLikeDto likesStore(UpdateStoreLikeDto updateStoreLikeDto, User user){
         Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()-> new NotFoundIdException());
-        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store.getId(),user.getId());}
-        else{
+        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){
+            storeLikeRepository.deleteStore(store.getId(),user.getId());
+
+            return new UpdateStoreLikeDto(updateStoreLikeDto.getStoreId(), Boolean.FALSE);
+        } else{
             StoreLike storeLike = StoreLike.builder().store(store).user(user).build();
             storeLikeRepository.save(storeLike);
+
+            return new UpdateStoreLikeDto(updateStoreLikeDto.getStoreId(), Boolean.TRUE);
         }
     }
     /*
