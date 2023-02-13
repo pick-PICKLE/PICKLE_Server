@@ -9,7 +9,8 @@ public enum DressReservationStatus {
     ORDER_COMPLETION(Constants.orderCompletion),
     PICKUP_WAITING(Constants.pickupWaiting),
     PICKUP_COMPLETION(Constants.pickupCompletion),
-    PURCHASE_CONFIRMATION(Constants.purchaseCompletion);
+    PURCHASE_CONFIRMATION(Constants.purchaseCompletion),
+    CANCELED_ORDER(Constants.purchaseCompletion);
 
     private final String sortBy;
 
@@ -27,5 +28,6 @@ public enum DressReservationStatus {
         public static final String pickupWaiting = "픽업대기";
         public static final String pickupCompletion = "픽업완료";
         public static final String purchaseCompletion = "구매확정";
+        public static final String canceledOrder = "주문취소";
     }
 }

@@ -55,4 +55,8 @@ public class DressReservation {
         this.reservedDressList = reservedDressList;
         this.status = DressReservationStatus.Constants.orderCompletion;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

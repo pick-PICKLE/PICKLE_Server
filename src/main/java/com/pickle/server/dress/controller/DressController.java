@@ -101,6 +101,22 @@ public class DressController {
                 , HttpStatus.OK);
     }
 
+    @ApiOperation(value = "의상 예약 취소하기",
+            httpMethod = "POST",
+            response = JSONObject.class,
+            notes = "의상 예약 취소 API"
+    )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "의상 예약 취소 성공")
+    })
+    @PostMapping("/reservation/cancel/{reservation_id}")
+    public ResponseEntity<JSONObject> cancelReservation(@PathVariable("reservation_id") Long reservationId){
+        dressService.cancelReservation(reservationId);
+        return new ResponseEntity<>(
+                PropertyUtil.response("예약 취소 완료")
+                , HttpStatus.OK);
+    }
+
     @ApiOperation(value="의상 좋아요",
             httpMethod = "POST",
             response = UpdateDressLikeDto.class,
