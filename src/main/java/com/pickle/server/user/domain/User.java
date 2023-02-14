@@ -4,6 +4,7 @@ package com.pickle.server.user.domain;
 
 
 import com.pickle.server.common.Timestamped;
+import com.pickle.server.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,6 +54,10 @@ public class User extends Timestamped  {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private List<StoreLike> storeLikes = new ArrayList<>();
 
-
+    public void updateProfile(UserDto userDto){
+        this.name = userDto.getName();
+        this.email = userDto.getEmail();
+        this.image = userDto.getImage();
+    }
 
 }

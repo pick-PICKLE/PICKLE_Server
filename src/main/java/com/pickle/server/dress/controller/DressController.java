@@ -63,7 +63,7 @@ public class DressController {
                                                   @RequestParam(value = "category", required = false, defaultValue = DressCategory.Constants.all) String category,
                                                   @RequestParam(value = "latitude") Double latitude,
                                                   @RequestParam(value = "longitude") Double longitude,
-                                                  @ApiIgnore @AuthenticationPrincipal User user){
+                                                  @ApiIgnore @AuthenticationPrincipal User user) {
 
         return new ResponseEntity<>(
                 PropertyUtil.response(dressService.searchDress(name, sort, category, latitude, longitude, user))
@@ -85,7 +85,7 @@ public class DressController {
 
     @ApiOperation(value = "의상 예약하기",
             httpMethod = "POST",
-            response = DressDetailDto.class,
+            response = DressReservationDto.class,
             notes = "의상 예약 API"
             +"주문완료 픽업대기 픽업완료 구매확정"
             +"status 변경 기능은 아직 없음(매장 계정이 없으므로)"

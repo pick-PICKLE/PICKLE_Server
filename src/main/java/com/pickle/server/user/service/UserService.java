@@ -2,6 +2,9 @@ package com.pickle.server.user.service;
 
 import com.pickle.server.common.error.UserNotFoundException;
 import com.pickle.server.config.PropertyUtil;
+import com.pickle.server.dress.domain.DressReservation;
+import com.pickle.server.dress.dto.UpdateDressLikeDto;
+import com.pickle.server.store.domain.Store;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.dto.UserDto;
 import com.pickle.server.user.repository.UserRepository;
@@ -23,5 +26,10 @@ public class UserService{
         }
         Optional<User> findUser = userRepository.findById(user.getId());
         return PropertyUtil.response(new UserDto(findUser.get()));
+    }
+
+    public void updateProfile(User user, UserDto userDto) {
+        user.updateProfile(userDto);
+        userRepository.save(user);
     }
 }
