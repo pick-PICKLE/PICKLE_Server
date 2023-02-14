@@ -208,14 +208,10 @@ public class DressRepositoryImpl implements DressDslRepository {
     public List<DressOrderListDto> findReservationListByStatusAndUser(String status,Long userId) {
         return queryFactory
                 .select(new QDressOrderListDto(
-                        dressReservation,reservedDress,
-                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
-                                .from(dressImage)
-                                .where(dressImage.dress.id.eq(dress.id)).limit(1)
+                        dressReservation, Expressions.asString(keyValueService.makeUrlHead("dresses"))
                 ))
-                .from(dressReservation, reservedDress)
+                .from(dressReservation)
                 .where(dressReservation.user.id.eq(userId))
-                .where(dressReservation.id.eq(reservedDress.dressReservation.id))
                 .where(dressReservation.status.eq(status))
                 .fetch();
     }

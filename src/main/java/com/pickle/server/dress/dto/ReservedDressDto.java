@@ -27,7 +27,6 @@ public class ReservedDressDto {
     String selectPrice;
 
 
-    @QueryProjection
     public ReservedDressDto(ReservedDress reservedDress, String urlhead) {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 

@@ -66,7 +66,8 @@ public class DressOrderDto {
         this.hoursOfOperation = dressReservation.getStore().getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
                 + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
-        this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
+        this.pickUpDateTime = dressReservation.getPickUpDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " / "
+                + dressReservation.getPickUpDateTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         for(ReservedDress rd : dressReservation.getReservedDressList()){
             this.reservedDressList.add(new ReservedDressDto(rd, urlHead));
         }

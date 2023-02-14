@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
@@ -18,8 +19,8 @@ public class DressOrderListDto {
     private Long dressReservationId;
 
     @ApiModelProperty(example = "yyyy-MM-dd HH:mm:ss")
-    @JsonProperty("pickup_datetime")
-    private String pickUpDateTime;
+    @JsonProperty("order_time")
+    private String orderTime;
 
     @ApiModelProperty(example = "스토어 이름")
     @JsonProperty("store_name")
@@ -42,15 +43,15 @@ public class DressOrderListDto {
     private String status;
 
     @QueryProjection
-    public DressOrderListDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl){
+    public DressOrderListDto(DressReservation dressReservation, String urlhead){
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
         this.dressReservationId = dressReservation.getId();
-        this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
+        this.orderTime = dressReservation.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.storeName = dressReservation.getStore().getName();
-        this.dressName = reservedDress.getDress().getName();
-        this.dressImageUrl = dressImageUrl;
-        this.price = priceFormat.format(dressReservation.getPrice()*reservedDress.getQuantity())+"원";
+        this.dressName = dressReservation.getReservedDressList().get(0).getDress().getName();
+        this.dressImageUrl = urlhead + dressReservation.getReservedDressList().get(0).getDress().getImageList().get(0).getImageUrl();;
+        this.price = priceFormat.format(dressReservation.getPrice())+"원";
         this.status = dressReservation.getStatus();
     }
 }

@@ -1,5 +1,6 @@
 package com.pickle.server.dress.domain;
 
+import com.pickle.server.common.Timestamped;
 import com.pickle.server.dress.dto.DressReservationDto;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.user.domain.User;
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "dress_reservation")
 @NoArgsConstructor
-public class DressReservation {
+public class DressReservation extends Timestamped {
 
     @Id
     @Column(name ="dress_reservation_id")
