@@ -1,6 +1,7 @@
 package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.*;
 import com.pickle.server.store.domain.StoreOpenDay;
 import com.querydsl.core.annotations.QueryProjection;
@@ -10,13 +11,15 @@ import lombok.Getter;
 
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
 public class DressOrderDto {
-    @ApiModelProperty(example = "예약내역 id")
-    @JsonProperty("reserved_dress_id")
-    private Long reservedDressId;
+    @ApiModelProperty(example = "주문 번호")
+    @JsonProperty("dress_reservation_id")
+    private Long dressReservationId;
 
     @ApiModelProperty(example = "스토어 이름")
     @JsonProperty("store_name")
@@ -34,14 +37,6 @@ public class DressOrderDto {
     @JsonProperty("store_open_day")
     private String storeOpenDay;
 
-    @ApiModelProperty(example = "의상 이름")
-    @JsonProperty("dress_name")
-    private String dressName;
-
-    @ApiModelProperty(example = "의상 대표 이미지")
-    @JsonProperty("dress_image_url")
-    private String dressImageUrl;
-
     @ApiModelProperty(example = "yyyy-MM-dd HH:mm:ss")
     @JsonProperty("pickup_datetime")
     private String pickUpDateTime;
@@ -54,46 +49,30 @@ public class DressOrderDto {
     @JsonProperty("price")
     private String price;
 
-//    @ApiModelProperty(example = "드레스 옵션 1")
-//    @JsonProperty("dress_option1")
-//    private String dressOption1;
-
-    @ApiModelProperty(example = "드레스 옵션 1_name")
-    @JsonProperty("dress_option1_name")
-    private String dressOptionName1;
-
-//    @ApiModelProperty(example = "드레스 옵션 2")
-//    @JsonProperty("dress_option2")
-//    private String dressOption2;
-    @ApiModelProperty(example = "드레스 옵션 2_name")
-    @JsonProperty("dress_option2_name")
-//    private DressOptionDetail dressOption1;
-    private String dressOptionName2;
-
     @ApiModelProperty(example = "예약 상태")
     @JsonProperty("reservation_status")
     private String status;
 
+    private List<ReservedDressDto> reservedDressList = new ArrayList<>();
+
 
     @QueryProjection
-    public DressOrderDto(DressReservation dressReservation, ReservedDress reservedDress, String dressImageUrl) {
+    public DressOrderDto(DressReservation dressReservation, String urlHead) {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
 
-        this.reservedDressId = reservedDress.getId();
+        this.dressReservationId = dressReservation.getId();
         this.storeName = dressReservation.getStore().getName();
         this.storeAddress = dressReservation.getStore().getAddress();
-        this.dressName = reservedDress.getDress().getName();
-        this.dressImageUrl = dressImageUrl;
         this.hoursOfOperation = dressReservation.getStore().getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "~"
                 + dressReservation.getStore().getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.storeOpenDay = makeStoreOpenDayIntroduction(dressReservation.getStore().getStoreOpenDay());
-        this.pickUpDateTime = dressReservation.getPickUpDateTime().toString();
-//        this.dressOption1 = reservedDress.getDressOptionDetail1().getDressOption().getName();
-        this.dressOptionName1 = reservedDress.getDressOptionDetail1().getName();
-//        this.dressOption2 = reservedDress.getDressOptionDetail2().getDressOption().getName();
-        this.dressOptionName2 = reservedDress.getDressOptionDetail2().getName();
-        this.comment =dressReservation.getComment();
-        this.price = priceFormat.format(dressReservation.getPrice()*reservedDress.getQuantity())+"원";
+        this.pickUpDateTime = dressReservation.getPickUpDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " / "
+                + dressReservation.getPickUpDateTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        for(ReservedDress rd : dressReservation.getReservedDressList()){
+            this.reservedDressList.add(new ReservedDressDto(rd, urlHead));
+        }
+        this.comment = dressReservation.getComment();
+        this.price = priceFormat.format(dressReservation.getPrice())+"원";
         this.status = dressReservation.getStatus();
     }
 

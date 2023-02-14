@@ -172,7 +172,7 @@ public class DressController {
             @ApiResponse(code = 200, message = "의상 예약 내역 조회 성공")
     })
     @GetMapping("/order-list")
-    public ResponseEntity<List<DressOrderListDto>> getOrderList(@RequestParam(name="status")String status,@ApiIgnore @AuthenticationPrincipal User user){
-        return new ResponseEntity<>(dressService.getDressOrderList(status,user.getId()), HttpStatus.OK);
+    public ResponseEntity<List<DressOrderListDto>> getOrderList(@RequestParam(name="status") String status, @ApiIgnore @AuthenticationPrincipal User user){
+        return new ResponseEntity<>(dressService.getDressOrderList(status, user.getId()), HttpStatus.OK);
     }
 }
