@@ -3,8 +3,7 @@ package com.pickle.server.dress.repository;
 
 import com.pickle.server.common.error.NotValidParamsException;
 import com.pickle.server.common.util.KeyValueService;
-import com.pickle.server.dress.domain.DressCategory;
-import com.pickle.server.dress.domain.DressSortBy;
+import com.pickle.server.dress.domain.*;
 import com.pickle.server.dress.dto.*;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.JPAExpressions;
@@ -19,7 +18,6 @@ import static com.pickle.server.dress.domain.QDress.dress;
 import static com.pickle.server.dress.domain.QDressImage.dressImage;
 import static com.pickle.server.dress.domain.QDressLike.dressLike;
 import static com.pickle.server.dress.domain.QDressReservation.dressReservation;
-import static com.pickle.server.dress.domain.QDressStock.dressStock;
 import static com.pickle.server.dress.domain.QRecentView.recentView;
 import static com.pickle.server.dress.domain.QReservedDress.reservedDress;
 
@@ -194,18 +192,15 @@ public class DressRepositoryImpl implements DressDslRepository {
     private NumberExpression<Double> radianToDegree(NumberExpression<Double> radian) {
         return radian.multiply(180 / Math.PI);
     }
+
     @Override
-    public List<DressOrderDto> findReservationByUserAndReservationId(Long dressReservationId,Long userId) {
+    public List<DressOrderDto> findReservationByUserAndReservationId(Long dressReservationId, Long userId) {
         return queryFactory
                 .select(new QDressOrderDto(
-                        dressReservation,reservedDress,
-                        JPAExpressions.select(dressImage.imageUrl.min().prepend(keyValueService.makeUrlHead("dresses")))
-                                .from(dressImage)
-                                .where(dressImage.dress.id.eq(dress.id)).limit(1)
-                ))
-                .from(dressReservation, reservedDress)
+                        dressReservation, Expressions.asString(keyValueService.makeUrlHead("dresses")))
+                )
+                .from(dressReservation)
                 .where(dressReservation.user.id.eq(userId).and(dressReservation.id.eq(dressReservationId)))
-                .where(dressReservation.id.eq(reservedDress.dressReservation.id))
                 .fetch();
     }
 
