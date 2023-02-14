@@ -4,6 +4,7 @@ import com.pickle.server.config.PropertyUtil;
 import com.pickle.server.dress.dto.UpdateDressLikeDto;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.dto.UserDto;
+import com.pickle.server.user.dto.UserUpdateDto;
 import com.pickle.server.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,8 +34,8 @@ public class UserController {
 
     @ApiOperation(value ="프로필 수정하기")
     @PutMapping(value = "/user/profile")
-    public ResponseEntity<JSONObject> updateProfile(@ApiIgnore @AuthenticationPrincipal User user, @RequestBody UserDto userDto) {
-        userService.updateProfile(user, userDto);
+    public ResponseEntity<JSONObject> updateProfile(@ApiIgnore @AuthenticationPrincipal User user, @RequestBody UserUpdateDto userUpdateDtoDto) {
+        userService.updateProfile(user, userUpdateDtoDto);
 
         return new ResponseEntity<>(PropertyUtil.response("프로필 수정 완료"), HttpStatus.OK);
     }

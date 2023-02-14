@@ -5,16 +5,15 @@ package com.pickle.server.user.domain;
 
 import com.pickle.server.common.Timestamped;
 import com.pickle.server.user.dto.UserDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.pickle.server.user.dto.UserUpdateDto;
+import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -54,10 +53,10 @@ public class User extends Timestamped  {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private List<StoreLike> storeLikes = new ArrayList<>();
 
-    public void updateProfile(UserDto userDto){
-        this.name = userDto.getName();
-        this.email = userDto.getEmail();
-        this.image = userDto.getImage();
+    public void updateProfile(UserUpdateDto userUpdateDto){
+        this.name = userUpdateDto.getName();
+        this.email = userUpdateDto.getEmail();
+        this.image = userUpdateDto.getImage();
     }
 
 }

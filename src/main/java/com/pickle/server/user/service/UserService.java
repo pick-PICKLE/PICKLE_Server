@@ -7,6 +7,7 @@ import com.pickle.server.dress.dto.UpdateDressLikeDto;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.user.domain.User;
 import com.pickle.server.user.dto.UserDto;
+import com.pickle.server.user.dto.UserUpdateDto;
 import com.pickle.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -28,8 +29,8 @@ public class UserService{
         return PropertyUtil.response(new UserDto(findUser.get()));
     }
 
-    public void updateProfile(User user, UserDto userDto) {
-        user.updateProfile(userDto);
+    public void updateProfile(User user, UserUpdateDto userUpdateDto) {
+        user.updateProfile(userUpdateDto);
         userRepository.save(user);
     }
 }
