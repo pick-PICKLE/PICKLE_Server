@@ -39,5 +39,4 @@ public class UserController {
 
         return new ResponseEntity<>(PropertyUtil.response("프로필 수정 완료"), HttpStatus.OK);
     }
-
 }

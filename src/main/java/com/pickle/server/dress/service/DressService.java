@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -111,7 +112,6 @@ public class DressService {
         return dressRepository.findReservationByUserAndReservationId(dressReservationId,userId);
     }
     public List<DressOrderListDto> getDressOrderList(String status,Long userId){
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundIdException());
         return dressRepository.findReservationListByStatusAndUser(status,userId);
     }
 

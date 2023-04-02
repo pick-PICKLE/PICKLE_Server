@@ -38,7 +38,6 @@ public class HomeService {
 
         Random random = new Random();
         int index = random.nextInt(Category.size());
-        System.out.println(Category.get(index));
 
         Stream<DressOverviewDto> recStream = dressRepository.findDressByCategory(userId, Category.get(index), lat, lng).stream().limit(20);
         List<DressOverviewDto> recDresses = recStream.collect(Collectors.toList());

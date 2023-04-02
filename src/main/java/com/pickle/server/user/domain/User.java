@@ -2,15 +2,16 @@
 package com.pickle.server.user.domain;
 
 
-
 import com.pickle.server.common.Timestamped;
-import com.pickle.server.user.dto.UserDto;
+import com.pickle.server.dress.domain.DressLike;
+import com.pickle.server.dress.domain.DressReservation;
+import com.pickle.server.store.domain.StoreLike;
 import com.pickle.server.user.dto.UserUpdateDto;
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,7 +36,17 @@ public class User extends Timestamped  {
     private String image;
 
     @Column
-    private String origin; //무슨 로그인?
+    private String origin;
+
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<DressReservation> reserves = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<DressLike> dressLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<StoreLike> storeLikes = new ArrayList<>();
 
     @Builder
     public User(String name, String email, String image, String origin) {
@@ -44,14 +55,6 @@ public class User extends Timestamped  {
         this.image = image;
         this.origin = origin;
     }
-    //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<Reserve> reserves = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<DressLike> dressLikes = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<StoreLike> storeLikes = new ArrayList<>();
 
     public void updateProfile(UserUpdateDto userUpdateDto){
         this.name = userUpdateDto.getName();

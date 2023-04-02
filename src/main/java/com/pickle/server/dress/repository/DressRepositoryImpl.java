@@ -206,6 +206,9 @@ public class DressRepositoryImpl implements DressDslRepository {
 
     @Override
     public List<DressOrderListDto> findReservationListByStatusAndUser(String status,Long userId) {
+        if(!DressReservationStatus.existsDressReservationStatusByName(status))
+            throw new NotValidParamsException();
+
         return queryFactory
                 .select(new QDressOrderListDto(
                         dressReservation, Expressions.asString(keyValueService.makeUrlHead("dresses"))
