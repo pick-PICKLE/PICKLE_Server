@@ -1,7 +1,8 @@
 package com.pickle.server.store.repository;
 
 
-import com.pickle.server.common.error.NotValidParamsException;
+import com.pickle.server.common.error.CustomException;
+import com.pickle.server.common.error.ErrorResponseStatus;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
@@ -86,7 +87,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
         if (latitude == null || longitude == null
                 || latitude > 90 || latitude < -90
                 || longitude > 180 || longitude < -180)
-            throw new NotValidParamsException();
+            throw new CustomException(ErrorResponseStatus.BAD_REQUEST_INVALID_SEARCH_PARAMETER);
         return queryFactory
                 .select(new QStoreCoordDto(store, storeLike.id))
                 .from(store)

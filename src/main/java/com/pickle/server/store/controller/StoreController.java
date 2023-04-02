@@ -64,7 +64,7 @@ public class StoreController {
     @ApiResponses({@ApiResponse(code = 200, message = "스토어 좋아요 목록 조회 성공")})
     @GetMapping("/like-list")
     public ResponseEntity<List<StoreLikeDto>> findStoreLikeByUser(@ApiIgnore @AuthenticationPrincipal User user){
-        return new ResponseEntity<>(storeService.findStoreLikeByUser(user.getId()),HttpStatus.OK);
+        return new ResponseEntity<>(storeService.findStoreLikeByUser(user),HttpStatus.OK);
     }
 
 
