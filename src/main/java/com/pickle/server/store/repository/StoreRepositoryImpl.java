@@ -11,6 +11,7 @@ import com.pickle.server.store.dto.QStoreCoordDto;
 import com.pickle.server.store.dto.QStoreLikeDto;
 import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreLikeDto;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -100,7 +101,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
 
     private NumberExpression<Double> calculateDistance(Double doubleLat1, Double doubleLong1,
                                                        NumberPath<Double> latitude2, NumberPath<Double> longitude2) {
-        NumberExpression<Double> latitude1 = latitude2.divide(latitude2).multiply(doubleLat1);
+        NumberExpression<Double> latitude1 = Expressions.numberTemplate(Double.class, "1.0").multiply(doubleLat1);
         NumberExpression<Double> theta = longitude2.add(-1 * doubleLong1).multiply(-1);
         NumberExpression<Double> degree = MathExpressions.sin(degreeToRadian(latitude1))
                 .multiply(MathExpressions.sin(degreeToRadian(latitude2)))

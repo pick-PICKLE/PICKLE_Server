@@ -58,7 +58,7 @@ public class StoreService {
     public UpdateStoreLikeDto likesStore(UpdateStoreLikeDto updateStoreLikeDto, User user){
         Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()-> new CustomException(NOT_FOUND_STORE_ID));
         if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){
-            storeLikeRepository.deleteStore(store.getId(),user.getId());
+            storeLikeRepository.deleteStoreLikeByStoreIdAndUserId(store.getId(),user.getId());
 
             return new UpdateStoreLikeDto(updateStoreLikeDto.getStoreId(), Boolean.FALSE);
         } else{
@@ -68,12 +68,4 @@ public class StoreService {
             return new UpdateStoreLikeDto(updateStoreLikeDto.getStoreId(), Boolean.TRUE);
         }
     }
-    /*
-    @Transactional
-    public void delLikeStore(UpdateStoreLikeDto updateStoreLikeDto){
-        User user = userRepository.findById(updateStoreLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()->new RuntimeException("해당 id의 스토어를 찾을 수 없습니다."));
-        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store,user);}
-        else{throw new RuntimeException();}
-    }*/
 }

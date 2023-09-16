@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Builder
 public class StoreLike {
     @Id
-    @Column(name ="storeLike_id")
+    @Column(name ="storelike_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
