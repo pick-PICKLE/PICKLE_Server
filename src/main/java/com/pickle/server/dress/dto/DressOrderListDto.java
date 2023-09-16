@@ -2,10 +2,8 @@ package com.pickle.server.dress.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pickle.server.dress.domain.DressReservation;
-import com.pickle.server.dress.domain.ReservedDress;
 import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
-
 import lombok.Getter;
 
 import java.text.DecimalFormat;
@@ -43,15 +41,14 @@ public class DressOrderListDto {
     private String status;
 
     @QueryProjection
-    public DressOrderListDto(DressReservation dressReservation, String urlhead){
+    public DressOrderListDto(DressReservation dressReservation, String urlHead) {
         DecimalFormat priceFormat = new DecimalFormat("###,###");
-
         this.dressReservationId = dressReservation.getId();
         this.orderTime = dressReservation.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.storeName = dressReservation.getStore().getName();
         this.dressName = dressReservation.getReservedDressList().get(0).getDress().getName();
-        this.dressImageUrl = urlhead + dressReservation.getReservedDressList().get(0).getDress().getImageList().get(0).getImageUrl();;
-        this.price = priceFormat.format(dressReservation.getPrice())+"원";
+        this.dressImageUrl = urlHead + dressReservation.getReservedDressList().get(0).getDress().getImageList().get(0).getImageUrl();
+        this.price = priceFormat.format(dressReservation.getPrice()) + "원";
         this.status = dressReservation.getStatus();
     }
 }

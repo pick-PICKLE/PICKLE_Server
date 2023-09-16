@@ -1,7 +1,8 @@
 package com.pickle.server.dress.repository;
 
 
-import com.pickle.server.common.error.NotValidParamsException;
+import com.pickle.server.common.error.CustomException;
+import com.pickle.server.common.error.ErrorResponseStatus;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.*;
 import com.pickle.server.dress.dto.*;
@@ -19,7 +20,6 @@ import static com.pickle.server.dress.domain.QDressImage.dressImage;
 import static com.pickle.server.dress.domain.QDressLike.dressLike;
 import static com.pickle.server.dress.domain.QDressReservation.dressReservation;
 import static com.pickle.server.dress.domain.QRecentView.recentView;
-import static com.pickle.server.dress.domain.QReservedDress.reservedDress;
 
 
 public class DressRepositoryImpl implements DressDslRepository {
@@ -61,7 +61,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                 if (latitude == null || longitude == null
                         || latitude > 90 || latitude < -90
                         || longitude > 180 || longitude < -180)
-                    throw new NotValidParamsException();
+                    throw new CustomException(ErrorResponseStatus.BAD_REQUEST_INVALID_SEARCH_PARAMETER);
                 return findDressByCategoryCondition(findDressByNameCondition(name, userId, latitude, longitude), category)
                         .orderBy(calculateDistance(latitude, longitude, dress.store.latitude, dress.store.longitude).asc())
                         .fetch();
@@ -78,7 +78,7 @@ public class DressRepositoryImpl implements DressDslRepository {
                         .orderBy(dress.createdAt.desc())
                         .fetch();
             default:
-                throw new NotValidParamsException();
+                throw new CustomException(ErrorResponseStatus.BAD_REQUEST_INVALID_SEARCH_PARAMETER);
         }
     }
 
@@ -206,6 +206,9 @@ public class DressRepositoryImpl implements DressDslRepository {
 
     @Override
     public List<DressOrderListDto> findReservationListByStatusAndUser(String status,Long userId) {
+        if(!DressReservationStatus.existsDressReservationStatusByName(status))
+            throw new CustomException(ErrorResponseStatus.BAD_REQUEST_INVALID_SEARCH_PARAMETER);
+
         return queryFactory
                 .select(new QDressOrderListDto(
                         dressReservation, Expressions.asString(keyValueService.makeUrlHead("dresses"))

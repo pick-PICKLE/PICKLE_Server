@@ -43,7 +43,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .consumes(getConsumeContentTypes())
                 .produces(getProduceContentTypes())
                 .useDefaultResponseMessages(false)
-//                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.pickle.server"))
                 .paths(PathSelectors.any())

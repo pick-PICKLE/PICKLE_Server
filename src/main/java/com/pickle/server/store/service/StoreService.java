@@ -1,10 +1,8 @@
 package com.pickle.server.store.service;
 
-import com.pickle.server.common.error.NotFoundIdException;
-import com.pickle.server.common.error.NotValidParamsException;
+import com.pickle.server.common.error.CustomException;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
-import com.pickle.server.dress.dto.UpdateDressLikeDto;
 import com.pickle.server.store.domain.Store;
 import com.pickle.server.store.domain.StoreLike;
 import com.pickle.server.store.dto.StoreCoordDto;
@@ -20,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.pickle.server.common.error.ErrorResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,10 +38,10 @@ public class StoreService {
 
     public StoreDetailDto findStoreDetailInfoByStoreId(Long storeId, String category, User user){
         if(!DressCategory.existsCategoryByName(category))
-            throw new NotValidParamsException();
+            throw new CustomException(BAD_REQUEST_INVALID_SEARCH_PARAMETER);
 
         Store store = storeRepository.findById(storeId).orElseThrow(
-                ()->new NotFoundIdException()
+                ()-> new CustomException(NOT_FOUND_STORE_ID)
         );
 
         List<DressBriefInStoreDto> dressBriefInStoreDtoList
@@ -50,16 +50,15 @@ public class StoreService {
     }
 
     @Transactional(readOnly = true)
-    public List<StoreLikeDto> findStoreLikeByUser(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        List<StoreLikeDto> storeLike = storeRepository.findStoreByUsers(userId);
-        return storeRepository.findStoreByUsers(userId);
+    public List<StoreLikeDto> findStoreLikeByUser(User user){
+        return storeRepository.findStoreByUsers(user.getId());
     }
+
     @Transactional
     public UpdateStoreLikeDto likesStore(UpdateStoreLikeDto updateStoreLikeDto, User user){
-        Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()-> new NotFoundIdException());
+        Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()-> new CustomException(NOT_FOUND_STORE_ID));
         if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){
-            storeLikeRepository.deleteStore(store.getId(),user.getId());
+            storeLikeRepository.deleteStoreLikeByStoreIdAndUserId(store.getId(),user.getId());
 
             return new UpdateStoreLikeDto(updateStoreLikeDto.getStoreId(), Boolean.FALSE);
         } else{
@@ -69,12 +68,4 @@ public class StoreService {
             return new UpdateStoreLikeDto(updateStoreLikeDto.getStoreId(), Boolean.TRUE);
         }
     }
-    /*
-    @Transactional
-    public void delLikeStore(UpdateStoreLikeDto updateStoreLikeDto){
-        User user = userRepository.findById(updateStoreLikeDto.getUserId()).orElseThrow(()->new RuntimeException("해당 id의 유저를 찾을 수 없습니다."));
-        Store store = storeRepository.findById(updateStoreLikeDto.getStoreId()).orElseThrow(()->new RuntimeException("해당 id의 스토어를 찾을 수 없습니다."));
-        if(storeLikeRepository.findByUserAndStore(user,store).isPresent()){storeLikeRepository.deleteStore(store,user);}
-        else{throw new RuntimeException();}
-    }*/
 }

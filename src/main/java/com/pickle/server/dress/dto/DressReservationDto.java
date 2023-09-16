@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,21 +29,9 @@ public class DressReservationDto {
     @JsonProperty("comment")
     private String comment;
 
-
     @ApiModelProperty(example = "합계 가격")
     @JsonProperty("price")
     private Integer price;
 
-    @Override
-    public String toString() {
-        return "DressReservationDto{" +
-                "storeId=" + storeId +
-                ", dressId=" + dressId +
-                ", pickUpDateTime=" + pickUpDateTime +
-                ", reservedDressList=" + reservedDressList +
-                ", comment='" + comment + '\'' +
-                ", price=" + price +
-                '}';
-    }
 }
 

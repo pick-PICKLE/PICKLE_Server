@@ -1,7 +1,8 @@
 package com.pickle.server.store.repository;
 
 
-import com.pickle.server.common.error.NotValidParamsException;
+import com.pickle.server.common.error.CustomException;
+import com.pickle.server.common.error.ErrorResponseStatus;
 import com.pickle.server.common.util.KeyValueService;
 import com.pickle.server.dress.domain.DressCategory;
 import com.pickle.server.dress.dto.DressBriefInStoreDto;
@@ -10,6 +11,7 @@ import com.pickle.server.store.dto.QStoreCoordDto;
 import com.pickle.server.store.dto.QStoreLikeDto;
 import com.pickle.server.store.dto.StoreCoordDto;
 import com.pickle.server.store.dto.StoreLikeDto;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.NumberPath;
@@ -86,7 +88,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
         if (latitude == null || longitude == null
                 || latitude > 90 || latitude < -90
                 || longitude > 180 || longitude < -180)
-            throw new NotValidParamsException();
+            throw new CustomException(ErrorResponseStatus.BAD_REQUEST_INVALID_SEARCH_PARAMETER);
         return queryFactory
                 .select(new QStoreCoordDto(store, storeLike.id))
                 .from(store)
@@ -99,7 +101,7 @@ public class StoreRepositoryImpl implements StoreDslRepository {
 
     private NumberExpression<Double> calculateDistance(Double doubleLat1, Double doubleLong1,
                                                        NumberPath<Double> latitude2, NumberPath<Double> longitude2) {
-        NumberExpression<Double> latitude1 = latitude2.divide(latitude2).multiply(doubleLat1);
+        NumberExpression<Double> latitude1 = Expressions.numberTemplate(Double.class, "1.0").multiply(doubleLat1);
         NumberExpression<Double> theta = longitude2.add(-1 * doubleLong1).multiply(-1);
         NumberExpression<Double> degree = MathExpressions.sin(degreeToRadian(latitude1))
                 .multiply(MathExpressions.sin(degreeToRadian(latitude2)))

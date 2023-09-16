@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private static final String[] AUTH_WHITELIST = {"/api/v1/auth/**","/",
-            "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",   // swagger
+            "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/index.html", "/swagger-ui.html","/webjars/**", "/swagger/**",
             "/h2-console/**", "/configuration/security","/auth/**"}; //인증된 사용자 아니어도 접근 가능
     private final AuthTokenProvider authTokenProvider;
 
